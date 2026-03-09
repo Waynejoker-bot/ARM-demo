@@ -1,0 +1,22 @@
+export type NavItem = {
+  href: string;
+  label: string;
+};
+
+export const primaryNavItems: NavItem[] = [
+  { href: "/home", label: "首页" },
+  { href: "/ceo-command-center", label: "CEO 主控室" },
+  { href: "/sales-manager-cockpit", label: "销售主管驾驶舱" },
+  { href: "/sales-war-room", label: "一线销售作战室" },
+  { href: "/agent", label: "Agent 工作台" },
+  { href: "/revenue", label: "收入中心" },
+  { href: "/pipeline", label: "商机管道" },
+  { href: "/deals", label: "商机" },
+  { href: "/customers", label: "客户" },
+  { href: "/meetings", label: "会议" },
+  { href: "/sales-team", label: "销售团队" },
+  { href: "/recaps", label: "复盘与培训" },
+  { href: "/agent-workflows", label: "Agent 工作流" },
+  { href: "/data-sources", label: "数据接入" },
+  { href: "/settings", label: "设置" },
+];
