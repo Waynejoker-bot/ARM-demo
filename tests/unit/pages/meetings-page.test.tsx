@@ -20,4 +20,21 @@ describe("meetings page", () => {
     expect(screen.getByText(/转录缺失/i)).toBeVisible();
     expect(screen.getByText(/数据缺失/i)).toBeVisible();
   });
+
+  it("exposes feed and card-density hooks for mobile meeting queues", () => {
+    render(<MeetingsPage />);
+
+    expect(screen.getByRole("heading", { name: "待确认优先队列" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+    expect(screen.getByRole("heading", { name: "待确认优先队列" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-density",
+      "feed"
+    );
+    expect(screen.getByRole("heading", { name: "Meeting Queue" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-density",
+      "cards"
+    );
+  });
 });

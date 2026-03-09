@@ -38,4 +38,17 @@ describe("meeting workbench view", () => {
     expect(screen.getByText(/数据状态：数据新鲜/i)).toBeVisible();
     expect(screen.getByText(/证据覆盖：2 条高相关依据/i)).toBeVisible();
   });
+
+  it("marks secondary workbench sections for mobile progressive disclosure", () => {
+    render(<MeetingWorkbenchView meetingId="meeting-11" />);
+
+    expect(screen.getByRole("heading", { name: "会议证据" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+    expect(screen.getByRole("heading", { name: "影响范围" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-collapsible",
+      "true"
+    );
+  });
 });

@@ -48,4 +48,21 @@ describe("sales manager reporting surfaces", () => {
       "/customers/acc-2"
     );
   });
+
+  it("marks the manager brief and intervention queue as mobile-first feed sections", () => {
+    render(<SalesManagerCockpitView />);
+
+    expect(screen.getByRole("heading", { name: "Agent 主管简报" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+    expect(screen.getByRole("heading", { name: "Intervention Queue" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+    expect(screen.getByRole("heading", { name: "Rep Weekly Snapshot" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "secondary"
+    );
+  });
 });

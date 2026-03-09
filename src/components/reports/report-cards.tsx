@@ -60,7 +60,7 @@ export function SalesManagerCockpitView() {
         description="先看 Team Brief，再看介入点，最后下钻到销售、线程和 Deal。"
       />
 
-      <SectionCard title="Agent 主管简报">
+      <SectionCard title="Agent 主管简报" mobilePriority="primary" mobileDensity="feed">
         <div className="stack-list">
           <div className="stack-card">
             <strong>本周团队推进有实质前进，但后期高价值线程的介入优先级明显上升。</strong>
@@ -77,7 +77,7 @@ export function SalesManagerCockpitView() {
       </SectionCard>
 
       <div className="grid-2">
-        <SectionCard title="Team Brief Overview">
+        <SectionCard title="Team Brief Overview" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>团队摘要</strong>
@@ -98,7 +98,7 @@ export function SalesManagerCockpitView() {
           </div>
         </SectionCard>
 
-        <SectionCard title="Intervention Queue">
+        <SectionCard title="Intervention Queue" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             {interventionThreads.map((thread) => {
               const account = dataset.accounts.find((item) => item.id === thread.accountId);
@@ -127,7 +127,7 @@ export function SalesManagerCockpitView() {
         </SectionCard>
       </div>
 
-      <SectionCard title="Rep Weekly Snapshot">
+      <SectionCard title="Rep Weekly Snapshot" mobilePriority="secondary" mobileDensity="feed">
         <div className="stack-list">
           {dataset.repReportSnapshots.map((snapshot) => (
             <div className="stack-card" key={snapshot.id}>

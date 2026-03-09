@@ -125,4 +125,22 @@ describe("agent panel", () => {
     expect(screen.getByText("曜石游戏新作买量试用项目")).toBeVisible();
     expect(screen.queryByText("决策卡上下文")).not.toBeInTheDocument();
   });
+
+  it("exposes mobile sheet state hooks when the panel is expanded or collapsed", () => {
+    const onCollapse = vi.fn();
+    const onExpand = vi.fn();
+
+    const { rerender } = render(
+      <AgentPanel context={context} isOpen onCollapse={onCollapse} onExpand={onExpand} />
+    );
+
+    expect(screen.getByLabelText("移动端 Agent 抽屉把手")).toBeInTheDocument();
+    expect(screen.getByRole("complementary")).toHaveAttribute("data-mobile-sheet-state", "expanded");
+
+    rerender(
+      <AgentPanel context={context} isOpen={false} onCollapse={onCollapse} onExpand={onExpand} />
+    );
+
+    expect(screen.getByRole("complementary")).toHaveAttribute("data-mobile-sheet-state", "collapsed");
+  });
 });

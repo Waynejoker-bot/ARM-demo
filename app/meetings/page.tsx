@@ -45,7 +45,7 @@ export default function MeetingsPage() {
         description="先处理待确认会议，再查看完整 Meeting Queue，确保每场会议都能推动线程和商机。"
       />
 
-      <SectionCard title="待确认优先队列">
+      <SectionCard title="待确认优先队列" mobilePriority="primary" mobileDensity="feed">
         <div className="stack-list">
           {pendingMeetings.map((meeting) => {
             const account = dataset.accounts.find((item) => item.id === meeting.accountId);
@@ -95,7 +95,7 @@ export default function MeetingsPage() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Meeting Queue">
+      <SectionCard title="Meeting Queue" mobileDensity="cards">
         <div className="table-like">
           {queuedMeetings.map((meeting) => {
             const account = dataset.accounts.find((item) => item.id === meeting.accountId);

@@ -48,7 +48,7 @@ export function AccountThreadListView() {
         description="把客户列表重定义为推进线程列表，优先展示阶段、动作和阻点。"
       />
 
-      <SectionCard title="线程列表">
+        <SectionCard title="线程列表" mobileDensity="feed">
         <div className="stack-card">
           <div className="button-row">
             <Badge tone="info">客户进展</Badge>
@@ -115,7 +115,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
       />
 
       <div className="grid-3">
-        <SectionCard title="线程概览">
+        <SectionCard title="线程概览" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>客户进展：{progressLabels[thread.customerProgressStage]}</strong>
@@ -134,7 +134,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
           </div>
         </SectionCard>
 
-        <SectionCard title="最近变化">
+        <SectionCard title="最近变化" mobileDensity="feed">
           <div className="stack-list">
             {meetings.map((meeting) => (
               <div className="stack-card" key={meeting.id}>
@@ -150,7 +150,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
           </div>
         </SectionCard>
 
-        <SectionCard title="Agent BP 建议">
+        <SectionCard title="Agent BP 建议" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>当前最大风险</strong>
@@ -172,7 +172,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
         </SectionCard>
       </div>
 
-      <SectionCard title="推进时间线">
+      <SectionCard title="推进时间线" mobileCollapsible>
         <div className="stack-list">
           {meetings.map((meeting) => (
             <div className="stack-card" key={`${meeting.id}-timeline`}>
@@ -185,7 +185,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
         </div>
       </SectionCard>
 
-      <SectionCard title="正式商机投影区">
+      <SectionCard title="正式商机投影区" mobileCollapsible>
         <div className="stack-list">
           {deals.length ? (
             deals.map((deal) => (

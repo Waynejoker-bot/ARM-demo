@@ -44,4 +44,21 @@ describe("account thread views", () => {
     expect(screen.getByText(/数据新鲜度：数据过期/i)).toBeVisible();
     expect(screen.getByText(/数据覆盖率：68%/i)).toBeVisible();
   });
+
+  it("marks timeline and deal projection as secondary mobile sections", () => {
+    render(<AccountThreadDetailView accountId="acc-3" />);
+
+    expect(screen.getByRole("heading", { name: "线程概览" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+    expect(screen.getByRole("heading", { name: "推进时间线" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-collapsible",
+      "true"
+    );
+    expect(screen.getByRole("heading", { name: "正式商机投影区" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-collapsible",
+      "true"
+    );
+  });
 });
