@@ -26,7 +26,7 @@ export default async function RecapDetailPage({
       />
 
       <div className="grid-2">
-        <SectionCard title="发生了什么">
+        <SectionCard title="发生了什么" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-card">
             <strong>{recap.summary}</strong>
             <p>
@@ -35,7 +35,7 @@ export default async function RecapDetailPage({
           </div>
         </SectionCard>
 
-        <SectionCard title="本来可以怎么处理">
+        <SectionCard title="本来可以怎么处理" mobilePriority="secondary" mobileDensity="feed">
           <ul className="list-plain">
             <li>在会议结束前先确认责任归属。</li>
             <li>把模糊担忧转换成具名的后续动作。</li>
