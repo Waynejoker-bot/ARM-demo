@@ -9,5 +9,6 @@ describe("root page", () => {
     expect(
       screen.getByRole("heading", { name: "销售主管首页" })
     ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "真实线下实录" })).toBeVisible();
   });
 });

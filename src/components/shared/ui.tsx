@@ -17,13 +17,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className={clsx("app-shell", !isOpen && "app-shell-panel-collapsed")}>
       <aside className="left-nav">
         <div className="brand-block">
-          <div className="brand-kicker">AI Sales OS</div>
-          <div className="brand-status-row">
-            <span className="brand-status-dot" />
-            <span>Meeting-first Demo</span>
-          </div>
-          <h1>ARM-demo</h1>
-          <p>以 Agent 为核心交互、以 Meeting 驱动推进、以 mock 数据完成演示闭环。</p>
+          <Link href="/home" className="brand-mark">
+            ARM-DEMO
+          </Link>
         </div>
 
         <div className="nav-group-label">Operating Surfaces</div>
@@ -76,10 +72,12 @@ export function AppShell({ children }: { children: ReactNode }) {
 export function PageHeader({
   title,
   description,
+  supportingCopy,
   action,
 }: {
   title: string;
-  description: string;
+  description: ReactNode;
+  supportingCopy?: ReactNode;
   action?: ReactNode;
 }) {
   return (
@@ -87,7 +85,12 @@ export function PageHeader({
       <div className="page-header-copy">
         <div className="eyebrow">Agent 优先工作台</div>
         <h1>{title}</h1>
-        <p>{description}</p>
+        <div className="page-header-description">
+          <p>{description}</p>
+          {supportingCopy ? (
+            <p className="page-header-supporting-copy">{supportingCopy}</p>
+          ) : null}
+        </div>
       </div>
       {action ? <div className="page-header-action">{action}</div> : null}
     </div>

@@ -210,6 +210,28 @@ export type RepReportSnapshot = {
   accountThreadIds: string[];
 };
 
+export type RealMeetingCase = {
+  id: string;
+  ownerLabel: string;
+  sourceLabel: string;
+  title: string;
+  accountName: string;
+  accountProfile: string;
+  meetingType: Meeting["meetingType"];
+  occurredAt: string;
+  status: Meeting["status"];
+  summaryStatus: Meeting["summaryStatus"];
+  transcriptStatus: Meeting["transcriptStatus"];
+  dataFreshness: DataFreshnessStatus;
+  priorityLabel: string;
+  insightLabel: "核心结论" | "会议目标";
+  insight: string;
+  nextStep: string;
+  publicContext: string | null;
+  publicSourceLabel: string | null;
+  publicSourceUrl: string | null;
+};
+
 export type RoleViewCollection = {
   ceo: {
     role: RoleType;
@@ -242,5 +264,6 @@ export type MockDataset = {
   alerts: AlertRecord[];
   accountThreads: AccountThread[];
   repReportSnapshots: RepReportSnapshot[];
+  realMeetingCases: RealMeetingCase[];
   roleViews: RoleViewCollection;
 };

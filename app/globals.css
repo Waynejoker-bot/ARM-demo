@@ -84,60 +84,27 @@ button {
 }
 
 .brand-block {
-  position: relative;
-  padding: 18px 18px 20px;
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(154, 176, 214, 0.16);
-  background:
-    radial-gradient(circle at top right, rgba(99, 164, 255, 0.15), transparent 42%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
-  overflow: hidden;
+  margin-bottom: 18px;
 }
 
-.brand-block::after {
-  content: "";
-  position: absolute;
-  inset: auto 18px 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(109, 226, 255, 0.32), transparent);
-}
-
-.brand-block h1 {
-  margin: 8px 0 10px;
-  font-size: clamp(2rem, 2vw, 2.35rem);
-  letter-spacing: -0.03em;
-}
-
-.brand-status-row {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(109, 226, 255, 0.18);
-  background: rgba(109, 226, 255, 0.08);
-  color: var(--cyan);
-  font-size: 0.76rem;
-}
-
-.brand-status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: var(--green);
-  box-shadow: 0 0 0 6px rgba(99, 245, 177, 0.14);
-  animation: pulse-live 2.2s infinite;
-}
-
-.brand-block p,
 .page-header p,
 .panel-header p {
   color: var(--muted);
   line-height: 1.6;
 }
 
-.eyebrow,
-.brand-kicker {
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  font-size: clamp(2.25rem, 2.35vw, 2.7rem);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+  color: var(--text);
+}
+
+.eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 0.72rem;
@@ -329,6 +296,17 @@ button {
   max-width: 72ch;
 }
 
+.page-header-description {
+  display: grid;
+  gap: 10px;
+}
+
+.page-header-supporting-copy {
+  max-width: 60ch;
+  font-size: 0.96rem;
+  color: rgba(157, 176, 215, 0.9);
+}
+
 .page-header-action {
   position: relative;
   z-index: 1;
@@ -513,6 +491,151 @@ button {
   background:
     linear-gradient(180deg, rgba(99, 164, 255, 0.08), rgba(255, 255, 255, 0.03));
   box-shadow: var(--shadow-soft);
+}
+
+.real-highlight-card,
+.real-highlight-note {
+  margin: 0;
+}
+
+.real-highlight-card {
+  display: grid;
+  gap: 10px;
+}
+
+.real-highlight-card p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.real-highlight-inline-label {
+  color: rgba(157, 176, 215, 0.88);
+}
+
+.real-highlight-card a {
+  color: var(--cyan);
+}
+
+.meeting-queue-card {
+  display: grid;
+  gap: 16px;
+  padding: 20px 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(154, 176, 214, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(99, 164, 255, 0.08), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.025));
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.meeting-queue-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(109, 226, 255, 0.24);
+  box-shadow: var(--shadow-soft);
+}
+
+.meeting-queue-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+}
+
+.meeting-queue-card-title-block {
+  display: grid;
+  gap: 8px;
+}
+
+.meeting-queue-source-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.meeting-queue-card-title-block p,
+.meeting-queue-insight p {
+  margin: 0;
+}
+
+.meeting-queue-account-profile,
+.meeting-queue-context p,
+.meeting-real-samples-note {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.meeting-queue-kicker,
+.meeting-queue-label {
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.meeting-queue-kicker {
+  color: var(--cyan);
+}
+
+.meeting-queue-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: rgba(157, 176, 215, 0.76);
+  font-size: 0.88rem;
+}
+
+.meeting-queue-meta span {
+  position: relative;
+  padding-right: 12px;
+}
+
+.meeting-queue-meta span:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(157, 176, 215, 0.42);
+  transform: translateY(-50%);
+}
+
+.meeting-queue-insight-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.meeting-queue-insight {
+  display: grid;
+  gap: 10px;
+  min-height: 116px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(154, 176, 214, 0.12);
+  background:
+    linear-gradient(180deg, rgba(15, 28, 47, 0.82), rgba(12, 22, 39, 0.72));
+}
+
+.meeting-queue-label {
+  color: rgba(157, 176, 215, 0.74);
+}
+
+.meeting-queue-insight p {
+  line-height: 1.7;
+}
+
+.meeting-queue-context {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(154, 176, 214, 0.1);
+  background: linear-gradient(180deg, rgba(11, 24, 41, 0.78), rgba(10, 20, 34, 0.66));
+}
+
+.meeting-queue-context a {
+  color: var(--cyan);
 }
 
 .list-plain {
@@ -1015,17 +1138,6 @@ button {
   }
 }
 
-@keyframes pulse-live {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(99, 245, 177, 0.2);
-  }
-
-  50% {
-    box-shadow: 0 0 0 8px rgba(99, 245, 177, 0);
-  }
-}
-
 @media (max-width: 1440px) {
   .app-shell {
     grid-template-columns: 240px 1fr 380px;
@@ -1089,6 +1201,14 @@ button {
   .grid-2,
   .grid-4,
   .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meeting-queue-card-header {
+    display: grid;
+  }
+
+  .meeting-queue-insight-grid {
     grid-template-columns: 1fr;
   }
 

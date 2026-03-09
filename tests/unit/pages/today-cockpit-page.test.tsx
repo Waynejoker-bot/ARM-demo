@@ -33,4 +33,16 @@ describe("rep today cockpit view", () => {
     expect(screen.getByText(/本周汇报草稿/i)).toBeVisible();
     expect(screen.getByText(/林书瑶 本周推进/i)).toBeVisible();
   });
+
+  it("surfaces Yang Wenxing's real field notes inside the rep home", () => {
+    render(<RepTodayCockpitView />);
+
+    expect(screen.getByRole("heading", { name: "真实客户推进样本" })).toBeVisible();
+    expect(screen.getByText(/葫芦娃产品线团队/i)).toBeVisible();
+    expect(screen.getByText(/短期更适合切入 VOD 聚合 API/i)).toBeVisible();
+    expect(screen.getByRole("link", { name: /查看全部实录/i })).toHaveAttribute(
+      "href",
+      "/meetings"
+    );
+  });
 });

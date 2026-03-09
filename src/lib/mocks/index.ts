@@ -11,6 +11,7 @@ import type {
   ForecastSnapshot,
   Meeting,
   MockDataset,
+  RealMeetingCase,
   RepReportSnapshot,
   RecapRecord,
   RepScorecard,
@@ -152,6 +153,108 @@ const alerts: AlertRecord[] = [
   { id: "alert-3", level: "high", title: "灵境娱乐商业化转型项目的客户关系系统同步失败", relatedDealId: "deal-6" },
 ];
 
+const realMeetingCases: RealMeetingCase[] = [
+  {
+    id: "real-meeting-1",
+    ownerLabel: "外勤销售：杨文星",
+    sourceLabel: "杨文星实录 · 3月3日短剧与游戏业务讨论",
+    title: "短剧与游戏业务发展讨论",
+    accountName: "葫芦娃产品线团队",
+    accountProfile:
+      "国内卡牌产品线与短剧团队并行，短剧团队约 30 多人，当前在评估云游转小游戏和音视频能力。",
+    meetingType: "discovery",
+    occurredAt: "2026-03-03T14:17:00+08:00",
+    status: "completed",
+    summaryStatus: "ready",
+    transcriptStatus: "ready",
+    dataFreshness: "fresh",
+    priorityLabel: "有明确切口",
+    insightLabel: "核心结论",
+    insight:
+      "短期更适合切入 VOD 聚合 API，而不是直接推动整体云迁移；客户现有游戏服务器迁移意愿很低。",
+    nextStep:
+      "先拉技术负责人一起看当前云与音视频账单，再判断是否能以 VOD 聚合 API 或云成本报价切入。",
+    publicContext:
+      "公开资料显示，Unity 已支持微信小游戏导出，抖音小游戏生态也在持续完善，客户提到的云游转小游戏路线具备外部技术参照。",
+    publicSourceLabel: "Unity 小游戏官方文档",
+    publicSourceUrl:
+      "https://docs.unity.cn/6000.0/Documentation/Manual/webgl-distributions-wechat.html",
+  },
+  {
+    id: "real-meeting-2",
+    ownerLabel: "外勤销售：杨文星",
+    sourceLabel: "杨文星实录 · 3月4日产品合作与功能优势讨论",
+    title: "产品合作及功能优势讨论",
+    accountName: "广州研发转发行团队",
+    accountProfile:
+      "团队已有自研归因与后台，技术负责人兼具产品背景并与老板深度绑定，替换现有后台的组织阻力较大。",
+    meetingType: "demo",
+    occurredAt: "2026-03-04T11:20:00+08:00",
+    status: "completed",
+    summaryStatus: "ready",
+    transcriptStatus: "ready",
+    dataFreshness: "fresh",
+    priorityLabel: "需高层在场",
+    insightLabel: "核心结论",
+    insight:
+      "客户并不否认产品能力，但主要阻力不是功能缺失，而是技术团队担心被替代；整体 APP 后台替换难度高。",
+    nextStep:
+      "等月底技术负责人和老板都在广州时，组织一场技术对齐会，优先从小游戏线试点切入。",
+    publicContext: null,
+    publicSourceLabel: null,
+    publicSourceUrl: null,
+  },
+  {
+    id: "real-meeting-3",
+    ownerLabel: "外勤销售：杨文星",
+    sourceLabel: "杨文星实录 · 3月4日游戏买量中台讨论",
+    title: "游戏买量中台功能及合作讨论",
+    accountName: "广州买量运营团队",
+    accountProfile:
+      "运营主要依赖巨量后台和 Excel 汇总，研发已买埋点分析工具并负责接入，但业务侧看数仍然碎片化。",
+    meetingType: "demo",
+    occurredAt: "2026-03-04T14:11:00+08:00",
+    status: "completed",
+    summaryStatus: "ready",
+    transcriptStatus: "ready",
+    dataFreshness: "fresh",
+    priorityLabel: "可继续扩线",
+    insightLabel: "核心结论",
+    insight:
+      "客户明确承认巨量后台复杂、业务侧很少直接看明细；真正的痛点是发行、研发、运营三方数据没有统一工作面。",
+    nextStep:
+      "借客户引荐约上硬核发行联系人和研发接口人，验证一站式归因分析中台是否能替代当前手工汇总链路。",
+    publicContext:
+      "公开行业报告显示，小游戏市场仍在增长，投放团队对素材 ROI 与跨渠道归因的精细化要求会继续抬高。",
+    publicSourceLabel: "QuestMobile 小游戏观察",
+    publicSourceUrl: "https://www.questmobile.com.cn/research/report-new/197",
+  },
+  {
+    id: "real-meeting-4",
+    ownerLabel: "外勤销售：杨文星",
+    sourceLabel: "杨文星实录 · 3月5日广告中台行业讨论",
+    title: "广告中台功能及行业合作讨论",
+    accountName: "广州成熟投放中台团队",
+    accountProfile:
+      "团队自建广告中台多年，运营与技术都能看长期 ROI、转端和回传策略，对第三方接入保持强烈数据安全警惕。",
+    meetingType: "review",
+    occurredAt: "2026-03-05T16:45:00+08:00",
+    status: "completed",
+    summaryStatus: "ready",
+    transcriptStatus: "ready",
+    dataFreshness: "fresh",
+    priorityLabel: "关系维护",
+    insightLabel: "核心结论",
+    insight:
+      "整套中台替换概率低，当前更现实的价值不是强推产品，而是保持关系、交换行业信息，再看是否有局部合作切口。",
+    nextStep:
+      "先让客户帮忙引荐同圈层技术负责人，维持高质量交流，暂不强推整套中台方案。",
+    publicContext: null,
+    publicSourceLabel: null,
+    publicSourceUrl: null,
+  },
+];
+
 export function createMockDataset(): MockDataset {
   const baseDataset = {
     accounts,
@@ -168,6 +271,7 @@ export function createMockDataset(): MockDataset {
     dataSources,
     syncRecords,
     alerts,
+    realMeetingCases,
   };
   const accountThreads: AccountThread[] = deriveAccountThreads(baseDataset);
   const repReportSnapshots: RepReportSnapshot[] = deriveRepReportSnapshots(

@@ -13,6 +13,7 @@ describe("sales manager reporting surfaces", () => {
     expect(screen.getByRole("heading", { name: "Team Brief Overview" })).toBeVisible();
     expect(screen.getByRole("heading", { name: "Intervention Queue" })).toBeVisible();
     expect(screen.getByRole("heading", { name: "Rep Weekly Snapshot" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "线下实录参考" })).toBeVisible();
   });
 
   it("supports drilldown from manager view into reps, threads, deals, and pipeline", () => {

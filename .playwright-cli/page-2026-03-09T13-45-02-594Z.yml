@@ -1,0 +1,475 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: AI Sales OS
+        - generic [ref=e8]: Meeting-first Demo
+        - heading "ARM-demo" [level=1] [ref=e9]
+        - paragraph [ref=e10]: 以 Agent 为核心交互、以 Meeting 驱动推进、以 mock 数据完成演示闭环。
+      - generic [ref=e11]: Operating Surfaces
+      - navigation [ref=e12]:
+        - link "首页" [ref=e13] [cursor=pointer]:
+          - /url: /home
+        - link "CEO 主控室" [ref=e14] [cursor=pointer]:
+          - /url: /ceo-command-center
+        - link "销售主管驾驶舱" [ref=e15] [cursor=pointer]:
+          - /url: /sales-manager-cockpit
+        - link "一线销售作战室" [ref=e16] [cursor=pointer]:
+          - /url: /sales-war-room
+        - link "Agent 工作台" [ref=e17] [cursor=pointer]:
+          - /url: /agent
+        - link "收入中心" [ref=e18] [cursor=pointer]:
+          - /url: /revenue
+        - link "商机管道" [ref=e19] [cursor=pointer]:
+          - /url: /pipeline
+        - link "商机" [ref=e20] [cursor=pointer]:
+          - /url: /deals
+        - link "客户" [ref=e21] [cursor=pointer]:
+          - /url: /customers
+        - link "会议" [ref=e22] [cursor=pointer]:
+          - /url: /meetings
+        - link "销售团队" [ref=e23] [cursor=pointer]:
+          - /url: /sales-team
+        - link "复盘与培训" [ref=e24] [cursor=pointer]:
+          - /url: /recaps
+        - link "Agent 工作流" [ref=e25] [cursor=pointer]:
+          - /url: /agent-workflows
+        - link "数据接入" [ref=e26] [cursor=pointer]:
+          - /url: /data-sources
+        - link "设置" [ref=e27] [cursor=pointer]:
+          - /url: /settings
+    - generic [ref=e28]:
+      - banner [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]: Revenue Command Surface
+          - generic [ref=e32]:
+            - generic [ref=e33]: Command Search
+            - strong [ref=e34]: 搜索商机、会议、纪要、风险信号
+        - generic [ref=e35]:
+          - generic [ref=e36]: 演示模式
+          - generic [ref=e37]: 2026 年 Q1
+          - generic [ref=e38]: 全球销售团队
+          - generic [ref=e39]: Agent 已联动
+          - generic [ref=e40]: 数据状态：新鲜度混合
+      - main [ref=e41]:
+        - generic [ref=e56]:
+          - generic [ref=e57]: Agent 优先工作台
+          - heading "会议" [level=1] [ref=e58]
+          - paragraph [ref=e59]: 先处理待确认会议，再查看完整 Meeting Queue，确保每场会议都能推动线程和商机。
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - heading "杨文星真实会议样本" [level=3] [ref=e62]
+            - generic [ref=e64]: 团队级客户表达
+          - paragraph [ref=e65]: 样本来自杨文星的线下实录。无法从会议文字唯一确认法务主体时，客户名按产品线或团队表达处理；公开补充只作为行业与技术背景，不强行写成客户硬事实。
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - generic [ref=e68]:
+                - generic [ref=e69]:
+                  - generic [ref=e70]:
+                    - generic [ref=e71]: 杨文星实录 · 3月3日短剧与游戏业务讨论
+                    - generic [ref=e72]: 外勤销售：杨文星
+                  - generic [ref=e73]: 当前状态：已开完
+                  - strong [ref=e74]: 短剧与游戏业务发展讨论
+                  - paragraph [ref=e75]: 葫芦娃产品线团队
+                  - paragraph [ref=e76]: 国内卡牌产品线与短剧团队并行，短剧团队约 30 多人，当前在评估云游转小游戏和音视频能力。
+                  - generic [ref=e77]:
+                    - generic [ref=e78]: 需求发现
+                    - generic [ref=e79]: 3/3 14:17
+                    - generic [ref=e80]: 已生成总结
+                - generic [ref=e81]: 有明确切口
+              - generic [ref=e82]:
+                - generic [ref=e83]:
+                  - generic [ref=e84]: 核心结论
+                  - paragraph [ref=e85]: 短期更适合切入 VOD 聚合 API，而不是直接推动整体云迁移；客户现有游戏服务器迁移意愿很低。
+                - generic [ref=e86]:
+                  - generic [ref=e87]: 下一步动作
+                  - paragraph [ref=e88]: 先拉技术负责人一起看当前云与音视频账单，再判断是否能以 VOD 聚合 API 或云成本报价切入。
+              - generic [ref=e89]:
+                - generic [ref=e90]: 公开补充
+                - paragraph [ref=e91]:
+                  - text: 公开资料显示，Unity 已支持微信小游戏导出，抖音小游戏生态也在持续完善，客户提到的云游转小游戏路线具备外部技术参照。
+                  - link "Unity 小游戏官方文档" [ref=e92] [cursor=pointer]:
+                    - /url: https://docs.unity.cn/6000.0/Documentation/Manual/webgl-distributions-wechat.html
+              - generic [ref=e93]:
+                - generic [ref=e94]: 证据可用
+                - generic [ref=e95]: 数据新鲜
+                - generic [ref=e96]: 已生成总结
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - generic [ref=e99]:
+                  - generic [ref=e100]:
+                    - generic [ref=e101]: 杨文星实录 · 3月4日产品合作与功能优势讨论
+                    - generic [ref=e102]: 外勤销售：杨文星
+                  - generic [ref=e103]: 当前状态：已开完
+                  - strong [ref=e104]: 产品合作及功能优势讨论
+                  - paragraph [ref=e105]: 广州研发转发行团队
+                  - paragraph [ref=e106]: 团队已有自研归因与后台，技术负责人兼具产品背景并与老板深度绑定，替换现有后台的组织阻力较大。
+                  - generic [ref=e107]:
+                    - generic [ref=e108]: 产品演示
+                    - generic [ref=e109]: 3/4 11:20
+                    - generic [ref=e110]: 已生成总结
+                - generic [ref=e111]: 需高层在场
+              - generic [ref=e112]:
+                - generic [ref=e113]:
+                  - generic [ref=e114]: 核心结论
+                  - paragraph [ref=e115]: 客户并不否认产品能力，但主要阻力不是功能缺失，而是技术团队担心被替代；整体 APP 后台替换难度高。
+                - generic [ref=e116]:
+                  - generic [ref=e117]: 下一步动作
+                  - paragraph [ref=e118]: 等月底技术负责人和老板都在广州时，组织一场技术对齐会，优先从小游戏线试点切入。
+              - generic [ref=e119]:
+                - generic [ref=e120]: 证据可用
+                - generic [ref=e121]: 数据新鲜
+                - generic [ref=e122]: 已生成总结
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - generic [ref=e125]:
+                  - generic [ref=e126]:
+                    - generic [ref=e127]: 杨文星实录 · 3月4日游戏买量中台讨论
+                    - generic [ref=e128]: 外勤销售：杨文星
+                  - generic [ref=e129]: 当前状态：已开完
+                  - strong [ref=e130]: 游戏买量中台功能及合作讨论
+                  - paragraph [ref=e131]: 广州买量运营团队
+                  - paragraph [ref=e132]: 运营主要依赖巨量后台和 Excel 汇总，研发已买埋点分析工具并负责接入，但业务侧看数仍然碎片化。
+                  - generic [ref=e133]:
+                    - generic [ref=e134]: 产品演示
+                    - generic [ref=e135]: 3/4 14:11
+                    - generic [ref=e136]: 已生成总结
+                - generic [ref=e137]: 可继续扩线
+              - generic [ref=e138]:
+                - generic [ref=e139]:
+                  - generic [ref=e140]: 核心结论
+                  - paragraph [ref=e141]: 客户明确承认巨量后台复杂、业务侧很少直接看明细；真正的痛点是发行、研发、运营三方数据没有统一工作面。
+                - generic [ref=e142]:
+                  - generic [ref=e143]: 下一步动作
+                  - paragraph [ref=e144]: 借客户引荐约上硬核发行联系人和研发接口人，验证一站式归因分析中台是否能替代当前手工汇总链路。
+              - generic [ref=e145]:
+                - generic [ref=e146]: 公开补充
+                - paragraph [ref=e147]:
+                  - text: 公开行业报告显示，小游戏市场仍在增长，投放团队对素材 ROI 与跨渠道归因的精细化要求会继续抬高。
+                  - link "QuestMobile 小游戏观察" [ref=e148] [cursor=pointer]:
+                    - /url: https://www.questmobile.com.cn/research/report-new/197
+              - generic [ref=e149]:
+                - generic [ref=e150]: 证据可用
+                - generic [ref=e151]: 数据新鲜
+                - generic [ref=e152]: 已生成总结
+            - generic [ref=e153]:
+              - generic [ref=e154]:
+                - generic [ref=e155]:
+                  - generic [ref=e156]:
+                    - generic [ref=e157]: 杨文星实录 · 3月5日广告中台行业讨论
+                    - generic [ref=e158]: 外勤销售：杨文星
+                  - generic [ref=e159]: 当前状态：已开完
+                  - strong [ref=e160]: 广告中台功能及行业合作讨论
+                  - paragraph [ref=e161]: 广州成熟投放中台团队
+                  - paragraph [ref=e162]: 团队自建广告中台多年，运营与技术都能看长期 ROI、转端和回传策略，对第三方接入保持强烈数据安全警惕。
+                  - generic [ref=e163]:
+                    - generic [ref=e164]: 复盘评审
+                    - generic [ref=e165]: 3/5 16:45
+                    - generic [ref=e166]: 已生成总结
+                - generic [ref=e167]: 关系维护
+              - generic [ref=e168]:
+                - generic [ref=e169]:
+                  - generic [ref=e170]: 核心结论
+                  - paragraph [ref=e171]: 整套中台替换概率低，当前更现实的价值不是强推产品，而是保持关系、交换行业信息，再看是否有局部合作切口。
+                - generic [ref=e172]:
+                  - generic [ref=e173]: 下一步动作
+                  - paragraph [ref=e174]: 先让客户帮忙引荐同圈层技术负责人，维持高质量交流，暂不强推整套中台方案。
+              - generic [ref=e175]:
+                - generic [ref=e176]: 证据可用
+                - generic [ref=e177]: 数据新鲜
+                - generic [ref=e178]: 已生成总结
+        - generic [ref=e179]:
+          - heading "待确认优先队列" [level=3] [ref=e181]
+          - generic [ref=e182]:
+            - generic [ref=e183]:
+              - generic [ref=e184]:
+                - generic [ref=e185]:
+                  - generic [ref=e186]: 当前状态：已开完
+                  - link "曜石游戏初次沟通会" [ref=e187] [cursor=pointer]:
+                    - /url: /meetings/meeting-5
+                    - strong [ref=e188]: 曜石游戏初次沟通会
+                  - paragraph [ref=e189]:
+                    - link "曜石游戏" [ref=e190] [cursor=pointer]:
+                      - /url: /customers/acc-5
+                  - generic [ref=e191]:
+                    - generic [ref=e192]: 初次沟通
+                    - generic [ref=e193]: 3/2 01:00
+                    - generic [ref=e194]: 待人工确认
+                - generic [ref=e195]: 会后待确认
+              - generic [ref=e196]:
+                - generic [ref=e197]:
+                  - generic [ref=e198]: 核心结论
+                  - paragraph [ref=e199]: 客户确实有兴趣，但对实施负担仍然缺乏清晰认知。
+                - generic [ref=e200]:
+                  - generic [ref=e201]: 下一步动作
+                  - paragraph [ref=e202]: 在正式报价前先澄清实施范围和客户投入。
+              - generic [ref=e203]:
+                - generic [ref=e204]: 转录缺失
+                - generic [ref=e205]: 数据缺失
+                - generic [ref=e206]: 待人工确认
+            - generic [ref=e207]:
+              - generic [ref=e208]:
+                - generic [ref=e209]:
+                  - generic [ref=e210]: 当前状态：已开完
+                  - link "玄河网络高层对齐会" [ref=e211] [cursor=pointer]:
+                    - /url: /meetings/meeting-2
+                    - strong [ref=e212]: 玄河网络高层对齐会
+                  - paragraph [ref=e213]:
+                    - link "玄河网络" [ref=e214] [cursor=pointer]:
+                      - /url: /customers/acc-3
+                  - generic [ref=e215]:
+                    - generic [ref=e216]: 复盘评审
+                    - generic [ref=e217]: 3/5 02:30
+                    - generic [ref=e218]: 待人工确认
+                - generic [ref=e219]: 优先处理
+              - generic [ref=e220]:
+                - generic [ref=e221]:
+                  - generic [ref=e222]: 核心结论
+                  - paragraph [ref=e223]: 这位销售在会议收尾时需要更坚决地锁定带日期的下一步。
+                - generic [ref=e224]:
+                  - generic [ref=e225]: 下一步动作
+                  - paragraph [ref=e226]: 尽快重新建立高层赞助人与采购方的一致意见。
+              - generic [ref=e227]:
+                - generic [ref=e228]: 证据可用
+                - generic [ref=e229]: 数据过期
+                - generic [ref=e230]: 待人工确认
+            - generic [ref=e231]:
+              - generic [ref=e232]:
+                - generic [ref=e233]:
+                  - generic [ref=e234]: 当前状态：已开完
+                  - link "玄河网络安全异议回应会" [ref=e235] [cursor=pointer]:
+                    - /url: /meetings/meeting-8
+                    - strong [ref=e236]: 玄河网络安全异议回应会
+                  - paragraph [ref=e237]:
+                    - link "玄河网络" [ref=e238] [cursor=pointer]:
+                      - /url: /customers/acc-3
+                  - generic [ref=e239]:
+                    - generic [ref=e240]: 产品演示
+                    - generic [ref=e241]: 3/4 02:00
+                    - generic [ref=e242]: 待人工确认
+                - generic [ref=e243]: 优先处理
+              - generic [ref=e244]:
+                - generic [ref=e245]:
+                  - generic [ref=e246]: 核心结论
+                  - paragraph [ref=e247]: 下一次会议应带上产品安全负责人，正面处理数据驻留顾虑。
+                - generic [ref=e248]:
+                  - generic [ref=e249]: 下一步动作
+                  - paragraph [ref=e250]: 联动产品团队正面回应安全异议。
+              - generic [ref=e251]:
+                - generic [ref=e252]: 证据可用
+                - generic [ref=e253]: 数据新鲜
+                - generic [ref=e254]: 待人工确认
+            - generic [ref=e255]:
+              - generic [ref=e256]:
+                - generic [ref=e257]:
+                  - generic [ref=e258]: 当前状态：已开完
+                  - link "灵境娱乐法务升级沟通会" [ref=e259] [cursor=pointer]:
+                    - /url: /meetings/meeting-6
+                    - strong [ref=e260]: 灵境娱乐法务升级沟通会
+                  - paragraph [ref=e261]:
+                    - link "灵境娱乐" [ref=e262] [cursor=pointer]:
+                      - /url: /customers/acc-6
+                  - generic [ref=e263]:
+                    - generic [ref=e264]: 复盘评审
+                    - generic [ref=e265]: 2/28 21:00
+                    - generic [ref=e266]: 待人工确认
+                - generic [ref=e267]: 优先处理
+              - generic [ref=e268]:
+                - generic [ref=e269]:
+                  - generic [ref=e270]: 核心结论
+                  - paragraph [ref=e271]: 该商机风险较高，因为系统内部状态与 CRM 历史已经出现明显偏差。
+                - generic [ref=e272]:
+                  - generic [ref=e273]: 下一步动作
+                  - paragraph [ref=e274]: 尽快恢复法务评审并推动价格审批。
+              - generic [ref=e275]:
+                - generic [ref=e276]: 证据可用
+                - generic [ref=e277]: 数据过期
+                - generic [ref=e278]: 待人工确认
+        - generic [ref=e279]:
+          - heading "Meeting Queue" [level=3] [ref=e281]
+          - generic [ref=e282]:
+            - generic [ref=e283]:
+              - generic [ref=e284]:
+                - generic [ref=e285]:
+                  - generic [ref=e286]: 当前状态：已开完
+                  - link "星川互动安全审查会" [ref=e287] [cursor=pointer]:
+                    - /url: /meetings/meeting-1
+                    - strong [ref=e288]: 星川互动安全审查会
+                  - paragraph [ref=e289]:
+                    - link "星川互动" [ref=e290] [cursor=pointer]:
+                      - /url: /customers/acc-1
+                  - generic [ref=e291]:
+                    - generic [ref=e292]: 方案沟通
+                    - generic [ref=e293]: 3/6 00:00
+                    - generic [ref=e294]: 已生成总结
+                - generic [ref=e295]: 节奏正常
+              - generic [ref=e296]:
+                - generic [ref=e297]:
+                  - generic [ref=e298]: 核心结论
+                  - paragraph [ref=e299]: 当前商机整体健康，采购流程是唯一剩余阻点。
+                - generic [ref=e300]:
+                  - generic [ref=e301]: 下一步动作
+                  - paragraph [ref=e302]: 最终确认安全审查并推动采购流程。
+              - generic [ref=e303]:
+                - generic [ref=e304]: 证据可用
+                - generic [ref=e305]: 数据新鲜
+                - generic [ref=e306]: 已生成总结
+            - generic [ref=e307]:
+              - generic [ref=e308]:
+                - generic [ref=e309]:
+                  - generic [ref=e310]: 当前状态：已开完
+                  - link "云岚游戏试点演示会" [ref=e311] [cursor=pointer]:
+                    - /url: /meetings/meeting-3
+                    - strong [ref=e312]: 云岚游戏试点演示会
+                  - paragraph [ref=e313]:
+                    - link "云岚游戏" [ref=e314] [cursor=pointer]:
+                      - /url: /customers/acc-2
+                  - generic [ref=e315]:
+                    - generic [ref=e316]: 产品演示
+                    - generic [ref=e317]: 3/4 17:00
+                    - generic [ref=e318]: 已生成总结
+                - generic [ref=e319]: 节奏正常
+              - generic [ref=e320]:
+                - generic [ref=e321]:
+                  - generic [ref=e322]: 核心结论
+                  - paragraph [ref=e323]: 试点商机整体在推进，但落地细节仍带来中等风险。
+                - generic [ref=e324]:
+                  - generic [ref=e325]: 下一步动作
+                  - paragraph [ref=e326]: 发送本地化落地方案并确认推进节奏。
+              - generic [ref=e327]:
+                - generic [ref=e328]: 证据可用
+                - generic [ref=e329]: 数据新鲜
+                - generic [ref=e330]: 已生成总结
+            - generic [ref=e331]:
+              - generic [ref=e332]:
+                - generic [ref=e333]:
+                  - generic [ref=e334]: 当前状态：已开完
+                  - link "赤霄互娱需求发现同步会" [ref=e335] [cursor=pointer]:
+                    - /url: /meetings/meeting-4
+                    - strong [ref=e336]: 赤霄互娱需求发现同步会
+                  - paragraph [ref=e337]:
+                    - link "赤霄互娱" [ref=e338] [cursor=pointer]:
+                      - /url: /customers/acc-4
+                  - generic [ref=e339]:
+                    - generic [ref=e340]: 需求发现
+                    - generic [ref=e341]: 3/2 12:00
+                    - generic [ref=e342]: 已生成总结
+                - generic [ref=e343]: 节奏正常
+              - generic [ref=e344]:
+                - generic [ref=e345]:
+                  - generic [ref=e346]: 核心结论
+                  - paragraph [ref=e347]: 当前 Meeting 已完成，等待系统补齐总结和下一步。
+                - generic [ref=e348]:
+                  - generic [ref=e349]: 下一步动作
+                  - paragraph [ref=e350]: 确认区域预算负责人和审批链路。
+              - generic [ref=e351]:
+                - generic [ref=e352]: 证据可用
+                - generic [ref=e353]: 数据新鲜
+                - generic [ref=e354]: 已生成总结
+            - generic [ref=e355]:
+              - generic [ref=e356]:
+                - generic [ref=e357]:
+                  - generic [ref=e358]: 当前状态：已开完
+                  - link "云岚游戏定价研讨会" [ref=e359] [cursor=pointer]:
+                    - /url: /meetings/meeting-7
+                    - strong [ref=e360]: 云岚游戏定价研讨会
+                  - paragraph [ref=e361]:
+                    - link "云岚游戏" [ref=e362] [cursor=pointer]:
+                      - /url: /customers/acc-2
+                  - generic [ref=e363]:
+                    - generic [ref=e364]: 方案沟通
+                    - generic [ref=e365]: 3/6 18:00
+                    - generic [ref=e366]: 已生成总结
+                - generic [ref=e367]: 节奏正常
+              - generic [ref=e368]:
+                - generic [ref=e369]:
+                  - generic [ref=e370]: 核心结论
+                  - paragraph [ref=e371]: 当前 Meeting 已完成，等待系统补齐总结和下一步。
+                - generic [ref=e372]:
+                  - generic [ref=e373]: 下一步动作
+                  - paragraph [ref=e374]: 整理价格选项，供财务团队评审。
+              - generic [ref=e375]:
+                - generic [ref=e376]: 证据可用
+                - generic [ref=e377]: 数据新鲜
+                - generic [ref=e378]: 已生成总结
+            - generic [ref=e379]:
+              - generic [ref=e380]:
+                - generic [ref=e381]:
+                  - generic [ref=e382]: 当前状态：已开完
+                  - link "赤霄互娱干系人规划会" [ref=e383] [cursor=pointer]:
+                    - /url: /meetings/meeting-9
+                    - strong [ref=e384]: 赤霄互娱干系人规划会
+                  - paragraph [ref=e385]:
+                    - link "赤霄互娱" [ref=e386] [cursor=pointer]:
+                      - /url: /customers/acc-4
+                  - generic [ref=e387]:
+                    - generic [ref=e388]: 方案沟通
+                    - generic [ref=e389]: 3/6 14:30
+                    - generic [ref=e390]: 已生成总结
+                - generic [ref=e391]: 节奏正常
+              - generic [ref=e392]:
+                - generic [ref=e393]:
+                  - generic [ref=e394]: 核心结论
+                  - paragraph [ref=e395]: 当前 Meeting 已完成，等待系统补齐总结和下一步。
+                - generic [ref=e396]:
+                  - generic [ref=e397]: 下一步动作
+                  - paragraph [ref=e398]: 确认最终参会决策人与利益相关方名单。
+              - generic [ref=e399]:
+                - generic [ref=e400]: 证据可用
+                - generic [ref=e401]: 数据新鲜
+                - generic [ref=e402]: 已生成总结
+            - generic [ref=e403]:
+              - generic [ref=e404]:
+                - generic [ref=e405]:
+                  - generic [ref=e406]: 当前状态：待开
+                  - link "星川互动续约收口会" [ref=e407] [cursor=pointer]:
+                    - /url: /meetings/meeting-10
+                    - strong [ref=e408]: 星川互动续约收口会
+                  - paragraph [ref=e409]:
+                    - link "星川互动" [ref=e410] [cursor=pointer]:
+                      - /url: /customers/acc-1
+                  - generic [ref=e411]:
+                    - generic [ref=e412]: 复盘评审
+                    - generic [ref=e413]: 3/8 03:00
+                    - generic [ref=e414]: 已生成总结
+                - generic [ref=e415]: 待开准备
+              - generic [ref=e416]:
+                - generic [ref=e417]:
+                  - generic [ref=e418]: 会议目标
+                  - paragraph [ref=e419]: 准备续约摘要，提交财务负责人最终签批。
+                - generic [ref=e420]:
+                  - generic [ref=e421]: 下一步动作
+                  - paragraph [ref=e422]: 准备续约摘要，提交财务负责人最终签批。
+              - generic [ref=e423]:
+                - generic [ref=e424]: 证据可用
+                - generic [ref=e425]: 数据新鲜
+                - generic [ref=e426]: 已生成总结
+            - generic [ref=e427]:
+              - generic [ref=e428]:
+                - generic [ref=e429]:
+                  - generic [ref=e430]: 当前状态：已开完
+                  - link "沧澜网络试点方案沟通会" [ref=e431] [cursor=pointer]:
+                    - /url: /meetings/meeting-11
+                    - strong [ref=e432]: 沧澜网络试点方案沟通会
+                  - paragraph [ref=e433]:
+                    - link "沧澜网络" [ref=e434] [cursor=pointer]:
+                      - /url: /customers/acc-8
+                  - generic [ref=e435]:
+                    - generic [ref=e436]: 产品演示
+                    - generic [ref=e437]: 3/8 17:30
+                    - generic [ref=e438]: 已生成总结
+                - generic [ref=e439]: 节奏正常
+              - generic [ref=e440]:
+                - generic [ref=e441]:
+                  - generic [ref=e442]: 核心结论
+                  - paragraph [ref=e443]: 客户已经接受试点方向，当前最重要的是在下一次会议前锁定试点范围和验证指标。
+                - generic [ref=e444]:
+                  - generic [ref=e445]: 下一步动作
+                  - paragraph [ref=e446]: 确认试点范围和下一次验证会议的日期。
+              - generic [ref=e447]:
+                - generic [ref=e448]: 证据可用
+                - generic [ref=e449]: 数据新鲜
+                - generic [ref=e450]: 已生成总结
+  - button "Open Next.js Dev Tools" [ref=e50] [cursor=pointer]:
+    - img [ref=e51]
+  - alert [ref=e54]

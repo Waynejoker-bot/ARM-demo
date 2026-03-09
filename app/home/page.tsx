@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { RealMeetingShowcaseSection } from "@/components/real-cases/showcase";
 import { Badge, MetricCard, PageHeader, SectionCard } from "@/components/shared/ui";
 import { RepTodayCockpitView } from "@/components/workspaces/rep-today-cockpit";
 import { getMockDataset } from "@/lib/mock-selectors";
@@ -106,6 +107,7 @@ function ManagerHome() {
       <PageHeader
         title="销售主管首页"
         description="优先判断团队风险、停滞商机、辅导重点和本周应介入的动作。"
+        supportingCopy="以 Agent 为核心交互、以 Meeting 驱动推进、以 mock 数据完成演示闭环。"
         action={<RoleTabs role="manager" />}
       />
 
@@ -150,6 +152,12 @@ function ManagerHome() {
           </div>
         </SectionCard>
       </div>
+
+      <RealMeetingShowcaseSection
+        title="真实线下实录"
+        limit={2}
+        description="默认首页也直接带入线下实录样本，帮助主管快速看到真实会议怎样落成判断、切口和会后动作。"
+      />
 
       <div className="grid-2">
         <SectionCard title="重点商机">

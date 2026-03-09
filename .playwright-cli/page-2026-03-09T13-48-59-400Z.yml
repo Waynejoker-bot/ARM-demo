@@ -1,0 +1,197 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic "移动端简报头" [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e6]: AI Sales OS
+          - strong [ref=e7]: Agent 正在持续监听本页上下文与风险变化
+        - button "打开 Agent" [ref=e8] [cursor=pointer]
+      - main [ref=e9]:
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]: Agent 优先工作台
+            - heading "销售主管首页" [level=1] [ref=e49]
+            - paragraph [ref=e50]: 优先判断团队风险、停滞商机、辅导重点和本周应介入的动作。
+          - generic [ref=e52]:
+            - link "CEO" [ref=e53] [cursor=pointer]:
+              - /url: /home?role=ceo
+              - generic [ref=e54]: CEO
+            - link "销售主管" [ref=e55] [cursor=pointer]:
+              - /url: /home?role=manager
+              - generic [ref=e56]: 销售主管
+            - link "一线销售" [ref=e57] [cursor=pointer]:
+              - /url: /home?role=rep
+              - generic [ref=e58]: 一线销售
+        - generic [ref=e59]:
+          - generic [ref=e60]:
+            - generic [ref=e61]: 本周 Pipeline 健康度
+            - strong [ref=e62]: "69"
+          - generic [ref=e63]:
+            - generic [ref=e64]: 停滞商机
+            - strong [ref=e65]: "3"
+          - generic [ref=e66]:
+            - generic [ref=e67]: 本周新增商机
+            - strong [ref=e68]: "4"
+          - generic [ref=e69]:
+            - generic [ref=e70]: 团队能力评分
+            - strong [ref=e71]: "76"
+        - generic [ref=e72]:
+          - generic [ref=e73]:
+            - heading "Agent 风险摘要" [level=3] [ref=e75]
+            - generic [ref=e76]:
+              - generic [ref=e77]:
+                - strong [ref=e78]: 本周整体收入面稳定，但有 3 个后期商机需要优先介入。
+                - paragraph [ref=e79]: Atlas 缺少明确的高层赞助人，Ivory 的 CRM 同步已经过期，另有一个初创客户商机缺失互动数据，导致当前评分可信度下降。
+              - generic [ref=e80]:
+                - generic [ref=e81]: Atlas 风险上升
+                - generic [ref=e82]: Ivory 数据过期
+                - generic [ref=e83]: 有销售辅导建议
+          - generic [ref=e84]:
+            - heading "团队判断摘要" [level=3] [ref=e86]
+            - generic [ref=e87]:
+              - generic [ref=e88]:
+                - strong [ref=e89]: 最该介入的商机
+                - paragraph [ref=e90]: Atlas 与 Ivory 都处于后期阶段，但前者缺高层赞助，后者缺新鲜 CRM 记录。
+              - generic [ref=e91]:
+                - strong [ref=e92]: 最该辅导的销售
+                - paragraph [ref=e93]: Sofia 推进速度不错，但预算资格判断仍然偏弱，需要更早确认经济购买者。
+              - generic [ref=e94]:
+                - strong [ref=e95]: 本周最该看的会议
+                - paragraph [ref=e96]: Atlas 高层对齐会和 Driftlane 初次沟通都暴露出可辅导的关键失误。
+        - generic [ref=e97]:
+          - generic [ref=e98]:
+            - heading "重点商机" [level=3] [ref=e100]
+            - generic [ref=e101]:
+              - generic [ref=e102]:
+                - generic [ref=e103]:
+                  - link "星川互动海外发行协同项目" [ref=e104] [cursor=pointer]:
+                    - /url: /deals/deal-1
+                    - strong [ref=e105]: 星川互动海外发行协同项目
+                  - text: 商务谈判
+                - generic [ref=e106]: 健康
+                - generic [ref=e107]: 赢单率 82%
+                - generic [ref=e108]: $3,050,000
+                - generic [ref=e109]: 低风险
+              - generic [ref=e110]:
+                - generic [ref=e111]:
+                  - link "玄河网络发行中台升级项目" [ref=e112] [cursor=pointer]:
+                    - /url: /deals/deal-2
+                    - strong [ref=e113]: 玄河网络发行中台升级项目
+                  - text: 方案报价
+                - generic [ref=e114]: 高风险
+                - generic [ref=e115]: 赢单率 39%
+                - generic [ref=e116]: $4,080,000
+                - generic [ref=e117]: 高风险
+              - generic [ref=e118]:
+                - generic [ref=e119]:
+                  - link "云岚游戏区域试点项目" [ref=e120] [cursor=pointer]:
+                    - /url: /deals/deal-3
+                    - strong [ref=e121]: 云岚游戏区域试点项目
+                  - text: 产品演示
+                - generic [ref=e122]: 需关注
+                - generic [ref=e123]: 赢单率 61%
+                - generic [ref=e124]: $1,320,000
+                - generic [ref=e125]: 中风险
+              - generic [ref=e126]:
+                - generic [ref=e127]:
+                  - link "赤霄互娱东南亚增长项目" [ref=e128] [cursor=pointer]:
+                    - /url: /deals/deal-4
+                    - strong [ref=e129]: 赤霄互娱东南亚增长项目
+                  - text: 资格确认
+                - generic [ref=e130]: 需关注
+                - generic [ref=e131]: 赢单率 53%
+                - generic [ref=e132]: $760,000
+                - generic [ref=e133]: 中风险
+          - generic [ref=e134]:
+            - heading "最高风险商机" [level=3] [ref=e136]
+            - generic [ref=e137]:
+              - generic [ref=e138]:
+                - strong [ref=e139]: 玄河网络发行中台升级项目
+                - paragraph [ref=e140]: 尽快重新建立高层赞助人与采购方的一致意见。
+                - generic [ref=e141]:
+                  - generic [ref=e142]: 健康度 43
+                  - generic [ref=e143]: 数据过期
+              - generic [ref=e144]:
+                - strong [ref=e145]: 灵境娱乐商业化转型项目
+                - paragraph [ref=e146]: 尽快恢复法务评审并推动价格审批。
+                - generic [ref=e147]:
+                  - generic [ref=e148]: 健康度 51
+                  - generic [ref=e149]: 数据过期
+              - generic [ref=e150]:
+                - strong [ref=e151]: 玄河网络安全合规模块增购
+                - paragraph [ref=e152]: 联动产品团队正面回应安全异议。
+                - generic [ref=e153]:
+                  - generic [ref=e154]: 健康度 57
+                  - generic [ref=e155]: 数据新鲜
+        - generic [ref=e156]:
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - heading "阶段趋势" [level=3] [ref=e159]
+              - text: 次级内容
+            - generic [ref=e160]:
+              - strong [ref=e161]: 阶段漏斗 / 转化趋势 / 平均停留时长
+              - paragraph [ref=e162]: 这里使用 mock 聚合数据，帮助你快速识别哪一段出现停滞和风险堆积。
+          - generic [ref=e163]:
+            - heading "团队辅导建议" [level=3] [ref=e165]
+            - list [ref=e166]:
+              - listitem [ref=e167]: "周承安: 在后期商机里进一步强化双向行动计划。"
+              - listitem [ref=e168]: "林书瑶: 更早确认预算负责人。"
+              - listitem [ref=e169]: "顾景行: 在复杂商机中重新建立高层赞助。"
+          - generic [ref=e170]:
+            - heading "数据告警" [level=3] [ref=e172]
+            - list [ref=e173]:
+              - listitem [ref=e174]: "客户关系系统: 两个大型商机存在过期同步记录。"
+              - listitem [ref=e175]: "协同聊天: 有多个客户沟通频道尚未关联。"
+              - listitem [ref=e176]: "会议录音服务: 有一场需求发现会议缺少转录。"
+    - generic "移动端底部导航容器":
+      - navigation "移动端主导航" [ref=e13]:
+        - link "首页" [ref=e14] [cursor=pointer]:
+          - /url: /home
+          - img [ref=e15]
+          - generic [ref=e18]: 首页
+        - link "商机" [ref=e19] [cursor=pointer]:
+          - /url: /deals
+          - img [ref=e20]
+          - generic [ref=e22]: 商机
+        - link "会议" [ref=e23] [cursor=pointer]:
+          - /url: /meetings
+          - img [ref=e24]
+          - generic [ref=e26]: 会议
+        - link "商机管道" [ref=e27] [cursor=pointer]:
+          - /url: /pipeline
+          - img [ref=e28]
+          - generic [ref=e35]: 商机管道
+        - button "打开移动端 Agent 工作台" [active] [ref=e36]:
+          - img [ref=e37]
+          - generic [ref=e40]: Agent
+        - button "打开更多页面" [ref=e41]:
+          - img [ref=e42]
+          - generic [ref=e44]: More
+    - complementary [ref=e177]:
+      - generic "移动端 Agent 抽屉把手" [ref=e178]
+      - generic [ref=e179]:
+        - generic [ref=e180]:
+          - generic [ref=e181]: 作战对话
+          - heading "Agent 工作台" [level=2] [ref=e182]
+        - button "收起 Agent 面板" [ref=e183] [cursor=pointer]:
+          - img [ref=e184]
+          - generic [ref=e187]: 收起
+      - generic "Agent 面板滚动区" [ref=e188]:
+        - generic [ref=e189]:
+          - generic [ref=e190]: 当前任务
+          - paragraph [ref=e191]: 在当前上下文里，我最应该优先处理什么？
+        - generic [ref=e193]:
+          - generic [ref=e194]: 开始协作
+          - paragraph [ref=e195]: 先输入问题，或把左侧决策卡拖到输入区里，再围绕这项任务持续细聊。
+        - generic "Agent 输入区" [ref=e196]:
+          - generic [ref=e197]:
+            - generic [ref=e198]:
+              - generic [ref=e199]: Agent 输入
+              - textbox "Agent 输入" [ref=e200]:
+                - /placeholder: 问一个具体问题，或拖入卡片继续细聊
+            - button "发送给 Agent" [ref=e201] [cursor=pointer]:
+              - img [ref=e202]
+          - generic [ref=e204]:
+            - button "缺什么信息？" [ref=e205] [cursor=pointer]
+            - button "下一步做什么？" [ref=e206] [cursor=pointer]
+  - alert [ref=e45]

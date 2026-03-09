@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { RealMeetingShowcaseSection } from "@/components/real-cases/showcase";
 import { Badge, PageHeader, SectionCard } from "@/components/shared/ui";
 import { EmptyState } from "@/components/shared/feedback-states";
 import { getAccountById, getAccountThreadById, getMockDataset } from "@/lib/mock-selectors";
@@ -46,6 +47,12 @@ export function AccountThreadListView() {
       <PageHeader
         title="客户推进线程"
         description="把客户列表重定义为推进线程列表，优先展示阶段、动作和阻点。"
+      />
+
+      <RealMeetingShowcaseSection
+        title="线下实录客户样本"
+        limit={3}
+        description="这些样本来自真实外勤会议，适合在看客户线程时快速参考：客户背景、关键结论和下一步动作应该如何落在一张卡里。"
       />
 
       <SectionCard title="线程列表">
@@ -171,6 +178,13 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
           </div>
         </SectionCard>
       </div>
+
+      <RealMeetingShowcaseSection
+        title="真实线下实录参考"
+        limit={4}
+        showPublicContext
+        description="这里放的是线下会议里最像真实客户推进线程的样本，用来对照当前线程应如何表达结论、阻点和下一步。"
+      />
 
       <SectionCard title="推进时间线">
         <div className="stack-list">

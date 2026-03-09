@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { RealMeetingShowcaseSection } from "@/components/real-cases/showcase";
 import { Badge, PageHeader, SectionCard } from "@/components/shared/ui";
 import { getMockDataset } from "@/lib/mock-selectors";
 import { formatFreshness } from "@/lib/presentation/labels";
@@ -102,6 +103,12 @@ export function RepTodayCockpitView({ action }: { action?: ReactNode }) {
           </div>
         </div>
       </SectionCard>
+
+      <RealMeetingShowcaseSection
+        title="真实客户推进样本"
+        limit={2}
+        description="把线下实录直接放进首页，帮助销售快速对齐真实客户在会后是怎么形成判断和下一步动作的。"
+      />
 
       <div className="grid-2">
         <SectionCard title="今日会议流">

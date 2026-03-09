@@ -72,4 +72,22 @@ describe("mock dataset", () => {
       )
     ).toBe(true);
   });
+
+  it("includes real-world meeting samples derived from Yang Wenxing's notes", () => {
+    const dataset = createMockDataset();
+
+    expect(dataset.realMeetingCases.length).toBeGreaterThanOrEqual(4);
+    expect(dataset.realMeetingCases[0]?.sourceLabel).toContain("杨文星");
+    expect(dataset.realMeetingCases.every((item) => item.status === "completed")).toBe(true);
+    expect(
+      dataset.realMeetingCases.every(
+        (item) =>
+          /[\u4e00-\u9fff]/.test(item.title) &&
+          /[\u4e00-\u9fff]/.test(item.accountName) &&
+          /[\u4e00-\u9fff]/.test(item.accountProfile) &&
+          /[\u4e00-\u9fff]/.test(item.insight) &&
+          /[\u4e00-\u9fff]/.test(item.nextStep)
+      )
+    ).toBe(true);
+  });
 });

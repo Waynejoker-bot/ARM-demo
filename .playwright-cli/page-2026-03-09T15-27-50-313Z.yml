@@ -1,0 +1,206 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - link "ARM-DEMO" [ref=e5] [cursor=pointer]:
+        - /url: /home
+      - generic [ref=e6]: Operating Surfaces
+      - navigation [ref=e7]:
+        - link "首页" [ref=e8] [cursor=pointer]:
+          - /url: /home
+        - link "CEO 主控室" [ref=e9] [cursor=pointer]:
+          - /url: /ceo-command-center
+        - link "销售主管驾驶舱" [ref=e10] [cursor=pointer]:
+          - /url: /sales-manager-cockpit
+        - link "一线销售作战室" [ref=e11] [cursor=pointer]:
+          - /url: /sales-war-room
+        - link "Agent 工作台" [ref=e12] [cursor=pointer]:
+          - /url: /agent
+        - link "收入中心" [ref=e13] [cursor=pointer]:
+          - /url: /revenue
+        - link "商机管道" [ref=e14] [cursor=pointer]:
+          - /url: /pipeline
+        - link "商机" [ref=e15] [cursor=pointer]:
+          - /url: /deals
+        - link "客户" [ref=e16] [cursor=pointer]:
+          - /url: /customers
+        - link "会议" [ref=e17] [cursor=pointer]:
+          - /url: /meetings
+        - link "销售团队" [ref=e18] [cursor=pointer]:
+          - /url: /sales-team
+        - link "复盘与培训" [ref=e19] [cursor=pointer]:
+          - /url: /recaps
+        - link "Agent 工作流" [ref=e20] [cursor=pointer]:
+          - /url: /agent-workflows
+        - link "数据接入" [ref=e21] [cursor=pointer]:
+          - /url: /data-sources
+        - link "设置" [ref=e22] [cursor=pointer]:
+          - /url: /settings
+    - generic [ref=e23]:
+      - banner [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e26]: Revenue Command Surface
+          - generic [ref=e27]:
+            - generic [ref=e28]: Command Search
+            - strong [ref=e29]: 搜索商机、会议、纪要、风险信号
+        - generic [ref=e30]:
+          - generic [ref=e31]: 演示模式
+          - generic [ref=e32]: 2026 年 Q1
+          - generic [ref=e33]: 全球销售团队
+          - generic [ref=e34]: Agent 已联动
+          - generic [ref=e35]: 数据状态：新鲜度混合
+      - main [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e39]: Agent 优先工作台
+            - heading "玄河网络" [level=1] [ref=e40]
+            - paragraph [ref=e42]: 位于北京的中型游戏公司，核心业务是发行中台建设和多产品线数据整合。
+          - generic [ref=e44]:
+            - generic [ref=e45]: 商务推进中
+            - generic [ref=e46]: 阻塞中
+            - generic [ref=e47]: 数据过期
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - heading "线程概览" [level=3] [ref=e51]
+            - generic [ref=e52]:
+              - generic [ref=e53]:
+                - strong [ref=e54]: 客户进展：商务推进中
+                - paragraph [ref=e55]: 玄河网络已进入商务推进，当前推进被关键阻点卡住。
+              - generic [ref=e56]:
+                - strong [ref=e57]: 当前动作：阻塞中
+                - paragraph [ref=e58]: 尽快重新建立高层赞助人与采购方的一致意见。
+                - paragraph [ref=e59]: 阻点：尽快重新建立高层赞助人与采购方的一致意见。
+              - generic [ref=e60]:
+                - strong [ref=e61]: 数据信任
+                - paragraph [ref=e62]: 数据新鲜度：数据过期
+                - paragraph [ref=e63]: 数据覆盖率：68%
+          - generic [ref=e64]:
+            - heading "最近变化" [level=3] [ref=e66]
+            - generic [ref=e67]:
+              - generic [ref=e68]:
+                - link "玄河网络高层对齐会" [ref=e69] [cursor=pointer]:
+                  - /url: /meetings/meeting-2
+                  - strong [ref=e70]: 玄河网络高层对齐会
+                - paragraph [ref=e71]: 已完成 Meeting · 暴露风险信号
+              - generic [ref=e72]:
+                - link "玄河网络安全异议回应会" [ref=e73] [cursor=pointer]:
+                  - /url: /meetings/meeting-8
+                  - strong [ref=e74]: 玄河网络安全异议回应会
+                - paragraph [ref=e75]: 已完成 Meeting · 暴露风险信号
+          - generic [ref=e76]:
+            - heading "Agent BP 建议" [level=3] [ref=e78]
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - strong [ref=e81]: 当前最大风险
+                - paragraph [ref=e82]: 尽快重新建立高层赞助人与采购方的一致意见。
+              - generic [ref=e83]:
+                - strong [ref=e84]: 下一步动作
+                - paragraph [ref=e85]: 尽快重新建立高层赞助人与采购方的一致意见。
+              - generic [ref=e86]:
+                - strong [ref=e87]: 是否该升级 Deal
+                - paragraph [ref=e88]: 当前已存在 Deal：玄河网络发行中台升级项目
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - heading "真实线下实录参考" [level=3] [ref=e91]
+            - link "查看全部实录" [ref=e93] [cursor=pointer]:
+              - /url: /meetings
+          - paragraph [ref=e94]: 这里放的是线下会议里最像真实客户推进线程的样本，用来对照当前线程应如何表达结论、阻点和下一步。
+          - generic [ref=e95]:
+            - generic [ref=e96]:
+              - generic [ref=e97]:
+                - generic [ref=e98]: 杨文星实录 · 3月3日短剧与游戏业务讨论
+                - generic [ref=e99]: 外勤销售：杨文星
+                - generic [ref=e100]: 有明确切口
+              - strong [ref=e101]: 葫芦娃产品线团队
+              - paragraph [ref=e102]: 国内卡牌产品线与短剧团队并行，短剧团队约 30 多人，当前在评估云游转小游戏和音视频能力。
+              - paragraph [ref=e103]: 短剧与游戏业务发展讨论 · 已开完 · 需求发现 · 3/3 14:17
+              - paragraph [ref=e104]: 核心结论：短期更适合切入 VOD 聚合 API，而不是直接推动整体云迁移；客户现有游戏服务器迁移意愿很低。
+              - paragraph [ref=e105]: 下一步动作：先拉技术负责人一起看当前云与音视频账单，再判断是否能以 VOD 聚合 API 或云成本报价切入。
+              - paragraph [ref=e106]:
+                - text: 公开补充：公开资料显示，Unity 已支持微信小游戏导出，抖音小游戏生态也在持续完善，客户提到的云游转小游戏路线具备外部技术参照。
+                - link "Unity 小游戏官方文档" [ref=e107] [cursor=pointer]:
+                  - /url: https://docs.unity.cn/6000.0/Documentation/Manual/webgl-distributions-wechat.html
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: 杨文星实录 · 3月4日产品合作与功能优势讨论
+                - generic [ref=e111]: 外勤销售：杨文星
+                - generic [ref=e112]: 需高层在场
+              - strong [ref=e113]: 广州研发转发行团队
+              - paragraph [ref=e114]: 团队已有自研归因与后台，技术负责人兼具产品背景并与老板深度绑定，替换现有后台的组织阻力较大。
+              - paragraph [ref=e115]: 产品合作及功能优势讨论 · 已开完 · 产品演示 · 3/4 11:20
+              - paragraph [ref=e116]: 核心结论：客户并不否认产品能力，但主要阻力不是功能缺失，而是技术团队担心被替代；整体 APP 后台替换难度高。
+              - paragraph [ref=e117]: 下一步动作：等月底技术负责人和老板都在广州时，组织一场技术对齐会，优先从小游戏线试点切入。
+            - generic [ref=e118]:
+              - generic [ref=e119]:
+                - generic [ref=e120]: 杨文星实录 · 3月4日游戏买量中台讨论
+                - generic [ref=e121]: 外勤销售：杨文星
+                - generic [ref=e122]: 可继续扩线
+              - strong [ref=e123]: 广州买量运营团队
+              - paragraph [ref=e124]: 运营主要依赖巨量后台和 Excel 汇总，研发已买埋点分析工具并负责接入，但业务侧看数仍然碎片化。
+              - paragraph [ref=e125]: 游戏买量中台功能及合作讨论 · 已开完 · 产品演示 · 3/4 14:11
+              - paragraph [ref=e126]: 核心结论：客户明确承认巨量后台复杂、业务侧很少直接看明细；真正的痛点是发行、研发、运营三方数据没有统一工作面。
+              - paragraph [ref=e127]: 下一步动作：借客户引荐约上硬核发行联系人和研发接口人，验证一站式归因分析中台是否能替代当前手工汇总链路。
+              - paragraph [ref=e128]:
+                - text: 公开补充：公开行业报告显示，小游戏市场仍在增长，投放团队对素材 ROI 与跨渠道归因的精细化要求会继续抬高。
+                - link "QuestMobile 小游戏观察" [ref=e129] [cursor=pointer]:
+                  - /url: https://www.questmobile.com.cn/research/report-new/197
+            - generic [ref=e130]:
+              - generic [ref=e131]:
+                - generic [ref=e132]: 杨文星实录 · 3月5日广告中台行业讨论
+                - generic [ref=e133]: 外勤销售：杨文星
+                - generic [ref=e134]: 关系维护
+              - strong [ref=e135]: 广州成熟投放中台团队
+              - paragraph [ref=e136]: 团队自建广告中台多年，运营与技术都能看长期 ROI、转端和回传策略，对第三方接入保持强烈数据安全警惕。
+              - paragraph [ref=e137]: 广告中台功能及行业合作讨论 · 已开完 · 复盘评审 · 3/5 16:45
+              - paragraph [ref=e138]: 核心结论：整套中台替换概率低，当前更现实的价值不是强推产品，而是保持关系、交换行业信息，再看是否有局部合作切口。
+              - paragraph [ref=e139]: 下一步动作：先让客户帮忙引荐同圈层技术负责人，维持高质量交流，暂不强推整套中台方案。
+        - generic [ref=e140]:
+          - heading "推进时间线" [level=3] [ref=e142]
+          - generic [ref=e143]:
+            - generic [ref=e144]:
+              - strong [ref=e145]: 玄河网络高层对齐会
+              - paragraph [ref=e146]: 状态变化节点：商务推进中 / 阻塞中
+            - generic [ref=e147]:
+              - strong [ref=e148]: 玄河网络安全异议回应会
+              - paragraph [ref=e149]: 状态变化节点：商务推进中 / 阻塞中
+        - generic [ref=e150]:
+          - heading "正式商机投影区" [level=3] [ref=e152]
+          - generic [ref=e153]:
+            - generic [ref=e154]:
+              - link "玄河网络发行中台升级项目" [ref=e155] [cursor=pointer]:
+                - /url: /deals/deal-2
+                - strong [ref=e156]: 玄河网络发行中台升级项目
+              - paragraph [ref=e157]: 方案报价 · 尽快重新建立高层赞助人与采购方的一致意见。
+            - generic [ref=e158]:
+              - link "玄河网络安全合规模块增购" [ref=e159] [cursor=pointer]:
+                - /url: /deals/deal-8
+                - strong [ref=e160]: 玄河网络安全合规模块增购
+              - paragraph [ref=e161]: 产品演示 · 联动产品团队正面回应安全异议。
+    - complementary [ref=e162]:
+      - generic [ref=e163]:
+        - generic [ref=e164]:
+          - generic [ref=e165]: 作战对话
+          - heading "Agent 工作台" [level=2] [ref=e166]
+        - button "收起 Agent 面板" [ref=e167] [cursor=pointer]:
+          - img [ref=e168]
+          - generic [ref=e171]: 收起
+      - generic "Agent 面板滚动区" [ref=e172]:
+        - generic [ref=e173]:
+          - generic [ref=e174]: 当前任务
+          - paragraph [ref=e175]: 在当前上下文里，我最应该优先处理什么？
+        - generic [ref=e177]:
+          - generic [ref=e178]: 开始协作
+          - paragraph [ref=e179]: 先输入问题，或把左侧决策卡拖到输入区里，再围绕这项任务持续细聊。
+        - generic "Agent 输入区" [ref=e180]:
+          - generic [ref=e181]:
+            - generic [ref=e182]:
+              - generic [ref=e183]: Agent 输入
+              - textbox "Agent 输入" [ref=e184]:
+                - /placeholder: 问一个具体问题，或拖入卡片继续细聊
+            - button "发送给 Agent" [ref=e185] [cursor=pointer]:
+              - img [ref=e186]
+          - generic [ref=e188]:
+            - button "缺什么信息？" [ref=e189] [cursor=pointer]
+            - button "下一步做什么？" [ref=e190] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e196] [cursor=pointer]:
+    - img [ref=e197]
+  - alert [ref=e200]

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { RealMeetingShowcaseSection } from "@/components/real-cases/showcase";
 import { Badge, MetricCard, PageHeader, SectionCard } from "@/components/shared/ui";
 import { EmptyState } from "@/components/shared/feedback-states";
 import { getMockDataset, getRepReportByRepId } from "@/lib/mock-selectors";
@@ -126,6 +127,12 @@ export function SalesManagerCockpitView() {
           </div>
         </SectionCard>
       </div>
+
+      <RealMeetingShowcaseSection
+        title="线下实录参考"
+        limit={2}
+        description="给主管看的不是更多活动量，而是真实线下会议里哪些判断会改变推进策略、哪些会后动作值得复用。"
+      />
 
       <SectionCard title="Rep Weekly Snapshot">
         <div className="stack-list">
