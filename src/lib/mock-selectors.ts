@@ -55,3 +55,15 @@ export function getAgentOutputsForObject(objectType: string, objectId: string) {
 export function getEvidenceForIds(evidenceIds: string[]) {
   return dataset.evidenceRefs.filter((evidence) => evidenceIds.includes(evidence.id));
 }
+
+export function getIntakeItemById(intakeItemId: string) {
+  return dataset.intakeItems.find((item) => item.id === intakeItemId) ?? null;
+}
+
+export function getEntityCandidatesForIntakeItem(intakeItemId: string) {
+  return dataset.entityCandidates.filter((candidate) => candidate.intakeItemId === intakeItemId);
+}
+
+export function getIngestionProposalsForIntakeItem(intakeItemId: string) {
+  return dataset.ingestionProposals.filter((proposal) => proposal.intakeItemId === intakeItemId);
+}
