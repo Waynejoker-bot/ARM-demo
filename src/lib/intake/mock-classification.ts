@@ -106,40 +106,47 @@ function buildQuestions(match: MatchBundle, input: IntakeClassificationInput) {
   ];
 }
 
-function buildCandidates(match: MatchBundle) {
-  return [
-    match.account
-      ? {
-          entityType: "account" as const,
-          entityId: match.account.id,
-          label: match.account.name,
-          confidence: Math.min(match.confidence + 0.02, 0.96),
-          reason: match.reasoning,
-        }
-      : null,
-    match.deal
-      ? {
-          entityType: "deal" as const,
-          entityId: match.deal.id,
-          label: match.deal.name,
-          confidence: match.confidence,
-          reason: match.reasoning,
-        }
-      : null,
-    match.meeting
-      ? {
-          entityType: "meeting" as const,
-          entityId: match.meeting.id,
-          label: match.meeting.title,
-          confidence: Math.max(match.confidence - 0.04, 0.4),
-          reason: "会议归属基于素材内容与最近一次相关会议的语义相似度推断。",
-        }
-      : null,
-  ].filter(Boolean);
+function buildCandidates(match: MatchBundle): IntakeClassificationResponse["candidates"] {
+  const candidates: IntakeClassificationResponse["candidates"] = [];
+
+  if (match.account) {
+    candidates.push({
+      entityType: "account",
+      entityId: match.account.id,
+      label: match.account.name,
+      confidence: Math.min(match.confidence + 0.02, 0.96),
+      reason: match.reasoning,
+    });
+  }
+
+  if (match.deal) {
+    candidates.push({
+      entityType: "deal",
+      entityId: match.deal.id,
+      label: match.deal.name,
+      confidence: match.confidence,
+      reason: match.reasoning,
+    });
+  }
+
+  if (match.meeting) {
+    candidates.push({
+      entityType: "meeting",
+      entityId: match.meeting.id,
+      label: match.meeting.title,
+      confidence: Math.max(match.confidence - 0.04, 0.4),
+      reason: "会议归属基于素材内容与最近一次相关会议的语义相似度推断。",
+    });
+  }
+
+  return candidates;
 }
 
-function buildProposals(match: MatchBundle, input: IntakeClassificationInput) {
-  const proposals = [];
+function buildProposals(
+  match: MatchBundle,
+  input: IntakeClassificationInput
+): IntakeClassificationResponse["proposals"] {
+  const proposals: IntakeClassificationResponse["proposals"] = [];
 
   if (match.meeting) {
     proposals.push({
