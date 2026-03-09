@@ -58,7 +58,7 @@ export default async function DealDetailPage({
       />
 
       <div className="grid-3">
-        <SectionCard title="概览">
+        <SectionCard title="概览" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             <div className="button-row">
               <HealthScoreRing score={deal.healthScore} />
@@ -84,7 +84,7 @@ export default async function DealDetailPage({
             evidence={evidence}
           />
         ) : (
-          <SectionCard title="可解释智能结果">
+          <SectionCard title="可解释智能结果" mobilePriority="primary" mobileDensity="feed">
             <div className="stack-card">
               <strong>暂无 Agent 结论</strong>
               <p>这条商机还没有可展示的智能结论。</p>
@@ -96,7 +96,7 @@ export default async function DealDetailPage({
       </div>
 
       <div className="grid-2">
-        <SectionCard title="证据依据">
+        <SectionCard title="证据依据" mobileDensity="feed">
           <div className="stack-list">
             {evidence.map((item) => (
               <div className="stack-card" key={item.id}>
@@ -108,7 +108,7 @@ export default async function DealDetailPage({
           </div>
         </SectionCard>
 
-        <SectionCard title="关联会议">
+        <SectionCard title="关联会议" mobilePriority="secondary" mobileDensity="feed">
           <div className="stack-list">
             {meetings.map((meeting) => (
               <div className="stack-card" key={meeting.id}>

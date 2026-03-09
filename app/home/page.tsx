@@ -47,14 +47,14 @@ function CeoHome() {
       </div>
 
       <div className="grid-2">
-        <SectionCard title="经营摘要">
+        <SectionCard title="经营摘要" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-card">
             <strong>本季度收入仍有机会达标，但两个高金额商机正在拉低预测置信度。</strong>
             <p>建议优先审视 Atlas 与 Ivory 的高层赞助、法务状态和 CRM 同步质量，避免季度末出现被动。</p>
           </div>
         </SectionCard>
 
-        <SectionCard title="组织层警报">
+        <SectionCard title="组织层警报" mobilePriority="secondary" mobileDensity="feed">
           <ul className="list-plain">
             {dataset.alerts.map((alert) => (
               <li key={alert.id}>{alert.title}</li>
@@ -64,7 +64,7 @@ function CeoHome() {
       </div>
 
       <div className="grid-2">
-        <SectionCard title="战略商机观察">
+        <SectionCard title="战略商机观察" mobileDensity="feed">
           <div className="stack-list">
             {topDeals.map((deal) => (
               <div className="stack-card" key={deal.id}>
@@ -83,7 +83,7 @@ function CeoHome() {
           </div>
         </SectionCard>
 
-        <SectionCard title="收入趋势与驱动">
+        <SectionCard title="收入趋势与驱动" mobilePriority="secondary" mobileCollapsible>
           <div className="chart-placeholder">
             <strong>Commit / Best Case / Upside</strong>
             <p className="muted">
@@ -117,7 +117,7 @@ function ManagerHome() {
       </div>
 
       <div className="hero-grid">
-        <SectionCard title="Agent 风险摘要">
+        <SectionCard title="Agent 风险摘要" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>本周整体收入面稳定，但有 3 个后期商机需要优先介入。</strong>
@@ -133,7 +133,7 @@ function ManagerHome() {
           </div>
         </SectionCard>
 
-        <SectionCard title="团队判断摘要">
+        <SectionCard title="团队判断摘要" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>最该介入的商机</strong>
@@ -152,7 +152,7 @@ function ManagerHome() {
       </div>
 
       <div className="grid-2">
-        <SectionCard title="重点商机">
+        <SectionCard title="重点商机" mobilePriority="primary" mobileDensity="cards">
           <div className="table-like">
             {topDeals.map((deal) => (
               <div className="table-row" key={deal.id}>
@@ -171,7 +171,7 @@ function ManagerHome() {
           </div>
         </SectionCard>
 
-        <SectionCard title="最高风险商机">
+        <SectionCard title="最高风险商机" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             {riskyDeals.map((deal) => (
               <div className="stack-card" key={deal.id}>
@@ -190,7 +190,7 @@ function ManagerHome() {
       </div>
 
       <div className="grid-3">
-        <SectionCard title="阶段趋势">
+        <SectionCard title="阶段趋势" mobilePriority="secondary" mobileCollapsible>
           <div className="chart-placeholder">
             <strong>阶段漏斗 / 转化趋势 / 平均停留时长</strong>
             <p className="muted">
@@ -198,7 +198,7 @@ function ManagerHome() {
             </p>
           </div>
         </SectionCard>
-        <SectionCard title="团队辅导建议">
+        <SectionCard title="团队辅导建议" mobilePriority="secondary" mobileDensity="feed">
           <ul className="list-plain">
             {dataset.repScorecards.slice(0, 3).map((rep) => (
               <li key={rep.repId}>
@@ -207,7 +207,7 @@ function ManagerHome() {
             ))}
           </ul>
         </SectionCard>
-        <SectionCard title="数据告警">
+        <SectionCard title="数据告警" mobilePriority="secondary" mobileDensity="feed">
           <ul className="list-plain">
             {dataset.dataSources
               .filter((source) => source.status !== "connected")

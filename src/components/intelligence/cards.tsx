@@ -22,6 +22,12 @@ import type {
   WorkflowEvent,
 } from "@/lib/domain/types";
 
+type MobileSectionProps = {
+  mobilePriority?: "primary" | "secondary";
+  mobileDensity?: "feed" | "cards";
+  mobileCollapsible?: boolean;
+};
+
 export function KpiCard(props: {
   label: string;
   value: string;
@@ -34,13 +40,21 @@ export function AgentBriefCard({
   title,
   summary,
   badges,
+  mobilePriority,
+  mobileDensity,
+  mobileCollapsible,
 }: {
   title: string;
   summary: string;
   badges?: string[];
-}) {
+} & MobileSectionProps) {
   return (
-    <SectionCard title={title}>
+    <SectionCard
+      title={title}
+      mobilePriority={mobilePriority}
+      mobileDensity={mobileDensity}
+      mobileCollapsible={mobileCollapsible}
+    >
       <div className="stack-list">
         <div className="stack-card">
           <strong>{summary}</strong>
@@ -256,7 +270,7 @@ export function SuggestionActionCard({ output }: { output: AgentOutput }) {
 
 export function ForecastCard({ snapshot }: { snapshot: ForecastSnapshot }) {
   return (
-    <SectionCard title={snapshot.periodLabel}>
+    <SectionCard title={snapshot.periodLabel} mobileDensity="cards">
       <div className="stack-list">
         <div className="table-row">
           <span>总额</span>

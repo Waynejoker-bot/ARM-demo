@@ -9,7 +9,7 @@ export default function SettingsPage() {
       />
 
       <div className="grid-2">
-        <SectionCard title="AI 偏好">
+        <SectionCard title="AI 偏好" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>Agent 语气风格</strong>
@@ -26,7 +26,7 @@ export default function SettingsPage() {
           </div>
         </SectionCard>
 
-        <SectionCard title="集成策略">
+        <SectionCard title="集成策略" mobilePriority="secondary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>CRM 同步审批规则</strong>

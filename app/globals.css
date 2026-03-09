@@ -1309,8 +1309,14 @@ button {
   }
 
   .section-card[data-mobile-density="feed"] .stack-list,
-  .section-card[data-mobile-density="feed"] .table-like {
+  .section-card[data-mobile-density="feed"] .table-like,
+  .section-card[data-mobile-density="feed"] .timeline,
+  .section-card[data-mobile-density="feed"] .workspace-decision-stack {
     gap: 10px;
+  }
+
+  .section-card[data-mobile-density="feed"] .list-plain {
+    gap: 6px;
   }
 
   .section-card[data-mobile-density="cards"] .table-row {
@@ -1326,6 +1332,30 @@ button {
   .section-card[data-mobile-density="cards"] .table-row > span,
   .section-card[data-mobile-density="cards"] .table-row .button-row {
     min-width: 0;
+  }
+
+  .section-card[data-mobile-density="cards"] .stack-list,
+  .section-card[data-mobile-density="cards"] .timeline,
+  .section-card[data-mobile-density="cards"] .workspace-decision-stack {
+    gap: 10px;
+  }
+
+  .section-card[data-mobile-density="cards"] .timeline-item {
+    padding: 14px 14px 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(154, 176, 214, 0.1);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.025));
+  }
+
+  .section-card[data-mobile-density="cards"] .chart-placeholder {
+    min-height: 0;
+    padding: 14px;
+  }
+
+  .section-card[data-mobile-density="cards"] .workspace-card-surface {
+    padding: 14px;
+    border-radius: 16px;
   }
 
   .section-card[data-mobile-collapsible="true"] {

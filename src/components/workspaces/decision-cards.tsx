@@ -229,7 +229,7 @@ export function RoleWorkspaceView({ workspace }: { workspace: RoleWorkspace }) {
         </div>
       </section>
 
-      <SectionCard title={workspace.spotlight.title}>
+      <SectionCard title={workspace.spotlight.title} mobilePriority="primary" mobileDensity="cards">
         <p className="muted workspace-section-note">{workspace.spotlight.description}</p>
         <div className="workspace-decision-stack" aria-label={workspace.spotlight.title}>
           {workspace.decisionCards.map((card) => (
@@ -238,7 +238,7 @@ export function RoleWorkspaceView({ workspace }: { workspace: RoleWorkspace }) {
         </div>
       </SectionCard>
 
-      <SectionCard title={workspace.secondarySection.title}>
+      <SectionCard title={workspace.secondarySection.title} mobilePriority="secondary" mobileDensity="feed">
         <p className="muted workspace-section-note">{workspace.secondarySection.description}</p>
         <div className="stack-list">
           {workspace.contextCards.map((card) => (
@@ -247,7 +247,7 @@ export function RoleWorkspaceView({ workspace }: { workspace: RoleWorkspace }) {
         </div>
       </SectionCard>
 
-      <SectionCard title={workspace.actionSection.title}>
+      <SectionCard title={workspace.actionSection.title} mobilePriority="secondary" mobileDensity="feed">
         <p className="muted workspace-section-note">{workspace.actionSection.description}</p>
         <div className="stack-list">
           {workspace.systemActions.map((card) => (
@@ -256,7 +256,7 @@ export function RoleWorkspaceView({ workspace }: { workspace: RoleWorkspace }) {
         </div>
       </SectionCard>
 
-      <SectionCard title={workspace.trustSection.title}>
+      <SectionCard title={workspace.trustSection.title} mobilePriority="secondary" mobileCollapsible>
         <p className="muted workspace-section-note">{workspace.trustSection.description}</p>
         <div className="stack-list">
           {workspace.trustCards.map((card) => (

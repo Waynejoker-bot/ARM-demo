@@ -152,7 +152,7 @@ export function SalesManagerCockpitView() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Drilldown">
+      <SectionCard title="Drilldown" mobilePriority="secondary" mobileCollapsible>
         <div className="grid-2">
           <div className="stack-card">
             <strong>{highlightedThread ? "高风险客户线程" : "暂无高风险线程"}</strong>
@@ -197,7 +197,7 @@ export function RepReportView({ repId }: { repId: string }) {
       />
 
       <div className="grid-2">
-        <SectionCard title="本周结构化摘要">
+        <SectionCard title="本周结构化摘要" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>{report.summary}</strong>
@@ -213,7 +213,7 @@ export function RepReportView({ repId }: { repId: string }) {
           </div>
         </SectionCard>
 
-        <SectionCard title="本周关键变化">
+        <SectionCard title="本周关键变化" mobilePriority="secondary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>本周新增机会</strong>
@@ -227,7 +227,7 @@ export function RepReportView({ repId }: { repId: string }) {
         </SectionCard>
       </div>
 
-      <SectionCard title="重点对象列表">
+      <SectionCard title="重点对象列表" mobilePriority="primary" mobileDensity="cards">
         <div className="table-like">
           {threads.map((thread) => {
             const account = dataset.accounts.find((item) => item.id === thread.accountId);
