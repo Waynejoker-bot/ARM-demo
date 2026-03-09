@@ -1,13 +1,21 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { vi } from "vitest";
 
 import { AppShell } from "@/components/shared/ui";
+import { useAgentPanelStore } from "@/state/agent-panel-store";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/home",
 }));
 
 describe("app shell", () => {
+  beforeEach(() => {
+    useAgentPanelStore.setState({
+      ...useAgentPanelStore.getState(),
+      isOpen: true,
+    });
+  });
+
   it("surfaces demo-mode context and agent linkage in the shell chrome", () => {
     render(
       <AppShell>
@@ -56,5 +64,35 @@ describe("app shell", () => {
     expect(screen.getByLabelText("移动端简报头")).toBeInTheDocument();
     expect(screen.getByLabelText("移动端底部导航容器")).toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveClass("main-content-mobile-safe");
+  });
+
+  it("collapses the panel by default on narrow viewports and reopens from the mobile agent trigger", async () => {
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      writable: true,
+      value: 390,
+    });
+
+    const { container } = render(
+      <AppShell>
+        <div>内容</div>
+      </AppShell>
+    );
+
+    await waitFor(() =>
+      expect(container.querySelector(".agent-panel")).toHaveAttribute(
+        "data-mobile-sheet-state",
+        "collapsed"
+      )
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "打开移动端 Agent 工作台" }));
+
+    await waitFor(() =>
+      expect(container.querySelector(".agent-panel")).toHaveAttribute(
+        "data-mobile-sheet-state",
+        "expanded"
+      )
+    );
   });
 });

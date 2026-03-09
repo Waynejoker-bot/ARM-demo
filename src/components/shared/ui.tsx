@@ -3,7 +3,7 @@
 import { AgentPanel } from "@/components/agent/agent-panel";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { Bot, Grid2x2, House, PanelBottom, PanelsTopLeft, Radar } from "lucide-react";
 
@@ -18,6 +18,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { isOpen, collapsePanel, expandPanel, context } = useAgentPanelStore();
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const hasInitializedResponsivePanel = useRef(false);
 
   const mobileNavIcons = {
     "/home": House,
@@ -25,6 +26,18 @@ export function AppShell({ children }: { children: ReactNode }) {
     "/meetings": PanelBottom,
     "/pipeline": Radar,
   } as const;
+
+  useEffect(() => {
+    if (hasInitializedResponsivePanel.current) {
+      return;
+    }
+
+    hasInitializedResponsivePanel.current = true;
+
+    if (window.innerWidth <= 768) {
+      collapsePanel();
+    }
+  }, [collapsePanel]);
 
   return (
     <div className={clsx("app-shell", !isOpen && "app-shell-panel-collapsed")}>
