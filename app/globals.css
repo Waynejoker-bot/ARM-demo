@@ -493,6 +493,39 @@ button {
   box-shadow: var(--shadow-soft);
 }
 
+.intake-hero-grid,
+.intake-recognition-grid,
+.intake-question-list {
+  display: grid;
+  gap: 16px;
+}
+
+.intake-hero-grid,
+.intake-recognition-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.intake-source-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.intake-source-button[aria-pressed="true"] {
+  border-color: rgba(109, 226, 255, 0.34);
+  background: linear-gradient(135deg, rgba(99, 164, 255, 0.16), rgba(109, 226, 255, 0.12));
+  color: var(--text);
+}
+
+.intake-focus-card {
+  min-height: 100%;
+}
+
+.intake-question-card {
+  border-style: dashed;
+}
+
 .real-highlight-card,
 .real-highlight-note {
   margin: 0;

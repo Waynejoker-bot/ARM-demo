@@ -35,4 +35,18 @@ describe("intake page", () => {
     expect(card.getByText(/需要补充信息/i)).toBeVisible();
     expect(card.getByText(/会议归属/i)).toBeVisible();
   });
+
+  it("shows source actions, candidate matches, confirmation questions, and proposal actions", () => {
+    render(<IntakePage />);
+
+    expect(screen.getByRole("button", { name: "录音" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "文字" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "邮件" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "链接" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "AI 识别与确认" })).toBeVisible();
+    expect(screen.getByText("沧澜网络")).toBeVisible();
+    expect(screen.getByText(/这条素材更像哪一类内容/i)).toBeVisible();
+    expect(screen.getAllByRole("button", { name: "确认写入" }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("button", { name: "暂不采用" }).length).toBeGreaterThan(0);
+  });
 });

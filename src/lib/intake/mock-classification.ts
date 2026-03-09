@@ -189,7 +189,7 @@ export function classifyIntakeWithMock(
   const needsManualInput = match.confidence < 0.75;
 
   return {
-    title: input.fileName ?? sourceText.slice(0, 24) || "新素材导入",
+    title: input.fileName ?? sourceText.slice(0, 24) ?? "新素材导入",
     normalizedSourceKind: input.sourceKind,
     confidence: match.confidence,
     reasoning: match.reasoning,
