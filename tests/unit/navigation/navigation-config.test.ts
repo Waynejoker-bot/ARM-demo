@@ -16,6 +16,10 @@ describe("primary navigation", () => {
           href: "/sales-war-room",
           label: "一线销售作战室",
         }),
+        expect.objectContaining({
+          href: "/intake",
+          label: "素材导入",
+        }),
       ])
     );
   });
