@@ -1,4 +1,5 @@
 .DS_Store
+.worktrees/
 .next
 node_modules
 playwright-report
