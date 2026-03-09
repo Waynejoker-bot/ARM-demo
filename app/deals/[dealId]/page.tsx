@@ -82,6 +82,8 @@ export default async function DealDetailPage({
             confidence={primaryOutput.confidence}
             freshness={deal.dataFreshness}
             evidence={evidence}
+            mobilePriority="primary"
+            mobileDensity="feed"
           />
         ) : (
           <SectionCard title="可解释智能结果" mobilePriority="primary" mobileDensity="feed">
@@ -92,7 +94,15 @@ export default async function DealDetailPage({
           </SectionCard>
         )}
 
-        {primaryOutput ? <SuggestionActionCard output={primaryOutput} /> : <div />}
+        {primaryOutput ? (
+          <SuggestionActionCard
+            output={primaryOutput}
+            mobilePriority="primary"
+            mobileDensity="feed"
+          />
+        ) : (
+          <div />
+        )}
       </div>
 
       <div className="grid-2">

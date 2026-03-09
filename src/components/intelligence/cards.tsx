@@ -165,15 +165,23 @@ export function ExplainableCard({
   confidence,
   freshness,
   evidence,
+  mobilePriority,
+  mobileDensity,
+  mobileCollapsible,
 }: {
   title: string;
   summary: string;
   confidence: number;
   freshness: "fresh" | "stale" | "missing";
   evidence: EvidenceRef[];
-}) {
+} & MobileSectionProps) {
   return (
-    <SectionCard title={title}>
+    <SectionCard
+      title={title}
+      mobilePriority={mobilePriority}
+      mobileDensity={mobileDensity}
+      mobileCollapsible={mobileCollapsible}
+    >
       <div className="stack-list">
         <div className="stack-card">
           <strong>{summary}</strong>
@@ -188,7 +196,14 @@ export function ExplainableCard({
   );
 }
 
-export function SuggestionActionCard({ output }: { output: AgentOutput }) {
+export function SuggestionActionCard({
+  output,
+  mobilePriority,
+  mobileDensity,
+  mobileCollapsible,
+}: {
+  output: AgentOutput;
+} & MobileSectionProps) {
   const [draft, setDraft] = useState(output.summary);
   const [state, setState] = useState(() => createAgentSuggestionState(output.id));
 
@@ -210,7 +225,12 @@ export function SuggestionActionCard({ output }: { output: AgentOutput }) {
   }, [state.lifecycle, state.syncStatus]);
 
   return (
-    <SectionCard title="建议动作卡">
+    <SectionCard
+      title="建议动作卡"
+      mobilePriority={mobilePriority}
+      mobileDensity={mobileDensity}
+      mobileCollapsible={mobileCollapsible}
+    >
       <div className="stack-list">
         <label className="stack-card" htmlFor={`suggestion-${output.id}`}>
           <strong>建议内容</strong>
@@ -293,9 +313,21 @@ export function ForecastCard({ snapshot }: { snapshot: ForecastSnapshot }) {
   );
 }
 
-export function RepScoreCard({ rep }: { rep: RepScorecardType }) {
+export function RepScoreCard({
+  rep,
+  mobilePriority,
+  mobileDensity,
+  mobileCollapsible,
+}: {
+  rep: RepScorecardType;
+} & MobileSectionProps) {
   return (
-    <SectionCard title={rep.repName}>
+    <SectionCard
+      title={rep.repName}
+      mobilePriority={mobilePriority}
+      mobileDensity={mobileDensity}
+      mobileCollapsible={mobileCollapsible}
+    >
       <div className="stack-list">
         <div className="button-row">
           <HealthScoreRing score={rep.averageHealthScore} />
