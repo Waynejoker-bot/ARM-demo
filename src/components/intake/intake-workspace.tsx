@@ -1,6 +1,7 @@
 import { Badge, PageHeader, SectionCard } from "@/components/shared/ui";
-import { classifyIntakeWithMock } from "@/lib/intake/mock-classification";
 import type { MockDataset } from "@/lib/domain/types";
+import type { IntakeClassificationResponse } from "@/lib/intake/types";
+import { classifyIntakeWithMock } from "@/lib/intake/mock-classification";
 
 function formatIntakeStatus(status: MockDataset["intakeItems"][number]["status"]) {
   switch (status) {
@@ -26,22 +27,47 @@ function getStatusTone(status: MockDataset["intakeItems"][number]["status"]) {
   return "info" as const;
 }
 
-export function IntakeWorkspace({ dataset }: { dataset: MockDataset }) {
+export function IntakeWorkspace({
+  dataset,
+  sourceKind,
+  draftText,
+  onDraftTextChange,
+  onSourceKindChange,
+  onClassify,
+  isSubmitting = false,
+  errorMessage = null,
+  recognitionOverride = null,
+}: {
+  dataset: MockDataset;
+  sourceKind: "recording" | "text" | "email" | "link";
+  draftText: string;
+  onDraftTextChange?: (value: string) => void;
+  onSourceKindChange?: (value: "recording" | "text" | "email" | "link") => void;
+  onClassify?: () => void;
+  isSubmitting?: boolean;
+  errorMessage?: string | null;
+  recognitionOverride?: IntakeClassificationResponse | null;
+}) {
   const focusItem =
     dataset.intakeItems.find((item) => item.status === "ready_to_apply") ?? dataset.intakeItems[0];
-  const recognition = classifyIntakeWithMock(
-    {
-      sourceKind: focusItem.sourceKind,
-      rawText: focusItem.rawTextPreview,
-      repId: focusItem.submittedByRepId,
-      fileName: focusItem.fileName ?? undefined,
-      externalUrl: focusItem.externalUrl ?? undefined,
-    },
-    dataset
-  );
+  const recognition =
+    recognitionOverride ??
+    classifyIntakeWithMock(
+      {
+        sourceKind,
+        rawText: draftText,
+        repId: focusItem.submittedByRepId,
+        fileName: focusItem.fileName ?? undefined,
+        externalUrl: focusItem.externalUrl ?? undefined,
+      },
+      dataset
+    );
   const focusProposals = dataset.ingestionProposals.filter((proposal) =>
     focusItem.proposalIds.includes(proposal.id)
   );
+  const visibleProposals = recognitionOverride?.proposals?.length
+    ? recognitionOverride.proposals
+    : focusProposals;
   const lowConfidenceItems = dataset.intakeItems.filter(
     (item) => item.classificationConfidence < 0.7
   );
@@ -71,12 +97,28 @@ export function IntakeWorkspace({ dataset }: { dataset: MockDataset }) {
                   key={button.value}
                   type="button"
                   className="ghost-button intake-source-button"
-                  aria-pressed={focusItem.sourceKind === button.value}
+                  aria-pressed={sourceKind === button.value}
+                  onClick={() => onSourceKindChange?.(button.value)}
                 >
                   {button.label}
                 </button>
               ))}
             </div>
+            <label className="intake-draft-field">
+              <span className="sr-only">素材内容</span>
+              <textarea
+                aria-label="素材内容"
+                className="intake-draft-area"
+                value={draftText}
+                onChange={(event) => onDraftTextChange?.(event.target.value)}
+              />
+            </label>
+            <div className="button-row">
+              <button type="button" className="primary-button" onClick={() => onClassify?.()}>
+                {isSubmitting ? "识别中..." : "开始识别"}
+              </button>
+            </div>
+            {errorMessage ? <p className="intake-inline-alert">{errorMessage}</p> : null}
           </div>
 
           <div className="stack-card intake-focus-card">
@@ -97,6 +139,12 @@ export function IntakeWorkspace({ dataset }: { dataset: MockDataset }) {
       <SectionCard title="AI 识别与确认">
         <div className="intake-recognition-grid">
           <div className="stack-list">
+            {recognition.needsManualInput ? (
+              <div className="stack-card intake-question-card">
+                <strong>需要手动补充信息</strong>
+                <p>{recognition.missingFields.join("、") || "请先补充基本归属信息。"}</p>
+              </div>
+            ) : null}
             {recognition.candidates.map((candidate) => (
               <div className="stack-card" key={`${candidate.entityType}-${candidate.entityId}`}>
                 <strong>{candidate.label}</strong>
@@ -133,8 +181,11 @@ export function IntakeWorkspace({ dataset }: { dataset: MockDataset }) {
 
       <SectionCard title="待确认写入">
         <div className="stack-list">
-          {focusProposals.map((proposal) => (
-            <div className="stack-card" key={proposal.id}>
+          {visibleProposals.map((proposal) => (
+            <div
+              className="stack-card"
+              key={`${proposal.targetType}-${proposal.targetObjectId ?? "none"}-${proposal.title}`}
+            >
               <strong>{proposal.title}</strong>
               <p>{proposal.summary}</p>
               <div className="button-row">

@@ -1,6 +1,11 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { afterEach, vi } from "vitest";
 
 import IntakePage from "../../../app/intake/page";
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe("intake page", () => {
   it("renders an import-first intake workspace for frontline reps", () => {
@@ -48,5 +53,49 @@ describe("intake page", () => {
     expect(screen.getByText(/这条素材更像哪一类内容/i)).toBeVisible();
     expect(screen.getAllByRole("button", { name: "确认写入" }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("button", { name: "暂不采用" }).length).toBeGreaterThan(0);
+  });
+
+  it("submits raw text for classification and shows manual follow-up when recognition confidence is low", async () => {
+    const fetchMock = vi.spyOn(global, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        title: "未归档客户沟通",
+        normalizedSourceKind: "text",
+        confidence: 0.42,
+        reasoning: "素材里缺少稳定映射到现有客户上下文的名称或日期。",
+        needsManualInput: true,
+        missingFields: ["关联客户", "会议归属"],
+        candidates: [],
+        questions: [
+          {
+            id: "material-role",
+            prompt: "这条素材更像哪一类内容？",
+            options: ["会后纪要", "电话补录", "仅记录为背景备注"],
+            reason: "先确认内容类型。",
+          },
+        ],
+        proposals: [
+          {
+            targetType: "evidence_ref",
+            targetObjectId: null,
+            title: "先保留为待确认素材",
+            summary: "当前归属不够稳定，先不要写入业务对象。",
+            confidence: 0.35,
+            requiresManualReview: true,
+          },
+        ],
+      }),
+    } as Response);
+
+    render(<IntakePage />);
+
+    fireEvent.change(screen.getByLabelText("素材内容"), {
+      target: { value: "客户说先内部看看，下周再约时间。" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "开始识别" }));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    expect(await screen.findByText("需要手动补充信息")).toBeVisible();
+    expect(screen.getByText(/关联客户、会议归属/i)).toBeVisible();
   });
 });
