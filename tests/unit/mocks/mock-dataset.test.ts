@@ -90,4 +90,18 @@ describe("mock dataset", () => {
       )
     ).toBe(true);
   });
+
+  it("covers the intake workspace with triage, low-confidence, and ready-to-apply states", () => {
+    const dataset = createMockDataset();
+
+    expect(dataset.intakeItems.length).toBeGreaterThanOrEqual(4);
+    expect(dataset.entityCandidates.length).toBeGreaterThanOrEqual(4);
+    expect(dataset.ingestionProposals.length).toBeGreaterThanOrEqual(4);
+    expect(
+      dataset.intakeItems.some(
+        (item) => item.status === "needs_confirmation" && item.classificationConfidence < 0.7
+      )
+    ).toBe(true);
+    expect(dataset.intakeItems.some((item) => item.status === "ready_to_apply")).toBe(true);
+  });
 });

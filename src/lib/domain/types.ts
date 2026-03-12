@@ -14,6 +14,21 @@ export type AgentType =
   | "next_step_agent"
   | "crm_sync_agent"
   | "coaching_agent";
+export type IntakeSourceKind = "recording" | "text" | "email" | "link";
+export type IntakeStatus =
+  | "received"
+  | "parsing"
+  | "needs_confirmation"
+  | "ready_to_apply"
+  | "applied"
+  | "failed";
+export type IntakeEntityType = "account" | "deal" | "meeting" | "contact";
+export type IngestionTargetType =
+  | "meeting_summary"
+  | "conversation"
+  | "evidence_ref"
+  | "deal_note"
+  | "next_step";
 
 export type Account = {
   id: string;
@@ -232,6 +247,50 @@ export type RealMeetingCase = {
   publicSourceUrl: string | null;
 };
 
+export type IntakeItem = {
+  id: string;
+  sourceKind: IntakeSourceKind;
+  submittedByRepId: string;
+  submittedAt: string;
+  status: IntakeStatus;
+  title: string;
+  rawTextPreview: string;
+  fileName: string | null;
+  externalUrl: string | null;
+  classificationConfidence: number;
+  needsManualInput: boolean;
+  missingFields: string[];
+  selectedAccountId: string | null;
+  selectedDealId: string | null;
+  selectedMeetingId: string | null;
+  candidateIds: string[];
+  proposalIds: string[];
+};
+
+export type EntityCandidate = {
+  id: string;
+  intakeItemId: string;
+  entityType: IntakeEntityType;
+  entityId: string;
+  label: string;
+  confidence: number;
+  reason: string;
+  isPrimary: boolean;
+};
+
+export type IngestionProposal = {
+  id: string;
+  intakeItemId: string;
+  targetType: IngestionTargetType;
+  targetObjectId: string | null;
+  title: string;
+  summary: string;
+  confidence: number;
+  status: "suggestion" | "confirmed" | "applied" | "rejected";
+  evidenceRefIds: string[];
+  requiresManualReview: boolean;
+};
+
 export type RoleViewCollection = {
   ceo: {
     role: RoleType;
@@ -265,5 +324,8 @@ export type MockDataset = {
   accountThreads: AccountThread[];
   repReportSnapshots: RepReportSnapshot[];
   realMeetingCases: RealMeetingCase[];
+  intakeItems: IntakeItem[];
+  entityCandidates: EntityCandidate[];
+  ingestionProposals: IngestionProposal[];
   roleViews: RoleViewCollection;
 };

@@ -16,6 +16,7 @@ export const primaryNavItems: NavItem[] = [
   { href: "/ceo-command-center", label: "CEO 主控室" },
   { href: "/sales-manager-cockpit", label: "销售主管驾驶舱" },
   { href: "/sales-war-room", label: "一线销售作战室" },
+  { href: "/intake", label: "素材导入" },
   { href: "/agent", label: "Agent 工作台" },
   { href: "/revenue", label: "收入中心" },
   { href: "/pipeline", label: "商机管道" },

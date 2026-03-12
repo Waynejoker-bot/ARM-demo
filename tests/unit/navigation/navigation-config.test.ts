@@ -20,6 +20,10 @@ describe("primary navigation", () => {
           href: "/design-system",
           label: "设计系统",
         }),
+        expect.objectContaining({
+          href: "/intake",
+          label: "素材导入",
+        }),
       ])
     );
   });
