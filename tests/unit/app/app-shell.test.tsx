@@ -8,15 +8,18 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("app shell", () => {
-  it("surfaces demo-mode context and agent linkage in the shell chrome", () => {
+  it("does not render the removed global top bar chrome", () => {
     render(
       <AppShell>
         <div>内容</div>
       </AppShell>
     );
 
-    expect(screen.getByText("演示模式")).toBeVisible();
-    expect(screen.getByText("Agent 已联动")).toBeVisible();
+    expect(screen.queryByText("Revenue Command Surface")).not.toBeInTheDocument();
+    expect(screen.queryByText("Command Search")).not.toBeInTheDocument();
+    expect(screen.queryByText("搜索商机、会议、纪要、风险信号")).not.toBeInTheDocument();
+    expect(screen.queryByText("演示模式")).not.toBeInTheDocument();
+    expect(screen.queryByText("Agent 已联动")).not.toBeInTheDocument();
   });
 
   it("keeps the left navigation brand minimal", () => {

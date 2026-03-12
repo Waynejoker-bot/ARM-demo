@@ -1,0 +1,19 @@
+flowchart TD
+    A["Meeting / Conversation / Evidence"] --> B["事实卡"]
+    B --> C["一线销售 Agent"]
+    C --> D["销售决策卡"]
+    D --> E["销售本人"]
+
+    B --> F["主管 Agent"]
+    D --> F
+    F --> G["主管决策卡"]
+    G --> H["主管本人"]
+
+    B --> I["CEO Agent"]
+    G --> I
+    D --> I
+    I --> J["CEO 决策卡"]
+    J --> K["CEO 本人"]
+
+    H --> L["向下命令卡 / 培训卡 / 资源调配卡"]
+    K --> M["向下资源卡 / CEO 介入卡"]

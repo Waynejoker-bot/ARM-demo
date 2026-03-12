@@ -37,23 +37,6 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="main-shell">
-        <header className="top-bar">
-          <div className="top-bar-search-stack">
-            <div className="top-bar-kicker">Revenue Command Surface</div>
-            <div className="search-pill">
-              <span className="search-pill-label">Command Search</span>
-              <strong>搜索商机、会议、纪要、风险信号</strong>
-            </div>
-          </div>
-          <div className="top-bar-meta">
-            <span className="context-chip context-chip-live">演示模式</span>
-            <span className="context-chip">2026 年 Q1</span>
-            <span className="context-chip">全球销售团队</span>
-            <span className="context-chip context-chip-agent">Agent 已联动</span>
-            <span className="context-chip">数据状态：新鲜度混合</span>
-          </div>
-        </header>
-
         <main className={clsx("main-content", isOpen && "main-content-panel-open")}>
           {children}
         </main>
