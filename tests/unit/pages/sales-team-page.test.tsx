@@ -15,4 +15,21 @@ describe("sales team page", () => {
     );
     expect(screen.getByText(/林书瑶 本周推进 3 个客户/i)).toBeVisible();
   });
+
+  it("keeps the sales team summaries stacked for mobile review", () => {
+    render(<SalesTeamPage />);
+
+    expect(screen.getByRole("heading", { name: "Rep Weekly Snapshot" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+    expect(screen.getByRole("heading", { name: "Rep Weekly Snapshot" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-density",
+      "feed"
+    );
+    expect(screen.getByRole("heading", { name: "重点介入对象" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+  });
 });

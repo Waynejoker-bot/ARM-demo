@@ -49,4 +49,21 @@ describe("meetings page", () => {
     expect(screen.getByText(/短期更适合切入 VOD 聚合 API，而不是直接推动整体云迁移/i)).toBeVisible();
     expect(screen.getByText(/先拉技术负责人一起看当前云与音视频账单/i)).toBeVisible();
   });
+
+  it("exposes feed and card-density hooks for mobile meeting queues", () => {
+    render(<MeetingsPage />);
+
+    expect(screen.getByRole("heading", { name: "待确认优先队列" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+    expect(screen.getByRole("heading", { name: "待确认优先队列" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-density",
+      "feed"
+    );
+    expect(screen.getByRole("heading", { name: "Meeting Queue" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-density",
+      "cards"
+    );
+  });
 });

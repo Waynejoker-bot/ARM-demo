@@ -52,7 +52,7 @@ export function PipelineProposalBoard({ deals }: { deals: Deal[] }) {
   }
 
   return (
-    <SectionCard title="看板视图（提议优先）">
+    <SectionCard title="看板视图（提议优先）" mobilePriority="primary" mobileDensity="cards">
       <div className="grid-3">
         {grouped.map(({ stage, deals: stageDeals }) => (
           <div className="stack-card" key={stage}>

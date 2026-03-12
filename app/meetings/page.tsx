@@ -299,7 +299,7 @@ export default function MeetingsPage() {
         </div>
       </SectionCard>
 
-      <SectionCard title="待确认优先队列">
+      <SectionCard title="待确认优先队列" mobilePriority="primary" mobileDensity="feed">
         <div className="stack-list">
           {pendingCards.map((card) => (
             <MeetingExecutionCard key={`pending-${card.id}`} card={card} />
@@ -307,7 +307,7 @@ export default function MeetingsPage() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Meeting Queue">
+      <SectionCard title="Meeting Queue" mobileDensity="cards">
         <div className="stack-list">
           {queuedCards.map((card) => (
             <MeetingExecutionCard key={card.id} card={card} />

@@ -33,10 +33,12 @@ export default function RevenuePage() {
               `置信度 ${Math.round(brief.confidence * 100)}%`,
               ...brief.rationaleItems,
             ]}
+            mobilePriority="primary"
+            mobileDensity="feed"
           />
         ) : null}
 
-        <SectionCard title="核心收入驱动">
+        <SectionCard title="核心收入驱动" mobileDensity="feed">
           <div className="stack-list">
             {deals.slice(0, 4).map((deal) => (
               <div className="stack-card" key={deal.id}>
@@ -58,7 +60,7 @@ export default function RevenuePage() {
 
       <div className="grid-2">
         <ForecastCard snapshot={forecast} />
-        <SectionCard title="情景模拟">
+        <SectionCard title="情景模拟" mobilePriority="secondary" mobileCollapsible>
           <div className="stack-list">
             <div className="stack-card">
               <strong>如果 Atlas 或 Ivory 再延后一周，首先下滑的是预测置信度。</strong>

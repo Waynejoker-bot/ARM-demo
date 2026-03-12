@@ -3,7 +3,9 @@
 .next
 node_modules
 playwright-report
+.playwright-cli/
 test-results
+output/
 output-*.png
 .env
 .env.local

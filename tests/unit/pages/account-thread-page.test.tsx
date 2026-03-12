@@ -54,4 +54,21 @@ describe("account thread views", () => {
     expect(screen.getByText(/广州成熟投放中台团队/i)).toBeVisible();
     expect(screen.getByText(/整套中台替换概率低/i)).toBeVisible();
   });
+
+  it("marks timeline and deal projection as secondary mobile sections", () => {
+    render(<AccountThreadDetailView accountId="acc-3" />);
+
+    expect(screen.getByRole("heading", { name: "线程概览" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+    expect(screen.getByRole("heading", { name: "推进时间线" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-collapsible",
+      "true"
+    );
+    expect(screen.getByRole("heading", { name: "正式商机投影区" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-collapsible",
+      "true"
+    );
+  });
 });

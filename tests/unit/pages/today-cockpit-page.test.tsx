@@ -45,4 +45,25 @@ describe("rep today cockpit view", () => {
       "/meetings"
     );
   });
+
+  it("marks the rep cockpit brief and follow-up queues for mobile use", () => {
+    render(<RepTodayCockpitView />);
+
+    expect(screen.getByRole("heading", { name: "Agent 今日简报" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+    expect(screen.getByRole("heading", { name: "Agent 今日简报" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-density",
+      "feed"
+    );
+    expect(screen.getByRole("heading", { name: "待确认区" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "primary"
+    );
+    expect(screen.getByRole("heading", { name: "对主管汇报草稿" }).closest(".section-card")).toHaveAttribute(
+      "data-mobile-priority",
+      "secondary"
+    );
+  });
 });

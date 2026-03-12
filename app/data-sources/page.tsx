@@ -18,7 +18,7 @@ export default function DataSourcesPage() {
         description="一个专门说明覆盖率、最近同步时间，以及数据缺失如何影响 AI 可信度的透明页面。"
       />
 
-      <SectionCard title="接入源状态">
+      <SectionCard title="接入源状态" mobilePriority="primary" mobileDensity="cards">
         <div className="table-like">
           {dataSources.map((source) => (
             <div className="table-row" key={source.id}>
@@ -38,7 +38,7 @@ export default function DataSourcesPage() {
       </SectionCard>
 
       <div className="grid-2">
-        <SectionCard title="受影响页面与对象">
+        <SectionCard title="受影响页面与对象" mobileDensity="feed">
           <div className="stack-list">
             {degradedDeals.map((deal) => (
               <div className="stack-card" key={deal.id}>
@@ -51,7 +51,7 @@ export default function DataSourcesPage() {
           </div>
         </SectionCard>
 
-        <SectionCard title="当前断连影响">
+        <SectionCard title="当前断连影响" mobilePriority="secondary" mobileDensity="feed">
           <div className="stack-list">
             {disconnected.map((source) => (
               <div className="stack-card" key={source.id}>

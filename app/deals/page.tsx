@@ -14,7 +14,7 @@ export default function DealsPage() {
         description="一个让风险、数据新鲜度和 Agent 建议一眼可见的优先级列表页。"
       />
 
-      <SectionCard title="商机列表">
+      <SectionCard title="商机列表" mobilePriority="primary" mobileDensity="cards">
         <div className="table-like">
           {deals.map((deal) => {
             const account = accounts.find((item) => item.id === deal.accountId);

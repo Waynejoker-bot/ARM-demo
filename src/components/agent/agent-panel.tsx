@@ -140,7 +140,10 @@ export function AgentPanel({
 
   if (!isOpen) {
     return (
-      <aside className="agent-panel agent-panel-collapsed">
+      <aside
+        className="agent-panel agent-panel-collapsed"
+        data-mobile-sheet-state="collapsed"
+      >
         <button
           className="panel-toggle-pill"
           type="button"
@@ -155,7 +158,9 @@ export function AgentPanel({
   }
 
   return (
-    <aside className="agent-panel">
+    <aside className="agent-panel" data-mobile-sheet-state="expanded">
+      <div className="mobile-sheet-handle" aria-label="移动端 Agent 抽屉把手" />
+
       <div className="panel-header panel-header-strong">
         <div>
           <div className="eyebrow">作战对话</div>

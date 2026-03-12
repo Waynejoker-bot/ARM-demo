@@ -101,7 +101,7 @@ export function MeetingWorkbenchView({ meetingId }: { meetingId: string }) {
       />
 
       <div className="grid-3">
-        <SectionCard title="会前准备">
+        <SectionCard title="会前准备" mobileDensity="feed">
           <ul className="list-plain">
             <li>客户：{account?.name ?? "未知客户"}</li>
             <li>当前线程：{thread ? progressLabels[thread.customerProgressStage] : "暂无线程"}</li>
@@ -110,7 +110,7 @@ export function MeetingWorkbenchView({ meetingId }: { meetingId: string }) {
           </ul>
         </SectionCard>
 
-        <SectionCard title="会议证据">
+        <SectionCard title="会议证据" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>{meeting.transcriptStatus === "missing" ? "会议转录缺失" : "录音与转录可回看"}</strong>
@@ -145,7 +145,7 @@ export function MeetingWorkbenchView({ meetingId }: { meetingId: string }) {
           </div>
         </SectionCard>
 
-        <SectionCard title="Agent BP 判断">
+        <SectionCard title="Agent BP 判断" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>{summary?.summary ?? thread?.currentFocus ?? "当前 Meeting 仍待 Agent 生成判断。"}</strong>
@@ -166,7 +166,7 @@ export function MeetingWorkbenchView({ meetingId }: { meetingId: string }) {
         </SectionCard>
       </div>
 
-      <SectionCard title="会后总结与状态提议">
+      <SectionCard title="会后总结与状态提议" mobilePriority="primary">
         <div className="grid-2">
           <div className="stack-list">
             <div className="stack-card">
@@ -205,7 +205,7 @@ export function MeetingWorkbenchView({ meetingId }: { meetingId: string }) {
         </div>
       </SectionCard>
 
-      <SectionCard title="影响范围">
+      <SectionCard title="影响范围" mobileCollapsible>
         <div className="grid-3">
           <div className="stack-card">
             <strong>影响客户线程</strong>

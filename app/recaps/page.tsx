@@ -14,7 +14,7 @@ export default function RecapsPage() {
         description="面向主管和赋能团队的复盘内容库，沉淀案例、失误和可训练的关键时刻。"
       />
 
-      <SectionCard title="复盘案例库">
+      <SectionCard title="复盘案例库" mobilePriority="primary" mobileDensity="feed">
         <div className="stack-list">
           {recapRecords.map((recap) => (
             <Link className="stack-card" href={`/recaps/${recap.id}`} key={recap.id}>

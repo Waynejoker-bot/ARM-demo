@@ -55,7 +55,7 @@ export function AccountThreadListView() {
         description="这些样本来自真实外勤会议，适合在看客户线程时快速参考：客户背景、关键结论和下一步动作应该如何落在一张卡里。"
       />
 
-      <SectionCard title="线程列表">
+      <SectionCard title="线程列表" mobileDensity="feed">
         <div className="stack-card">
           <div className="button-row">
             <Badge tone="info">客户进展</Badge>
@@ -122,7 +122,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
       />
 
       <div className="grid-3">
-        <SectionCard title="线程概览">
+        <SectionCard title="线程概览" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>客户进展：{progressLabels[thread.customerProgressStage]}</strong>
@@ -141,7 +141,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
           </div>
         </SectionCard>
 
-        <SectionCard title="最近变化">
+        <SectionCard title="最近变化" mobileDensity="feed">
           <div className="stack-list">
             {meetings.map((meeting) => (
               <div className="stack-card" key={meeting.id}>
@@ -157,7 +157,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
           </div>
         </SectionCard>
 
-        <SectionCard title="Agent BP 建议">
+        <SectionCard title="Agent BP 建议" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>当前最大风险</strong>
@@ -186,7 +186,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
         description="这里放的是线下会议里最像真实客户推进线程的样本，用来对照当前线程应如何表达结论、阻点和下一步。"
       />
 
-      <SectionCard title="推进时间线">
+      <SectionCard title="推进时间线" mobileCollapsible>
         <div className="stack-list">
           {meetings.map((meeting) => (
             <div className="stack-card" key={`${meeting.id}-timeline`}>
@@ -199,7 +199,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
         </div>
       </SectionCard>
 
-      <SectionCard title="正式商机投影区">
+      <SectionCard title="正式商机投影区" mobileCollapsible>
         <div className="stack-list">
           {deals.length ? (
             deals.map((deal) => (

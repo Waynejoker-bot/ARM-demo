@@ -30,11 +30,13 @@ export default function PipelinePage() {
           title="Agent 风险摘要"
           summary={pipelineBrief.summary}
           badges={pipelineBrief.rationaleItems}
+          mobilePriority="primary"
+          mobileDensity="feed"
         />
       ) : null}
 
       <div className="grid-2">
-        <SectionCard title="漏斗视图">
+        <SectionCard title="漏斗视图" mobileDensity="feed">
           <div className="chart-placeholder">
             {stages.map((stage) => {
               const stageDeals = deals.filter((deal) => deal.stage === stage);
@@ -50,7 +52,7 @@ export default function PipelinePage() {
           </div>
         </SectionCard>
 
-        <SectionCard title="健康度矩阵">
+        <SectionCard title="健康度矩阵" mobilePriority="secondary" mobileCollapsible>
           <div className="chart-placeholder">
             <p className="muted">这个 mock 矩阵会刻意放大后期低健康度商机，帮助快速识别风险。</p>
             <div className="button-row">

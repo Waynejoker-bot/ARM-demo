@@ -3,6 +3,13 @@ export type NavItem = {
   label: string;
 };
 
+export const mobilePrimaryNavItems: NavItem[] = [
+  { href: "/home", label: "首页" },
+  { href: "/deals", label: "商机" },
+  { href: "/meetings", label: "会议" },
+  { href: "/pipeline", label: "商机管道" },
+];
+
 export const primaryNavItems: NavItem[] = [
   { href: "/home", label: "首页" },
   { href: "/design-system", label: "设计系统" },
@@ -21,3 +28,7 @@ export const primaryNavItems: NavItem[] = [
   { href: "/data-sources", label: "数据接入" },
   { href: "/settings", label: "设置" },
 ];
+
+export const mobileOverflowNavItems: NavItem[] = primaryNavItems.filter(
+  ({ href }) => !mobilePrimaryNavItems.some((item) => item.href === href) && href !== "/agent"
+);

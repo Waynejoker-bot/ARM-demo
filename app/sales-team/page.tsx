@@ -48,7 +48,7 @@ export default function SalesTeamPage() {
         />
       </div>
 
-      <SectionCard title="Rep Weekly Snapshot">
+      <SectionCard title="Rep Weekly Snapshot" mobilePriority="primary" mobileDensity="feed">
         <div className="stack-list">
           {dataset.repReportSnapshots.map((report) => (
             <div className="stack-card" key={report.id}>
@@ -73,7 +73,7 @@ export default function SalesTeamPage() {
         </div>
       </SectionCard>
 
-      <SectionCard title="重点介入对象">
+      <SectionCard title="重点介入对象" mobilePriority="primary" mobileDensity="feed">
         <div className="stack-list">
           {interventionThreads.map((thread) => {
             const account = dataset.accounts.find((item) => item.id === thread.accountId);

@@ -12,7 +12,7 @@ export default function AgentWorkflowPage() {
         description="用时间线展示不同 Agent 做了什么、哪些在处理中、哪些已经失败。"
       />
 
-      <SectionCard title="工作流事件流">
+      <SectionCard title="工作流事件流" mobilePriority="primary" mobileDensity="cards">
         <div className="timeline">
           {workflowEvents.map((event) => (
             <div className="timeline-item" key={event.id}>

@@ -20,7 +20,7 @@ export default function AgentWorkspacePage() {
       />
 
       <div className="grid-2">
-        <SectionCard title="推荐对话">
+        <SectionCard title="推荐对话" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>销售主管应该优先介入哪个后期商机？</strong>
@@ -37,7 +37,7 @@ export default function AgentWorkspacePage() {
           </div>
         </SectionCard>
 
-        <SectionCard title="最近 Agent 输出">
+        <SectionCard title="最近 Agent 输出" mobileDensity="feed">
           <div className="stack-list">
             {agentOutputs.slice(0, 5).map((output) => {
               const deal = deals.find((item) => item.id === output.objectId);

@@ -77,7 +77,7 @@ export function RepTodayCockpitView({ action }: { action?: ReactNode }) {
         action={action}
       />
 
-      <SectionCard title="Agent 今日简报">
+      <SectionCard title="Agent 今日简报" mobilePriority="primary" mobileDensity="feed">
         <div className="stack-list">
           <div className="stack-card">
             <strong>
@@ -111,7 +111,7 @@ export function RepTodayCockpitView({ action }: { action?: ReactNode }) {
       />
 
       <div className="grid-2">
-        <SectionCard title="今日会议流">
+        <SectionCard title="今日会议流" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             {recentMeetings.map((meeting) => {
               const account = dataset.accounts.find((item) => item.id === meeting.accountId);
@@ -139,7 +139,7 @@ export function RepTodayCockpitView({ action }: { action?: ReactNode }) {
           </div>
         </SectionCard>
 
-        <SectionCard title="待确认区">
+        <SectionCard title="待确认区" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             {pendingThreads.map((thread) => {
               const account = dataset.accounts.find((item) => item.id === thread.accountId);
@@ -163,7 +163,7 @@ export function RepTodayCockpitView({ action }: { action?: ReactNode }) {
         </SectionCard>
       </div>
 
-      <SectionCard title="客户推进线程">
+      <SectionCard title="客户推进线程" mobileDensity="feed">
         <div className="stack-list">
           {threads.map((thread) => {
             const account = dataset.accounts.find((item) => item.id === thread.accountId);
@@ -199,7 +199,7 @@ export function RepTodayCockpitView({ action }: { action?: ReactNode }) {
       </SectionCard>
 
       <div className="grid-2">
-        <SectionCard title="对主管汇报草稿">
+        <SectionCard title="对主管汇报草稿" mobilePriority="secondary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>今日汇报草稿</strong>
@@ -216,7 +216,7 @@ export function RepTodayCockpitView({ action }: { action?: ReactNode }) {
           </div>
         </SectionCard>
 
-        <SectionCard title="Agent 面板联动入口">
+        <SectionCard title="Agent 面板联动入口" mobilePriority="secondary" mobileCollapsible>
           <div className="stack-list">
             <div className="stack-card">
               <strong>为什么沧澜网络还不能直接升格为正式商机？</strong>

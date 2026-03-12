@@ -61,7 +61,7 @@ export function SalesManagerCockpitView() {
         description="先看 Team Brief，再看介入点，最后下钻到销售、线程和 Deal。"
       />
 
-      <SectionCard title="Agent 主管简报">
+      <SectionCard title="Agent 主管简报" mobilePriority="primary" mobileDensity="feed">
         <div className="stack-list">
           <div className="stack-card">
             <strong>本周团队推进有实质前进，但后期高价值线程的介入优先级明显上升。</strong>
@@ -78,7 +78,7 @@ export function SalesManagerCockpitView() {
       </SectionCard>
 
       <div className="grid-2">
-        <SectionCard title="Team Brief Overview">
+        <SectionCard title="Team Brief Overview" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>团队摘要</strong>
@@ -99,7 +99,7 @@ export function SalesManagerCockpitView() {
           </div>
         </SectionCard>
 
-        <SectionCard title="Intervention Queue">
+        <SectionCard title="Intervention Queue" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             {interventionThreads.map((thread) => {
               const account = dataset.accounts.find((item) => item.id === thread.accountId);
@@ -134,7 +134,7 @@ export function SalesManagerCockpitView() {
         description="给主管看的不是更多活动量，而是真实线下会议里哪些判断会改变推进策略、哪些会后动作值得复用。"
       />
 
-      <SectionCard title="Rep Weekly Snapshot">
+      <SectionCard title="Rep Weekly Snapshot" mobilePriority="secondary" mobileDensity="feed">
         <div className="stack-list">
           {dataset.repReportSnapshots.map((snapshot) => (
             <div className="stack-card" key={snapshot.id}>
@@ -159,7 +159,7 @@ export function SalesManagerCockpitView() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Drilldown">
+      <SectionCard title="Drilldown" mobilePriority="secondary" mobileCollapsible>
         <div className="grid-2">
           <div className="stack-card">
             <strong>{highlightedThread ? "高风险客户线程" : "暂无高风险线程"}</strong>
@@ -204,7 +204,7 @@ export function RepReportView({ repId }: { repId: string }) {
       />
 
       <div className="grid-2">
-        <SectionCard title="本周结构化摘要">
+        <SectionCard title="本周结构化摘要" mobilePriority="primary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>{report.summary}</strong>
@@ -220,7 +220,7 @@ export function RepReportView({ repId }: { repId: string }) {
           </div>
         </SectionCard>
 
-        <SectionCard title="本周关键变化">
+        <SectionCard title="本周关键变化" mobilePriority="secondary" mobileDensity="feed">
           <div className="stack-list">
             <div className="stack-card">
               <strong>本周新增机会</strong>
@@ -234,7 +234,7 @@ export function RepReportView({ repId }: { repId: string }) {
         </SectionCard>
       </div>
 
-      <SectionCard title="重点对象列表">
+      <SectionCard title="重点对象列表" mobilePriority="primary" mobileDensity="cards">
         <div className="table-like">
           {threads.map((thread) => {
             const account = dataset.accounts.find((item) => item.id === thread.accountId);
