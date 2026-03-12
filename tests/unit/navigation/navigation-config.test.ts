@@ -21,6 +21,14 @@ describe("primary navigation", () => {
           label: "设计系统",
         }),
         expect.objectContaining({
+          href: "/agent-task-cards",
+          label: "Agent 任务卡片版",
+        }),
+        expect.objectContaining({
+          href: "/conversational-agent-os",
+          label: "会话版 Agent OS",
+        }),
+        expect.objectContaining({
           href: "/intake",
           label: "素材导入",
         }),

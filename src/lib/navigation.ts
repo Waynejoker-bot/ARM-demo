@@ -13,6 +13,8 @@ export const mobilePrimaryNavItems: NavItem[] = [
 export const primaryNavItems: NavItem[] = [
   { href: "/home", label: "首页" },
   { href: "/design-system", label: "设计系统" },
+  { href: "/agent-task-cards", label: "Agent 任务卡片版" },
+  { href: "/conversational-agent-os", label: "会话版 Agent OS" },
   { href: "/ceo-command-center", label: "CEO 主控室" },
   { href: "/sales-manager-cockpit", label: "销售主管驾驶舱" },
   { href: "/sales-war-room", label: "一线销售作战室" },

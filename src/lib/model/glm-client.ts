@@ -1,10 +1,36 @@
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+
 import type { ProviderChatInput } from "@/lib/model/types";
 
 const GLM_API_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
 const DEFAULT_MODEL = "glm-4-flash";
 
+export function readApiKeyFromLocalFile(startDir = process.cwd()) {
+  let currentDir = startDir;
+
+  while (true) {
+    const apiKeyPath = join(currentDir, "APIkey.md");
+
+    if (existsSync(apiKeyPath)) {
+      const content = readFileSync(apiKeyPath, "utf8");
+      const match = content.match(/([A-Za-z0-9._-]+\.[A-Za-z0-9._-]+)/);
+
+      return match?.[1] ?? null;
+    }
+
+    const parentDir = dirname(currentDir);
+
+    if (parentDir === currentDir) {
+      return null;
+    }
+
+    currentDir = parentDir;
+  }
+}
+
 export function getGlmApiKey() {
-  return process.env.GLM_API_KEY ?? null;
+  return process.env.GLM_API_KEY ?? readApiKeyFromLocalFile();
 }
 
 export async function requestGlmCompletion(input: ProviderChatInput) {
@@ -23,7 +49,8 @@ export async function requestGlmCompletion(input: ProviderChatInput) {
     body: JSON.stringify({
       model: DEFAULT_MODEL,
       messages: input.messages,
-      temperature: 0.5,
+      temperature: input.temperature ?? 0.5,
+      ...(input.responseFormat ? { response_format: input.responseFormat } : {}),
     }),
   });
 

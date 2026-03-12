@@ -227,6 +227,8 @@ export type RepReportSnapshot = {
 
 export type RealMeetingCase = {
   id: string;
+  accountId?: string;
+  meetingId?: string;
   ownerLabel: string;
   sourceLabel: string;
   title: string;
@@ -242,6 +244,9 @@ export type RealMeetingCase = {
   insightLabel: "核心结论" | "会议目标";
   insight: string;
   nextStep: string;
+  companyNameSource?: "raw_verified" | "internal_match";
+  companyNameSourceLabel?: string;
+  companyNameSourceNote?: string;
   publicContext: string | null;
   publicSourceLabel: string | null;
   publicSourceUrl: string | null;

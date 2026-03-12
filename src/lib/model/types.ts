@@ -28,4 +28,8 @@ export type ModelMessage = {
 
 export type ProviderChatInput = AgentChatRequest & {
   messages: ModelMessage[];
+  temperature?: number;
+  responseFormat?: {
+    type: "json_object";
+  };
 };
