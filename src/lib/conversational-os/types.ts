@@ -35,9 +35,18 @@ export type ConversationThreadMember = {
 
 export type ConversationMessageKind =
   | "human"
+  | "source_input"
   | "agent_reply"
   | "system_handoff"
   | "card_summary";
+
+export type ConversationSourceItemKind = "meeting_summary" | "audio" | "screenshot" | "link";
+
+export type ConversationSourceItem = {
+  kind: ConversationSourceItemKind;
+  title: string;
+  detail?: string;
+};
 
 export type ConversationMessageVisibility =
   | "visible_to_thread"
@@ -54,6 +63,7 @@ export type ConversationMessage = {
   occurredAt: string;
   visibility: ConversationMessageVisibility;
   relatedCardId: string | null;
+  sourceItems?: ConversationSourceItem[];
 };
 
 export type ConversationCardAction =

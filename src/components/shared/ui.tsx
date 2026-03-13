@@ -21,7 +21,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const hasInitializedResponsivePanel = useRef(false);
 
   const mobileNavIcons = {
-    "/home": House,
+    "/conversational-agent-os": House,
     "/deals": Grid2x2,
     "/meetings": PanelBottom,
     "/pipeline": Radar,
@@ -43,7 +43,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className={clsx("app-shell", !isOpen && "app-shell-panel-collapsed")}>
       <aside className="left-nav">
         <div className="brand-block">
-          <Link href="/home" className="brand-mark">
+          <Link href="/conversational-agent-os" className="brand-mark">
             ARM-DEMO
           </Link>
         </div>

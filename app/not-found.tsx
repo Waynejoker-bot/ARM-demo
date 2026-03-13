@@ -9,7 +9,7 @@ export default function NotFound() {
       <PageHeader
         title="没有找到对应页面"
         description="可能是对象不存在，或者当前 mock 数据里还没有这条记录。"
-        action={<Link href="/home">返回首页</Link>}
+        action={<Link href="/conversational-agent-os">返回首页</Link>}
       />
       <ErrorState
         title="请求的页面不存在"

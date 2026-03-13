@@ -5,7 +5,7 @@ import { AppShell } from "@/components/shared/ui";
 import { useAgentPanelStore } from "@/state/agent-panel-store";
 
 vi.mock("next/navigation", () => ({
-  usePathname: () => "/home",
+  usePathname: () => "/conversational-agent-os",
 }));
 
 describe("app shell", () => {
@@ -61,8 +61,24 @@ describe("app shell", () => {
 
     expect(desktopNav).toBeInTheDocument();
     expect(mobileNav).toBeInTheDocument();
-    expect(within(desktopNav).getByRole("link", { name: "首页" })).toBeInTheDocument();
+    expect(within(desktopNav).getByRole("link", { name: "首页" })).toHaveAttribute(
+      "href",
+      "/conversational-agent-os"
+    );
     expect(within(mobileNav).getByRole("link", { name: "会议" })).toBeInTheDocument();
+  });
+
+  it("routes the brand mark to the canonical conversational homepage", () => {
+    render(
+      <AppShell>
+        <div>内容</div>
+      </AppShell>
+    );
+
+    expect(screen.getByRole("link", { name: "ARM-DEMO" })).toHaveAttribute(
+      "href",
+      "/conversational-agent-os"
+    );
   });
 
   it("exposes dedicated mobile agent and more controls", () => {

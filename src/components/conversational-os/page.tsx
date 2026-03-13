@@ -1,9 +1,8 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 
 import { Badge, PageHeader } from "@/components/shared/ui";
-import { PinnedPriorityCard } from "@/components/conversational-os/pinned-priority";
 import { ConversationThreadList } from "@/components/conversational-os/thread-list";
 import type {
   ConversationThreadDetail,
@@ -13,17 +12,48 @@ import {
   formatAbsoluteConversationTime,
   formatRelativeConversationTime,
 } from "@/lib/conversational-os/time";
-import type { ConversationDecisionCard, ConversationMessage } from "@/lib/conversational-os/types";
+import type {
+  ConversationDecisionCard,
+  ConversationMessage,
+  ConversationSourceItem,
+} from "@/lib/conversational-os/types";
+
+const MOBILE_LAYOUT_MEDIA_QUERY = "(max-width: 720px)";
+
+type MobileConversationView = "thread_list" | "thread_view" | "detail_view";
+
+function isMobileConversationViewport() {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
+
+  return window.matchMedia(MOBILE_LAYOUT_MEDIA_QUERY).matches;
+}
 
 function findHumanMember(thread: ConversationThreadDetail) {
   return thread.members.find((member) => member.role !== "agent");
 }
 
 function messageTone(message: ConversationMessage) {
+  if (message.kind === "source_input") return "source";
   if (message.kind === "human") return "human";
   if (message.kind === "system_handoff") return "system";
   if (message.kind === "card_summary") return "card";
   return "agent";
+}
+
+function messageLabel(message: ConversationMessage) {
+  if (message.kind === "source_input") return "源数据";
+  if (message.kind === "system_handoff") return "状态通知";
+  if (message.kind === "card_summary") return "卡片摘要";
+  return "消息";
+}
+
+function sourceItemLabel(kind: ConversationSourceItem["kind"]) {
+  if (kind === "meeting_summary") return "会议";
+  if (kind === "audio") return "录音";
+  if (kind === "screenshot") return "截图";
+  return "链接";
 }
 
 function formatCardButton(card: ConversationDecisionCard) {
@@ -35,32 +65,88 @@ function formatCardButton(card: ConversationDecisionCard) {
   return "查看详情";
 }
 
+function getDefaultSelectedCardId(thread: ConversationThreadDetail) {
+  const latestRelatedCardId = [...thread.messages]
+    .reverse()
+    .find((message) => message.relatedCardId && thread.cards.some((card) => card.id === message.relatedCardId))
+    ?.relatedCardId;
+
+  return latestRelatedCardId ?? thread.cards.at(-1)?.id ?? null;
+}
+
+function resolveSelectedCardId(thread: ConversationThreadDetail, currentCardId: string | null) {
+  if (currentCardId && thread.cards.some((card) => card.id === currentCardId)) {
+    return currentCardId;
+  }
+
+  return getDefaultSelectedCardId(thread);
+}
+
 export function ConversationalAgentOsPageView({
-  initialDefaultThreadId,
+  initialSelectedThreadId,
   initialThreadPreviews,
   initialThread,
 }: {
-  initialDefaultThreadId: string;
+  initialSelectedThreadId: string;
   initialThreadPreviews: ConversationThreadPreview[];
   initialThread: ConversationThreadDetail;
 }) {
+  const initialMobileViewport = isMobileConversationViewport();
   const [threadPreviews, setThreadPreviews] = useState(initialThreadPreviews);
-  const [selectedThreadId, setSelectedThreadId] = useState(initialDefaultThreadId);
+  const [selectedThreadId, setSelectedThreadId] = useState(initialSelectedThreadId);
   const [currentThread, setCurrentThread] = useState(initialThread);
   const [draftMessage, setDraftMessage] = useState("");
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(initialThread.pinnedCard?.id ?? null);
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(getDefaultSelectedCardId(initialThread));
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(initialMobileViewport);
+  const [mobileView, setMobileView] = useState<MobileConversationView>(
+    initialMobileViewport ? "thread_list" : "thread_view"
+  );
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const selectedCard = useMemo(
-    () =>
-      currentThread.cards.find((card) => card.id === selectedCardId) ??
-      currentThread.pinnedCard ??
-      null,
-    [currentThread.cards, currentThread.pinnedCard, selectedCardId]
+    () => currentThread.cards.find((card) => card.id === selectedCardId) ?? null,
+    [currentThread.cards, selectedCardId]
   );
+  const latestThreadMessage = currentThread.messages[currentThread.messages.length - 1] ?? null;
 
-  async function loadThread(threadId: string) {
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+      return;
+    }
+
+    const mediaQueryList = window.matchMedia(MOBILE_LAYOUT_MEDIA_QUERY);
+    const updateViewport = (matches: boolean) => {
+      setIsMobileViewport(matches);
+
+      if (matches) {
+        setMobileView("thread_list");
+      }
+    };
+
+    updateViewport(mediaQueryList.matches);
+
+    const onChange = (event: MediaQueryListEvent) => {
+      updateViewport(event.matches);
+    };
+
+    if (typeof mediaQueryList.addEventListener === "function") {
+      mediaQueryList.addEventListener("change", onChange);
+
+      return () => mediaQueryList.removeEventListener("change", onChange);
+    }
+
+    mediaQueryList.addListener(onChange);
+    return () => mediaQueryList.removeListener(onChange);
+  }, []);
+
+  async function loadThread(
+    threadId: string,
+    options?: {
+      mobileViewOnSuccess?: MobileConversationView;
+    }
+  ) {
     setError(null);
     setSelectedThreadId(threadId);
 
@@ -80,7 +166,11 @@ export function ConversationalAgentOsPageView({
         if (payload.threadPreviews) {
           setThreadPreviews(payload.threadPreviews);
         }
-        setSelectedCardId(payload.pinnedCard?.id ?? null);
+        setSelectedCardId(resolveSelectedCardId(payload, null));
+        setIsDetailOpen(false);
+        if (options?.mobileViewOnSuccess) {
+          setMobileView(options.mobileViewOnSuccess);
+        }
       } catch (loadError) {
         setError(loadError instanceof Error ? loadError.message : "读取线程失败。");
       }
@@ -123,7 +213,7 @@ export function ConversationalAgentOsPageView({
 
         setCurrentThread(payload.currentThread);
         setThreadPreviews(payload.threadPreviews);
-        setSelectedCardId(payload.currentThread.pinnedCard?.id ?? null);
+        setSelectedCardId((currentCardId) => resolveSelectedCardId(payload.currentThread!, currentCardId));
         setDraftMessage("");
       } catch (submitError) {
         setError(submitError instanceof Error ? submitError.message : "发送消息失败。");
@@ -167,7 +257,7 @@ export function ConversationalAgentOsPageView({
 
         setCurrentThread(payload.currentThread);
         setThreadPreviews(payload.threadPreviews);
-        setSelectedCardId(payload.currentThread.pinnedCard?.id ?? null);
+        setSelectedCardId((currentCardId) => resolveSelectedCardId(payload.currentThread!, currentCardId));
       } catch (submitError) {
         setError(submitError instanceof Error ? submitError.message : "发送卡片失败。");
       }
@@ -195,19 +285,291 @@ export function ConversationalAgentOsPageView({
 
         setThreadPreviews(payload.threadPreviews);
         setSelectedThreadId(payload.defaultThreadId);
-        await loadThread(payload.defaultThreadId);
+        setIsDetailOpen(false);
+        if (isMobileViewport) {
+          setMobileView("thread_list");
+        }
+        await loadThread(payload.defaultThreadId, {
+          mobileViewOnSuccess: isMobileViewport ? "thread_list" : undefined,
+        });
       } catch (resetError) {
         setError(resetError instanceof Error ? resetError.message : "重置 Demo 失败。");
       }
     });
   }
 
+  function handleThreadSelection(threadId: string) {
+    if (threadId === currentThread.thread.id) {
+      setSelectedThreadId(threadId);
+
+      if (isMobileViewport) {
+        setMobileView("thread_view");
+      }
+
+      return;
+    }
+
+    void loadThread(threadId, {
+      mobileViewOnSuccess: isMobileViewport ? "thread_view" : undefined,
+    });
+  }
+
+  function openCardDetail(cardId: string) {
+    setSelectedCardId(cardId);
+
+    if (isMobileViewport) {
+      setMobileView("detail_view");
+      return;
+    }
+
+    setIsDetailOpen(true);
+  }
+
+  const conversationStatus = error ? (
+    <div className="conversation-inline-alert">
+      <strong>会话处理失败</strong>
+      <p>{error}</p>
+    </div>
+  ) : (
+    <div className="conversation-inline-status">
+      <span>{isPending ? "Agent 正在处理…" : "最近同步至 SQLite，可刷新后继续。"}</span>
+    </div>
+  );
+
+  const conversationMessages = (
+    <div className="conversation-message-list">
+      {currentThread.messages.map((message) => {
+        const relatedCard = message.relatedCardId
+          ? currentThread.cards.find((card) => card.id === message.relatedCardId) ?? null
+          : null;
+
+        return (
+          <article
+            key={message.id}
+            className={`conversation-message conversation-message-${messageTone(message)}`}
+          >
+            <div className="conversation-message-topline">
+              <strong>{message.actorName}</strong>
+              <div className="conversation-message-meta">
+                <span>{messageLabel(message)}</span>
+                <time
+                  className="conversation-message-time"
+                  dateTime={message.occurredAt}
+                  title={formatAbsoluteConversationTime(message.occurredAt)}
+                >
+                  {formatRelativeConversationTime(message.occurredAt)}
+                </time>
+              </div>
+            </div>
+            <p>{message.body}</p>
+
+            {message.kind === "source_input" && message.sourceItems?.length ? (
+              <div className="conversation-source-bundle" aria-label="源数据清单">
+                {message.sourceItems.map((item) => (
+                  <div key={`${message.id}-${item.kind}-${item.title}`} className="conversation-source-item">
+                    <div className="conversation-source-item-topline">
+                      <span>{sourceItemLabel(item.kind)}</span>
+                      <strong>{item.title}</strong>
+                    </div>
+                    {item.detail ? <p>{item.detail}</p> : null}
+                  </div>
+                ))}
+              </div>
+            ) : null}
+
+            {relatedCard ? (
+              <div className="conversation-inline-card">
+                <div className="conversation-inline-card-topline">
+                  <span>卡片摘要</span>
+                  <Badge tone="info">{relatedCard.primaryActionLabel}</Badge>
+                </div>
+                <strong>{relatedCard.title}</strong>
+                <p>{relatedCard.summary}</p>
+                <div className="conversation-inline-card-footer">
+                  <div className="conversation-inline-card-meta">
+                    <span>{relatedCard.trustNote}</span>
+                    <time
+                      className="conversation-inline-card-time"
+                      dateTime={relatedCard.createdAt}
+                      title={formatAbsoluteConversationTime(relatedCard.createdAt)}
+                    >
+                      到达 {formatRelativeConversationTime(relatedCard.createdAt)}
+                    </time>
+                  </div>
+                  <div className="button-row">
+                    <button
+                      type="button"
+                      className="ghost-button"
+                      onClick={() => openCardDetail(relatedCard.id)}
+                    >
+                      查看详情
+                    </button>
+                    <button
+                      type="button"
+                      className="primary-button"
+                      disabled={isPending}
+                      onClick={() => void submitCardMessage(relatedCard.id)}
+                    >
+                      {formatCardButton(relatedCard)}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </article>
+        );
+      })}
+    </div>
+  );
+
+  const conversationComposer = (
+    <form
+      className="conversation-composer"
+      onSubmit={(event) => {
+        event.preventDefault();
+        void submitTextMessage(draftMessage);
+      }}
+    >
+      <label className="conversation-composer-label" htmlFor="conversation-message-input">
+        继续在当前会话里回复、追问或确认 Agent 的结论。
+      </label>
+      <textarea
+        id="conversation-message-input"
+        value={draftMessage}
+        onChange={(event) => setDraftMessage(event.target.value)}
+        placeholder="例如：把这条判断拆成下周动作，并说明为什么要我现在确认。"
+        rows={4}
+      />
+      <div className="conversation-composer-actions">
+        <button type="submit" className="primary-button" disabled={isPending || !draftMessage.trim()}>
+          发送
+        </button>
+      </div>
+    </form>
+  );
+
+  const detailPanelContent = selectedCard ? (
+    <>
+      <div className="conversation-card-detail-topline">
+        <span className="conversation-kicker">辅助下钻</span>
+        <Badge tone="info">{selectedCard.primaryActionLabel}</Badge>
+      </div>
+      <h3>{selectedCard.title}</h3>
+      <p>{selectedCard.detail}</p>
+      <div className="conversation-card-detail-grid">
+        <div>
+          <span>信任信息</span>
+          <strong>{selectedCard.trustNote}</strong>
+        </div>
+        <div>
+          <span>到达时间</span>
+          <strong>{formatAbsoluteConversationTime(selectedCard.createdAt)}</strong>
+        </div>
+        <div>
+          <span>来源下钻</span>
+          <div className="button-row">
+            {selectedCard.sourceMeetingId ? (
+              <a className="ghost-button" href={`/meetings/${selectedCard.sourceMeetingId}`}>
+                查看会议
+              </a>
+            ) : null}
+            {selectedCard.sourceDealId ? (
+              <a className="ghost-button" href={`/deals/${selectedCard.sourceDealId}`}>
+                查看商机
+              </a>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </>
+  ) : (
+    <>
+      <div className="conversation-card-detail-topline">
+        <span className="conversation-kicker">辅助下钻</span>
+      </div>
+      <p>当前线程还没有可下钻的卡片详情。</p>
+    </>
+  );
+
+  if (isMobileViewport) {
+    return (
+      <div className="conversation-page-shell conversation-page-shell-mobile">
+        {mobileView === "thread_list" ? (
+          <section className="conversation-mobile-screen conversation-mobile-thread-list">
+            <div className="conversation-mobile-topbar">
+              <div className="conversation-mobile-title-stack">
+                <span className="conversation-kicker">会话列表</span>
+                <h2>会话版 Agent OS</h2>
+              </div>
+              <button type="button" className="ghost-button" onClick={resetDemo} disabled={isPending}>
+                重置 Demo
+              </button>
+            </div>
+
+            <ConversationThreadList
+              threads={threadPreviews}
+              selectedThreadId={selectedThreadId}
+              onSelectThread={handleThreadSelection}
+            />
+          </section>
+        ) : null}
+
+        {mobileView === "thread_view" ? (
+          <section className="conversation-mobile-screen conversation-mobile-thread-view">
+            <div className="conversation-mobile-topbar">
+              <button
+                type="button"
+                className="ghost-button"
+                onClick={() => setMobileView("thread_list")}
+                aria-label="返回会话列表"
+              >
+                返回会话列表
+              </button>
+              <div className="conversation-mobile-title-stack">
+                <span className="conversation-kicker">会话中</span>
+                <h2>{currentThread.thread.title}</h2>
+              </div>
+              <Badge tone="info">{findHumanMember(currentThread)?.actorName ?? "Agent"}</Badge>
+            </div>
+
+            {conversationStatus}
+            {conversationMessages}
+            {conversationComposer}
+          </section>
+        ) : null}
+
+        {mobileView === "detail_view" ? (
+          <section className="conversation-mobile-screen conversation-mobile-detail-view">
+            <div className="conversation-mobile-topbar">
+              <button
+                type="button"
+                className="ghost-button"
+                onClick={() => setMobileView("thread_view")}
+                aria-label="返回会话"
+              >
+                返回会话
+              </button>
+              <div className="conversation-mobile-title-stack">
+                <span className="conversation-kicker">卡片详情</span>
+                <h2>{selectedCard?.title ?? "详情"}</h2>
+              </div>
+            </div>
+
+            <section className="conversation-card-detail conversation-mobile-detail-card">
+              {detailPanelContent}
+            </section>
+          </section>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <div className="conversation-page-shell">
       <PageHeader
         title="会话版 Agent OS"
-        description="把卡片当作消息，把 Agent 当作秘书，让组织协作过程真实可见但按权限收束。"
-        supportingCopy="每个线程顶部都固定保留当前最重要的任务卡，避免产品退化成纯聊天工具。"
+        description="首页直接进入全量会话流，默认以超级管理员视角查看所有可见线程。"
+        supportingCopy="看得到某条 conversation，就能进入并看到该线程的全部内容；任务卡作为消息里的结构化 payload 继续推进。"
         action={
           <div className="button-row">
             <button type="button" className="ghost-button" onClick={resetDemo} disabled={isPending}>
@@ -221,179 +583,49 @@ export function ConversationalAgentOsPageView({
         <ConversationThreadList
           threads={threadPreviews}
           selectedThreadId={selectedThreadId}
-          onSelectThread={loadThread}
+          onSelectThread={handleThreadSelection}
         />
 
-        <section className="conversation-main-stage">
-          <PinnedPriorityCard
-            card={currentThread.pinnedCard}
-            onOpenDetail={(cardId) => setSelectedCardId(cardId)}
-          />
-
+        <section className="conversation-main-stage" data-detail-open={isDetailOpen}>
           <section className="conversation-surface">
             <div className="conversation-surface-header">
               <div>
-                <span className="conversation-kicker">当前线程</span>
+                <span className="conversation-kicker">会话中</span>
                 <h2>{currentThread.thread.title}</h2>
               </div>
-              <Badge tone="info">{findHumanMember(currentThread)?.actorName ?? "Agent"}</Badge>
-            </div>
-
-            {error ? (
-              <div className="conversation-inline-alert">
-                <strong>会话处理失败</strong>
-                <p>{error}</p>
-              </div>
-            ) : (
-              <div className="conversation-inline-status">
-                <span>{isPending ? "Agent 正在处理…" : "当前消息和卡片都写入 SQLite，可刷新后继续。"}</span>
-              </div>
-            )}
-
-            <div className="conversation-message-list">
-              {currentThread.messages.map((message) => {
-                const relatedCard = message.relatedCardId
-                  ? currentThread.cards.find((card) => card.id === message.relatedCardId) ?? null
-                  : null;
-
-                return (
-                  <article
-                    key={message.id}
-                    className={`conversation-message conversation-message-${messageTone(message)}`}
+              <div className="conversation-surface-header-meta">
+                <Badge tone="info">{findHumanMember(currentThread)?.actorName ?? "Agent"}</Badge>
+                {latestThreadMessage ? (
+                  <time
+                    className="conversation-thread-time"
+                    dateTime={latestThreadMessage.occurredAt}
+                    title={formatAbsoluteConversationTime(latestThreadMessage.occurredAt)}
                   >
-                    <div className="conversation-message-topline">
-                      <strong>{message.actorName}</strong>
-                      <div className="conversation-message-meta">
-                        <span>{message.kind === "system_handoff" ? "状态通知" : "消息"}</span>
-                        <time
-                          className="conversation-message-time"
-                          dateTime={message.occurredAt}
-                          title={formatAbsoluteConversationTime(message.occurredAt)}
-                        >
-                          {formatRelativeConversationTime(message.occurredAt)}
-                        </time>
-                      </div>
-                    </div>
-                    <p>{message.body}</p>
-
-                    {relatedCard ? (
-                      <div className="conversation-inline-card">
-                        <div className="conversation-inline-card-topline">
-                          <span>卡片摘要</span>
-                          <Badge tone="info">{relatedCard.primaryActionLabel}</Badge>
-                        </div>
-                        <strong>{relatedCard.title}</strong>
-                        <p>{relatedCard.summary}</p>
-                        <div className="conversation-inline-card-footer">
-                          <div className="conversation-inline-card-meta">
-                            <span>{relatedCard.trustNote}</span>
-                            <time
-                              className="conversation-inline-card-time"
-                              dateTime={relatedCard.createdAt}
-                              title={formatAbsoluteConversationTime(relatedCard.createdAt)}
-                            >
-                              到达 {formatRelativeConversationTime(relatedCard.createdAt)}
-                            </time>
-                          </div>
-                          <div className="button-row">
-                            <button
-                              type="button"
-                              className="ghost-button"
-                              onClick={() => setSelectedCardId(relatedCard.id)}
-                            >
-                              查看详情
-                            </button>
-                            <button
-                              type="button"
-                              className="primary-button"
-                              disabled={isPending}
-                              onClick={() => void submitCardMessage(relatedCard.id)}
-                            >
-                              {formatCardButton(relatedCard)}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ) : null}
-                  </article>
-                );
-              })}
-            </div>
-
-            <form
-              className="conversation-composer"
-              onSubmit={(event) => {
-                event.preventDefault();
-                void submitTextMessage(draftMessage);
-              }}
-            >
-              <label className="conversation-composer-label" htmlFor="conversation-message-input">
-                直接和当前 Agent 说清楚你的下一步，或把当前卡片确认后继续处理。
-              </label>
-              <textarea
-                id="conversation-message-input"
-                value={draftMessage}
-                onChange={(event) => setDraftMessage(event.target.value)}
-                placeholder="例如：我已经把二访时间定下来了，请帮我整理成上报摘要。"
-                rows={4}
-              />
-              <div className="conversation-composer-actions">
-                {selectedCard ? (
-                  <button
-                    type="button"
-                    className="ghost-button"
-                    disabled={isPending}
-                    onClick={() => void submitCardMessage(selectedCard.id)}
-                  >
-                    发送当前卡片
-                  </button>
+                    {formatRelativeConversationTime(latestThreadMessage.occurredAt)}
+                  </time>
                 ) : null}
-                <button type="submit" className="primary-button" disabled={isPending || !draftMessage.trim()}>
-                  发送
+              </div>
+            </div>
+
+            {conversationStatus}
+            {conversationMessages}
+            {conversationComposer}
+          </section>
+
+          {isDetailOpen ? (
+            <section className="conversation-card-detail">
+              <div className="conversation-card-detail-actions">
+                <button
+                  type="button"
+                  className="ghost-button"
+                  onClick={() => setIsDetailOpen(false)}
+                >
+                  收起详情
                 </button>
               </div>
-            </form>
-          </section>
-
-          <section className="conversation-card-detail">
-            <div className="conversation-card-detail-topline">
-              <span className="conversation-kicker">卡片详情</span>
-              {selectedCard ? <Badge tone="info">{selectedCard.primaryActionLabel}</Badge> : null}
-            </div>
-            {selectedCard ? (
-              <>
-                <h3>{selectedCard.title}</h3>
-                <p>{selectedCard.detail}</p>
-                <div className="conversation-card-detail-grid">
-                  <div>
-                    <span>信任信息</span>
-                    <strong>{selectedCard.trustNote}</strong>
-                  </div>
-                  <div>
-                    <span>到达时间</span>
-                    <strong>{formatAbsoluteConversationTime(selectedCard.createdAt)}</strong>
-                  </div>
-                  <div>
-                    <span>来源下钻</span>
-                    <div className="button-row">
-                      {selectedCard.sourceMeetingId ? (
-                        <a className="ghost-button" href={`/meetings/${selectedCard.sourceMeetingId}`}>
-                          查看会议
-                        </a>
-                      ) : null}
-                      {selectedCard.sourceDealId ? (
-                        <a className="ghost-button" href={`/deals/${selectedCard.sourceDealId}`}>
-                          查看商机
-                        </a>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <p>当前线程还没有可下钻的卡片详情。</p>
-            )}
-          </section>
+              {detailPanelContent}
+            </section>
+          ) : null}
         </section>
       </div>
     </div>

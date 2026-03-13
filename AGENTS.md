@@ -10,10 +10,10 @@
 开始任何实现、重构、调试、补文档之前，先读取并遵守以下文件：
 
 - `APIkey.md`
-- `docs/plans/2026-03-08-ai-sales-os-frontend-full-mock-build-plan.md`
-- `ai_sales_os_frontend_product_plan.md`
-- `ai_sales_os_frontend_agent_build_prd.md`
-- `ai_sales_os_frontend_agent_first_ia_wireframes.md`
+- `docs/current/README.md`
+- `docs/current/product-direction.md`
+- `docs/current/implementation-status.md`
+- `docs/insights/anti-regression.md`
 - `/Users/wayne/.codex/skills/frontend-design/SKILL.md`
 - `.cursor/rules/tdd.mdc`
 - `.cursor/rules/systematic-debugging.mdc`
@@ -24,11 +24,10 @@
 
 1. 本文件 `AGENTS.md`
 2. `.cursor/rules/*.mdc`
-3. `/Users/wayne/.codex/skills/frontend-design/SKILL.md`
-4. `docs/plans/2026-03-08-ai-sales-os-frontend-full-mock-build-plan.md`
-5. `ai_sales_os_frontend_agent_build_prd.md`
-6. `ai_sales_os_frontend_agent_first_ia_wireframes.md`
-7. `ai_sales_os_frontend_product_plan.md`
+3. `docs/current/product-direction.md`
+4. `docs/current/implementation-status.md`
+5. `docs/insights/anti-regression.md`
+6. `/Users/wayne/.codex/skills/frontend-design/SKILL.md`
 
 ---
 
@@ -167,14 +166,14 @@
 
 以下两份文档是实现时的直接规格，不是背景材料：
 
-- `ai_sales_os_frontend_agent_build_prd.md`
-- `ai_sales_os_frontend_agent_first_ia_wireframes.md`
+- `docs/current/product-direction.md`
+- `docs/current/implementation-status.md`
 
 实现时必须特别遵守这些约束：
 
 - 保持统一对象模型，不按页面各自发明字段
-- 将 `Agent panel` 作为全局能力设计
-- 保持 `Home / Deals / Deal Detail / Meeting Detail / Pipeline` 的页面职责稳定
+- 将 Agent 协作层作为全局能力设计，不限定为单一 `panel` 形态
+- 保持 `Meeting / Account Thread / Deal / Pipeline / Revenue / Task Card / Conversation` 的关系稳定
 - 所有 AI 卡片必须支持 explainability
 - 所有核心页面必须显示 data freshness / coverage / missing state
 
@@ -366,67 +365,68 @@ AI 生成建议，仅作为候选结果，不代表正式状态。
 
 ---
 
-## 12. Required MVP Surface
+## 12. Required Core Surface
 
-MVP 必须优先完成以下页面：
+当前主线至少要维护并澄清以下核心 surface：
 
 1. `/home`
-2. `/deals`
-3. `/deals/:dealId`
-4. `/meetings/:meetingId`
+2. `/customers`
+3. `/meetings/:meetingId`
+4. `/deals/:dealId`
 5. `/pipeline`
-6. 全局 Agent side panel
+6. `/intake`
+7. `/agent-task-cards`
+8. `/conversational-agent-os`
 
-MVP 必须优先走通以下能力闭环：
+当前主线必须优先走通以下能力闭环：
 
 1. 会议理解
-2. Deal Health 可解释展示
+2. Account Thread / Deal 投影关系展示
 3. Next Step 建议与人工确认
 4. Pipeline 风险识别
 5. 数据状态透传
+6. Raw intake -> suggestion -> confirm -> apply
+7. Task Card / Conversation 交互验证
 
 最关键闭环：
 
 ```text
-会议完成
--> Agent 生成总结
+会议 / 素材进入系统
+-> Agent 生成总结或判断
 -> 用户查看证据
 -> 用户修正重点
--> Agent 生成 Next Step
+-> Agent 生成 Next Step 或 Task Card
 -> 用户确认
--> 应用到 Deal
--> 选择是否同步 CRM
+-> 应用到内部状态
+-> 选择是否同步或继续 handoff
 ```
 
-如果这个闭环没有走通，说明产品还没有实现 `Agent-first` MVP。
+如果这个闭环没有走通，说明产品还没有真正收敛到 `Agent-first` 主线。
 
 ---
 
 ## 13. App Shell And IA Requirements
 
-应用外壳必须稳定支持：
+当前实现必须承认并管理两类壳层：
 
-- 左侧主导航
-- 顶部上下文栏
-- 主内容区
-- 全局 Agent 侧边面板
+1. 稳定的 route / object shell
+2. 正在探索的 conversation-first shell
 
-页面结构必须以这两份文档为准：
+强制要求：
 
-- `ai_sales_os_frontend_agent_build_prd.md`
-- `ai_sales_os_frontend_agent_first_ia_wireframes.md`
+- 不得再新增第三种顶层产品叙事而不先收口前两者
+- route shell 继续承担对象页、证据页、执行页职责
+- conversation-first shell 继续承担主协作、handoff、task-card 验证职责
+- 无论壳层如何变化，都不得破坏 meeting-first / account-thread / deal projection 语义
 
 优先构建顺序：
 
-1. app shell
-2. shared types and enums
-3. reusable cards and badges
-4. global Agent panel
-5. home
-6. deal list
-7. deal detail
-8. meeting detail
-9. pipeline
+1. shared types and enums
+2. reusable cards and badges
+3. meeting / thread / deal / pipeline 等主对象语义
+4. intake 与 explainability 闭环
+5. task-card 与 conversation-first 交互验证
+6. 壳层收口与入口收口
 
 不得先做高保真视觉，再补语义和状态。
 

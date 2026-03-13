@@ -1,3 +1,9 @@
+> Status: archived
+> Archived because: 这是一份阶段性文档快照，当前 canonical 方向与实现基线已经收敛到 `docs/current/*`。
+> Superseded by: `docs/current/README.md`, `docs/current/product-direction.md`, `docs/current/implementation-status.md`
+>
+> 仅保留作历史上下文与复盘材料使用，不再作为当前实现依据。
+
 # Single Mainline Consolidation Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.

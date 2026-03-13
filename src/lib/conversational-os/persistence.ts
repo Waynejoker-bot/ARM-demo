@@ -58,7 +58,8 @@ const CREATE_MESSAGES_SQL = `
     body TEXT NOT NULL,
     occurred_at TEXT NOT NULL,
     visibility TEXT NOT NULL,
-    related_card_id TEXT
+    related_card_id TEXT,
+    source_items TEXT
   )
 `;
 
@@ -130,6 +131,7 @@ function withDatabase<T>(dbPath: string, run: (db: DatabaseSync) => T) {
   db.exec(CREATE_DELIVERIES_SQL);
   db.exec(CREATE_THREAD_READS_SQL);
   ensureCardCreatedAtColumn(db);
+  ensureMessageSourceItemsColumn(db);
   syncSeedCardCreatedAt(db);
 
   try {
@@ -165,6 +167,18 @@ function syncSeedCardCreatedAt(db: DatabaseSync) {
   }
 }
 
+function ensureMessageSourceItemsColumn(db: DatabaseSync) {
+  const columns = db.prepare("PRAGMA table_info(conversation_messages)").all() as Array<{
+    name: string;
+  }>;
+
+  if (columns.some((column) => column.name === "source_items")) {
+    return;
+  }
+
+  db.exec("ALTER TABLE conversation_messages ADD COLUMN source_items TEXT");
+}
+
 function bootstrapSeed(db: DatabaseSync) {
   const threadCount = db.prepare("SELECT COUNT(*) as count FROM conversation_threads").get() as {
     count: number;
@@ -183,8 +197,8 @@ function bootstrapSeed(db: DatabaseSync) {
     VALUES (?, ?, ?, ?, ?, ?)
   `);
   const insertMessage = db.prepare(`
-    INSERT INTO conversation_messages (id, thread_id, actor_id, actor_name, kind, body, occurred_at, visibility, related_card_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO conversation_messages (id, thread_id, actor_id, actor_name, kind, body, occurred_at, visibility, related_card_id, source_items)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   const insertCard = db.prepare(`
     INSERT INTO conversation_cards (id, thread_id, title, summary, detail, trust_note, priority_rank, primary_action, primary_action_label, created_at, source_meeting_id, source_deal_id)
@@ -235,7 +249,8 @@ function bootstrapSeed(db: DatabaseSync) {
       message.body,
       message.occurredAt,
       message.visibility,
-      message.relatedCardId
+      message.relatedCardId,
+      message.sourceItems ? JSON.stringify(message.sourceItems) : null
     );
   }
 
@@ -456,7 +471,7 @@ export function createConversationRepository(options: ConversationRepositoryOpti
         const messages = db
           .prepare(
             `
-              SELECT id, thread_id, actor_id, actor_name, kind, body, occurred_at, visibility, related_card_id
+              SELECT id, thread_id, actor_id, actor_name, kind, body, occurred_at, visibility, related_card_id, source_items
               FROM conversation_messages
               WHERE thread_id = ?
               ORDER BY occurred_at ASC, id ASC
@@ -473,6 +488,7 @@ export function createConversationRepository(options: ConversationRepositoryOpti
             occurredAt: row.occurred_at,
             visibility: row.visibility,
             relatedCardId: row.related_card_id,
+            sourceItems: row.source_items ? JSON.parse(row.source_items) : undefined,
           })) as ConversationMessage[];
 
         const cards = db
@@ -563,8 +579,8 @@ export function createConversationRepository(options: ConversationRepositoryOpti
         bootstrapSeed(db);
         const statement = db.prepare(`
           INSERT OR REPLACE INTO conversation_messages (
-            id, thread_id, actor_id, actor_name, kind, body, occurred_at, visibility, related_card_id
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            id, thread_id, actor_id, actor_name, kind, body, occurred_at, visibility, related_card_id, source_items
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `);
 
         for (const message of messages) {
@@ -577,7 +593,8 @@ export function createConversationRepository(options: ConversationRepositoryOpti
             message.body,
             message.occurredAt,
             message.visibility,
-            message.relatedCardId
+            message.relatedCardId,
+            message.sourceItems ? JSON.stringify(message.sourceItems) : null
           );
         }
       });

@@ -1,7 +1,18 @@
 import { primaryNavItems } from "@/lib/navigation";
 
 describe("primary navigation", () => {
-  it("registers the new role workspace pages in the sidebar", () => {
+  it("keeps a single canonical homepage entry in the sidebar", () => {
+    expect(primaryNavItems.filter((item) => item.label === "首页")).toEqual([
+      {
+        href: "/conversational-agent-os",
+        label: "首页",
+      },
+    ]);
+    expect(primaryNavItems.some((item) => item.href === "/home")).toBe(false);
+    expect(primaryNavItems.some((item) => item.label === "会话版 Agent OS")).toBe(false);
+  });
+
+  it("still keeps the other operating surfaces available", () => {
     expect(primaryNavItems).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -23,10 +34,6 @@ describe("primary navigation", () => {
         expect.objectContaining({
           href: "/agent-task-cards",
           label: "Agent 任务卡片版",
-        }),
-        expect.objectContaining({
-          href: "/conversational-agent-os",
-          label: "会话版 Agent OS",
         }),
         expect.objectContaining({
           href: "/intake",

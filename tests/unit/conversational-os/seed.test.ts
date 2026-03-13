@@ -32,13 +32,14 @@ describe("conversational agent os seed", () => {
       (message) => message.threadId === "thread-rep-yang"
     );
 
-    expect(repThreadMessages.some((message) => message.body.includes("短剧与游戏业务发展讨论"))).toBe(
-      true
-    );
+    expect(repThreadMessages.some((message) => message.kind === "source_input")).toBe(true);
+    expect(repThreadMessages.some((message) => message.body.includes("刚见完客户"))).toBe(true);
     expect(
       repThreadMessages.some(
         (message) =>
-          message.body.includes("VOD 聚合 API") || message.body.includes("月底广州会")
+          message.body.includes("VOD 聚合 API") ||
+          message.body.includes("月底广州会") ||
+          message.sourceItems?.some((item) => item.title === "硬件会议摘要")
       )
     ).toBe(true);
   });

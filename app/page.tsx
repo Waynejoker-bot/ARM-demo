@@ -1,5 +1,5 @@
-import HomePage from "./home/page";
+import ConversationalAgentOsPage from "./conversational-agent-os/page";
 
-export default async function Page() {
-  return HomePage({});
+export default function Page() {
+  return <ConversationalAgentOsPage />;
 }
