@@ -1,48 +1,60 @@
 # Current Implementation Status
 
-日期：2026-03-13
+日期：2026-03-14
 状态：canonical
 
-## 1. 当前 `main` 已有能力
+## 1. 产品聚焦完成
 
-当前主线已经不是早期骨架，而是一个可运行的 full-surface mock prototype。
+已从 25 个页面路由 / 17 个导航项的 Sales Intelligence 系统，收敛为以一线销售为核心用户、以 Conversational Agent OS 为唯一主入口的 Agent 协同工作台。
 
-已落地的主要能力包括：
+## 2. 导航精简
 
-- 角色与对象页：`/home`、`/deals`、`/deals/:dealId`、`/meetings`、`/meetings/:meetingId`、`/pipeline`、`/customers`、`/sales-team`、`/revenue`、`/recaps`、`/data-sources`、`/settings`
-- meeting-first 中层：meeting workbench、account thread、deal projection、pipeline simulation
-- 上游输入：`/intake` + GLM 识别路由
-- 交互实验：`/agent-task-cards`、`/conversational-agent-os`
-- 设计评审面：`/design-system`
-- 模型路由：`/api/agent/chat`、`/api/intake/classify`、`/api/conversational-os/*`、`/api/task-cards/actions`
+导航从 17 项收敛为 4 项：
 
-## 2. 当前仓库的真实状态判断
+- `/` — 首页（Conversational Agent OS）
+- `/pipeline` — 商机管道
+- `/settings` — 设置
+- `/design-system` — 设计系统（开发用）
 
-当前主线已经具备：
+所有其他页面路由保留代码但从导航中移除。
 
-- meeting-first 语义基座
-- confirm/apply/sync 等状态语义
-- mobile shell 适配
-- intake 链路
-- task-card 与 conversation-first 的实验能力
+## 3. 路由收口
 
-但它仍未完全收敛，主要体现在：
+- `/` 是唯一 canonical 入口，直接渲染 Conversational Agent OS
+- `/home` 和 `/conversational-agent-os` 均 redirect 到 `/`
+- `/meetings/:meetingId`、`/deals/:dealId`、`/customers/:customerId` 作为下钻页面保留
+- 其他页面代码保留但不对用户暴露
 
-- `/home`、角色工作台、task-card、conversational-agent-os 并存
-- route shell 与 conversation-first shell 并存
-- `design-system` 仍在导航中，容易被误解为产品主线
+## 4. 核心闭环能力
 
-## 3. 当前执行建议
+### 4.1 对话内素材上传
 
-在没有新的明确批准前，后续工作应按以下方式理解当前代码：
+- Composer 区域支持文件/图片上传入口
+- 支持类型：录音、截图、文档、文本
+- 上传后以 `source_input` 消息进入对话流
+- 复用 `/api/intake/classify` 分类逻辑
+- API route 支持 `source_material` 消息类型
 
-- 对象页与详情页：稳定执行基座
-- `intake`：已进入主线能力
-- `agent-task-cards` 与 `conversational-agent-os`：当前主交互探索面
-- `design-system`：内部评审面，不应等同于产品入口
+### 4.2 Agent 主动推送
 
-## 4. 当前文档与代码的关系
+- Rep 线程 seed 包含"今日关注 3 件事"主动推送消息
+- 每件事对应一张结构化卡片（含 title、summary、action、evidence link）
+- 卡片可展开查看详情，可跳到 `/deals/:id` 或 `/meetings/:id`
 
-- `docs/current/product-direction.md` 定义当前 canonical 方向
-- 本文件定义“当前代码到底落在哪里”
-- `docs/history/` 中的内容只用于复盘，不应用来直接指导新实现
+### 4.3 对话内动作闭环
+
+- 卡片动作按钮触发 confirm 后，卡片显示"已确认"状态
+- 已确认的卡片不再显示操作按钮，改为 success 徽章
+- Agent 回复确认处理结果
+
+## 5. 测试状态
+
+- 42 个测试文件，141 个测试用例，全部通过
+- `next build` 通过，无 TypeScript 错误
+
+## 6. 当前未实现
+
+- 真实多模态解析（录音转文字、图片 OCR）
+- 真实 CRM 同步
+- CEO/销售主管专属视图
+- 权限和角色切换

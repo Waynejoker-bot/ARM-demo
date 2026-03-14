@@ -1,7 +1,3 @@
-import { mkdirSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { DatabaseSync } from "node:sqlite";
-
 import { conversationSeed } from "@/lib/conversational-os/seed";
 import type {
   ConversationDelivery,
@@ -25,6 +21,39 @@ export type ConversationThreadState = {
   deliveries: ConversationDelivery[];
   unreadCount: number;
 };
+
+export type ConversationRepository = {
+  listThreads(): ConversationThread[];
+  listThreadPreviewsWithUnread(): Array<ConversationThread & { unreadCount: number }>;
+  getThreadState(threadId: string): ConversationThreadState;
+  appendMessages(messages: ConversationMessage[]): void;
+  upsertCard(card: ConversationDecisionCard): void;
+  recordHandoff(handoff: ConversationHandoff): void;
+  recordDelivery(delivery: ConversationDelivery): void;
+  markThreadRead(threadId: string, readAt: string): void;
+  resetDemoState(): void;
+};
+
+let sqliteAvailable = false;
+let DatabaseSyncClass: any = null;
+let mkdirSyncFn: typeof import("node:fs").mkdirSync | null = null;
+let pathJoin: typeof import("node:path").join | null = null;
+let pathDirname: typeof import("node:path").dirname | null = null;
+
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  DatabaseSyncClass = require("node:sqlite").DatabaseSync;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const fs = require("node:fs");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const path = require("node:path");
+  mkdirSyncFn = fs.mkdirSync;
+  pathJoin = path.join;
+  pathDirname = path.dirname;
+  sqliteAvailable = true;
+} catch {
+  sqliteAvailable = false;
+}
 
 const CREATE_THREADS_SQL = `
   CREATE TABLE IF NOT EXISTS conversation_threads (
@@ -112,17 +141,21 @@ const CREATE_THREAD_READS_SQL = `
 `;
 
 function resolveDbPath(customPath?: string) {
-  return customPath ?? process.env.CONVERSATIONAL_OS_DB_PATH ?? join(process.cwd(), ".data", "conversational-os.sqlite");
+  if (customPath) return customPath;
+  if (process.env.CONVERSATIONAL_OS_DB_PATH) return process.env.CONVERSATIONAL_OS_DB_PATH;
+
+  const base = process.env.NETLIFY ? "/tmp" : pathJoin!(process.cwd(), ".data");
+  return pathJoin!(base, "conversational-os.sqlite");
 }
 
 function ensureDbDirectory(dbPath: string) {
-  mkdirSync(dirname(dbPath), { recursive: true });
+  mkdirSyncFn!(pathDirname!(dbPath), { recursive: true });
 }
 
-function withDatabase<T>(dbPath: string, run: (db: DatabaseSync) => T) {
+function withDatabase<T>(dbPath: string, run: (db: any) => T) {
   ensureDbDirectory(dbPath);
 
-  const db = new DatabaseSync(dbPath);
+  const db = new DatabaseSyncClass(dbPath);
   db.exec(CREATE_THREADS_SQL);
   db.exec(CREATE_MEMBERS_SQL);
   db.exec(CREATE_MESSAGES_SQL);
@@ -141,7 +174,7 @@ function withDatabase<T>(dbPath: string, run: (db: DatabaseSync) => T) {
   }
 }
 
-function ensureCardCreatedAtColumn(db: DatabaseSync) {
+function ensureCardCreatedAtColumn(db: any) {
   const columns = db.prepare("PRAGMA table_info(conversation_cards)").all() as Array<{
     name: string;
   }>;
@@ -154,7 +187,7 @@ function ensureCardCreatedAtColumn(db: DatabaseSync) {
   db.exec("UPDATE conversation_cards SET created_at = COALESCE(created_at, '2026-03-05T00:00:00+08:00')");
 }
 
-function syncSeedCardCreatedAt(db: DatabaseSync) {
+function syncSeedCardCreatedAt(db: any) {
   const updateStatement = db.prepare(`
     UPDATE conversation_cards
     SET created_at = ?
@@ -167,7 +200,7 @@ function syncSeedCardCreatedAt(db: DatabaseSync) {
   }
 }
 
-function ensureMessageSourceItemsColumn(db: DatabaseSync) {
+function ensureMessageSourceItemsColumn(db: any) {
   const columns = db.prepare("PRAGMA table_info(conversation_messages)").all() as Array<{
     name: string;
   }>;
@@ -179,7 +212,7 @@ function ensureMessageSourceItemsColumn(db: DatabaseSync) {
   db.exec("ALTER TABLE conversation_messages ADD COLUMN source_items TEXT");
 }
 
-function bootstrapSeed(db: DatabaseSync) {
+function bootstrapSeed(db: any) {
   const threadCount = db.prepare("SELECT COUNT(*) as count FROM conversation_threads").get() as {
     count: number;
   };
@@ -300,7 +333,7 @@ function bootstrapSeed(db: DatabaseSync) {
   }
 }
 
-function getHumanActorId(db: DatabaseSync, threadId: string) {
+function getHumanActorId(db: any, threadId: string) {
   const row = db
     .prepare(
       `
@@ -315,7 +348,7 @@ function getHumanActorId(db: DatabaseSync, threadId: string) {
   return row?.actor_id ?? null;
 }
 
-function getLastReadAt(db: DatabaseSync, threadId: string) {
+function getLastReadAt(db: any, threadId: string) {
   const row = db
     .prepare(
       `
@@ -329,7 +362,7 @@ function getLastReadAt(db: DatabaseSync, threadId: string) {
   return row?.last_read_at ?? null;
 }
 
-function getUnreadCount(db: DatabaseSync, threadId: string) {
+function getUnreadCount(db: any, threadId: string) {
   const humanActorId = getHumanActorId(db, threadId);
   const lastReadAt = getLastReadAt(db, threadId);
 
@@ -363,11 +396,17 @@ function getUnreadCount(db: DatabaseSync, threadId: string) {
   return Math.max(deliveryRow.count, systemRow.count);
 }
 
-export function createConversationRepository(options: ConversationRepositoryOptions = {}) {
+export function createConversationRepository(options: ConversationRepositoryOptions = {}): ConversationRepository {
+  if (!sqliteAvailable) {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { createInMemoryConversationRepository } = require("@/lib/conversational-os/persistence-memory");
+    return createInMemoryConversationRepository();
+  }
+
   const dbPath = resolveDbPath(options.dbPath);
 
   function init() {
-    withDatabase(dbPath, (db) => bootstrapSeed(db));
+    withDatabase(dbPath, (db: any) => bootstrapSeed(db));
   }
 
   init();

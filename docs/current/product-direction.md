@@ -1,74 +1,70 @@
 # Current Product Direction
 
-日期：2026-03-13
+日期：2026-03-14
 状态：canonical
 
 ## 1. 当前产品定义
 
-AI Sales OS 当前不再被理解为“一个带聊天框的销售后台”。
+AI Sales OS 是一个以一线销售为核心用户的 Agent 协同工作台。
 
-它的 canonical 定义是：
+canonical 定义：
 
-> 一个以 `Meeting` 为源头、以 `Account Thread` 为持续上下文、以 `Deal` 为正式经营投影、并逐步收敛到 `conversation-first` 协作方式的销售 Agent OS。
+> 一个以 Conversational Agent OS 为唯一主入口、以多模态素材上传为驱动、帮助一线销售从获客到成交全链路提效的 Agent 协同工作台。
 
-## 2. 不变的业务语义基座
+产品阶段：演示原型（Demo Prototype）。
 
-以下内容被视为当前不可回退的产品语义：
+## 2. 核心用户与场景
 
-- `Meeting` 是高价值事实源头，不是附属记录
-- `Account Thread` 是客户推进的持续上下文
-- `Deal` 是经营投影，不是销售最早打开的主对象
+- **核心用户**：一线销售
+- **核心场景**：全销售周期——从发现客户到推进成交
+- **Agent 交互**：混合模式——Agent 主动推送任务卡片 + 销售随时对话追问
+- **数据输入**：多模态素材上传（会议录音、聊天截图、邮件、链接、文字等）
+
+## 3. 核心闭环
+
+唯一需要走通的闭环：
+
+```
+销售上传素材 → Agent 理解识别 → 推送结构化卡片 → 销售对话追问
+→ Agent 辅助执行 → 销售确认执行（confirm → apply → 可选 sync）→ 新素材进入
+```
+
+## 4. 不变的业务语义
+
 - `suggestion / confirm / apply / sync` 必须分离
-- explainability、evidence、freshness、coverage 需要显式可见
+- explainability、evidence、freshness 需要显式可见
 - 业务数据继续 mock-first；模型调用只走服务端安全代理
+- `Meeting` 仍是高价值事实源头
 
-## 3. 当前交互方向
+## 5. 页面结构
 
-当前交互方向统一收敛为两层：
+### 5.1 用户直接使用的页面
 
-### 3.1 稳定基座
+| 路由 | 定位 |
+|------|------|
+| `/` | 唯一主入口（Conversational Agent OS） |
+| `/pipeline` | Pipeline 看板（辅助视图） |
+| `/settings` | 设置 |
+| `/design-system` | 仅开发评审用 |
 
-稳定基座仍是当前 `main` 已有的对象页与执行页：
+### 5.2 下钻页面（从对话卡片跳入，不在导航中）
 
-- Home / Deals / Deal Detail / Meeting Workbench / Pipeline
-- Customers / Sales Team / Revenue / Recaps / Data Sources
-- Intake 作为上游原始素材输入工作台
+- `/meetings/:meetingId` — 会议工作台
+- `/deals/:dealId` — Deal 详情
+- `/customers/:customerId` — 客户详情
 
-这些页面继续承担：
+### 5.3 隐藏页面（代码保留，不对用户暴露）
 
-- 证据查看
-- 状态确认
-- 对象下钻
-- 支撑透明层
+所有其他页面路由保留代码但从导航中移除，仅作为 Agent 内部数据源或未来扩展用。
 
-### 3.2 最新主交互探索
-
-最新想法不是继续堆叠更多 dashboard，而是把交互逐步收敛到：
-
-- `conversational agent os`：thread-first、message-first、detail drill-down
-- `task cards`：作为结构化决策载体，而不是零散页面卡片
-
-当前应将这两条路线视为最新交互方向，而不是额外平行产品。
-
-## 4. 当前禁止事项
+## 6. 当前禁止事项
 
 - 不回到 dashboard-first
-- 不把 Agent 降级成右侧说明栏
-- 不让 `design-system` 冒充产品主线
-- 不再新增未经收口的顶层入口叙事
-- 不把历史阶段文档继续当成 live spec
+- 不把 Agent 降级成页面侧边说明栏
+- 不增加新的顶层入口叙事
+- 不做 CEO/销售主管专属视图（demo 聚焦一线销售）
+- 不做复杂的权限和角色切换
 
-## 5. 当前主线应优先解决的问题
+## 7. 文档使用规则
 
-当前最该解决的不是“继续加页面”，而是“收敛顶层叙事和壳层”。
-
-优先级如下：
-
-1. 收敛顶层入口
-2. 收敛主交互壳层
-3. 保持 meeting-first 语义与 conversation-first 方向一致
-4. 让 task card、conversation、detail drill-down 成为同一叙事的不同层
-
-## 6. 文档使用规则
-
-如果任何历史文档与本文件冲突，以本文件为准；如果当前代码与本文件不一致，以 `docs/current/implementation-status.md` 说明的“已实现现实”作为执行基线，再由明确批准决定是否继续收敛。
+如果任何历史文档与本文件冲突，以本文件为准。

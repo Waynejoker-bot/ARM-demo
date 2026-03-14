@@ -13,3 +13,6 @@ output-*.png
 .env.*
 !.env.example
 APIkey.md
+
+# Local Netlify folder
+.netlify

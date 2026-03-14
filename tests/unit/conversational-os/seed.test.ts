@@ -44,6 +44,21 @@ describe("conversational agent os seed", () => {
     ).toBe(true);
   });
 
+  it("seeds the rep thread with a proactive daily focus brief and multiple action cards", () => {
+    const repMessages = conversationSeed.messages.filter(
+      (message) => message.threadId === "thread-rep-yang"
+    );
+    const proactiveBrief = repMessages.find(
+      (message) => message.kind === "agent_reply" && message.body.includes("今天你需要重点关注")
+    );
+
+    expect(proactiveBrief).toBeDefined();
+
+    const repCards = conversationSeed.cards.filter((card) => card.threadId === "thread-rep-yang");
+    expect(repCards.length).toBeGreaterThanOrEqual(3);
+    expect(repCards.some((card) => card.sourceDealId === "deal-real-2")).toBe(true);
+  });
+
   it("defines seeded deliveries and read state for all three threads", () => {
     expect(conversationSeed.deliveries.length).toBeGreaterThan(0);
     expect(conversationSeed.readStates).toHaveLength(3);

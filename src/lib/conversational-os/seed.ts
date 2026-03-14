@@ -3,9 +3,10 @@ import { realMeetings } from "@/lib/mocks/yang-wenxing-real";
 import type { ConversationSeed } from "@/lib/conversational-os/types";
 
 const zifeiMeeting = realMeetings.find((meeting) => meeting.id === "meeting-real-1");
+const dakewanMeeting = realMeetings.find((meeting) => meeting.id === "meeting-real-2");
 const dachenMeeting = realMeetings.find((meeting) => meeting.id === "meeting-real-5");
 
-if (!zifeiMeeting || !dachenMeeting) {
+if (!zifeiMeeting || !dakewanMeeting || !dachenMeeting) {
   throw new Error("Conversational Agent OS seed is missing required Yang Wenxing real meetings.");
 }
 
@@ -172,6 +173,39 @@ export const conversationSeed: ConversationSeed = {
       relatedCardId: null,
     },
     {
+      id: "msg-rep-yang-daily-brief",
+      threadId: "thread-rep-yang",
+      actorId: "agent-rep-bp",
+      actorName: "一线销售 AgentBP",
+      kind: "agent_reply",
+      body: "今天你需要重点关注 3 件事：\n1. 紫菲二访阵容锁定（剩余窗口 5 天）\n2. 大可玩方案对比试点跟进（客户上周提了新需求）\n3. 大臣小游戏试点的报价边界确认（CEO 侧已批准）\n\n以下是每件事的详细卡片，你可以逐个确认或追问。",
+      occurredAt: "2026-03-06T09:00:00+08:00",
+      visibility: "visible_to_thread",
+      relatedCardId: null,
+    },
+    {
+      id: "msg-rep-yang-card-dakewan",
+      threadId: "thread-rep-yang",
+      actorId: "agent-rep-bp",
+      actorName: "一线销售 AgentBP",
+      kind: "agent_reply",
+      body: "大可玩上周二访后提了两个新需求点，需要你在本周内给出答复方案。",
+      occurredAt: "2026-03-06T09:01:00+08:00",
+      visibility: "visible_to_thread",
+      relatedCardId: "card-rep-dakewan-followup",
+    },
+    {
+      id: "msg-rep-yang-card-dachen",
+      threadId: "thread-rep-yang",
+      actorId: "agent-rep-bp",
+      actorName: "一线销售 AgentBP",
+      kind: "agent_reply",
+      body: "大臣小游戏试点边界 CEO 已批准，你现在可以准备试点方案并联系客户确认时间。",
+      occurredAt: "2026-03-06T09:02:00+08:00",
+      visibility: "visible_to_thread",
+      relatedCardId: "card-rep-dachen-trial",
+    },
+    {
       id: "msg-manager-liu-1",
       threadId: "thread-manager-liu",
       actorId: "agent-manager-bp",
@@ -209,6 +243,36 @@ export const conversationSeed: ConversationSeed = {
       sourceMeetingId: "meeting-real-1",
       sourceDealId: "deal-real-1",
       createdAt: "2026-03-05T19:11:00+08:00",
+    },
+    {
+      id: "card-rep-dakewan-followup",
+      threadId: "thread-rep-yang",
+      title: "大可玩新需求跟进：本周内回复方案对比结果",
+      summary: "客户上周二访后追加了归因精度和素材审核效率两个需求点，需要你在周五前给出对比方案。",
+      detail:
+        "大可玩创始人直接参与决策，对竞品痛点认知清晰。本次跟进的关键是拿出我们在归因精度和素材审核上的数据对比，而不是泛泛讲功能清单。",
+      trustNote: "来源于大可玩二访后微信沟通整理。",
+      priorityRank: 95,
+      primaryAction: "confirm",
+      primaryActionLabel: "确认跟进计划",
+      sourceMeetingId: "meeting-real-2",
+      sourceDealId: "deal-real-2",
+      createdAt: "2026-03-06T09:01:00+08:00",
+    },
+    {
+      id: "card-rep-dachen-trial",
+      threadId: "thread-rep-yang",
+      title: "大臣小游戏试点：CEO 已批准报价边界，准备试点方案",
+      summary: "试点边界已获批，现在需要准备详细的试点技术方案和时间表，联系客户确认启动时间。",
+      detail:
+        "CEO 王豪已批准小游戏线试点的报价边界。你的下一步是在本周内准备技术试点方案（含接入方式、数据验证标准和成功指标），并与大臣方确认 3 月底前启动。",
+      trustNote: "来源于 CEO 决策回传，边界已正式批准。",
+      priorityRank: 90,
+      primaryAction: "confirm",
+      primaryActionLabel: "确认并开始准备",
+      sourceMeetingId: "meeting-real-5",
+      sourceDealId: "deal-real-5",
+      createdAt: "2026-03-06T09:02:00+08:00",
     },
     {
       id: "card-manager-zifei-intervention",

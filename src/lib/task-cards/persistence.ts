@@ -1,7 +1,3 @@
-import { mkdirSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join, dirname } from "node:path";
-import { DatabaseSync } from "node:sqlite";
 import { randomUUID } from "node:crypto";
 
 import { applyTaskCardAction, createTaskCardState } from "@/lib/task-cards/selectors";
@@ -48,22 +44,48 @@ const CREATE_EVENTS_TABLE_SQL = `
   )
 `;
 
+let sqliteAvailable = false;
+let DatabaseSyncClass: any = null;
+let mkdirSyncFn: any = null;
+let pathJoin: any = null;
+let pathDirname: any = null;
+let tmpdir: any = null;
+
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  DatabaseSyncClass = require("node:sqlite").DatabaseSync;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  mkdirSyncFn = require("node:fs").mkdirSync;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const path = require("node:path");
+  pathJoin = path.join;
+  pathDirname = path.dirname;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  tmpdir = require("node:os").tmpdir;
+  sqliteAvailable = true;
+} catch {
+  sqliteAvailable = false;
+}
+
 function resolveDefaultDbPath() {
   if (process.env.VITEST || process.env.NODE_ENV === "test") {
-    return join(tmpdir(), "arm-task-card-flow.test.sqlite");
+    return pathJoin(tmpdir(), "arm-task-card-flow.test.sqlite");
   }
 
-  return process.env.TASK_CARD_FLOW_DB_PATH ?? join(process.cwd(), ".data", "task-card-flow.sqlite");
+  if (process.env.TASK_CARD_FLOW_DB_PATH) return process.env.TASK_CARD_FLOW_DB_PATH;
+
+  const base = process.env.NETLIFY ? "/tmp" : pathJoin(process.cwd(), ".data");
+  return pathJoin(base, "task-card-flow.sqlite");
 }
 
 function ensureDbDirectory(dbPath: string) {
-  mkdirSync(dirname(dbPath), { recursive: true });
+  mkdirSyncFn(pathDirname(dbPath), { recursive: true });
 }
 
-function withDatabase<T>(dbPath: string, run: (db: DatabaseSync) => T) {
+function withDatabase<T>(dbPath: string, run: (db: any) => T) {
   ensureDbDirectory(dbPath);
 
-  const db = new DatabaseSync(dbPath);
+  const db = new DatabaseSyncClass(dbPath);
   db.exec(CREATE_EVENTS_TABLE_SQL);
 
   try {
@@ -184,7 +206,48 @@ function findExistingEvent(
   });
 }
 
+function createInMemoryTaskCardFlowRepository() {
+  const events: PersistedTaskCardActionEvent[] = [];
+
+  return {
+    loadState() {
+      return deriveTaskCardState(events);
+    },
+    recordAction(request: PersistedActionRequest) {
+      const currentState = deriveTaskCardState(events);
+      const existing = events.find(
+        (e) => e.cardId === request.cardId && e.actionKind === request.actionKind
+      );
+
+      if (existing) {
+        return { state: deriveTaskCardState(events), event: existing };
+      }
+
+      const actor = getActionActor(currentState, request);
+      const event: PersistedTaskCardActionEvent = {
+        id: `task-action-${randomUUID()}`,
+        cardId: request.cardId,
+        actionKind: request.actionKind,
+        actorRole: actor.actorRole,
+        actorName: actor.actorName,
+        occurredAt: new Date().toISOString(),
+      };
+
+      events.push(event);
+
+      return { state: deriveTaskCardState(events), event };
+    },
+    reset() {
+      events.length = 0;
+    },
+  };
+}
+
 export function createTaskCardFlowRepository(options: TaskCardFlowRepositoryOptions = {}) {
+  if (!sqliteAvailable) {
+    return createInMemoryTaskCardFlowRepository();
+  }
+
   const dbPath = options.dbPath ?? resolveDefaultDbPath();
 
   return {

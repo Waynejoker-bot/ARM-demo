@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
 import { Badge, PageHeader } from "@/components/shared/ui";
 import { ConversationThreadList } from "@/components/conversational-os/thread-list";
@@ -102,6 +102,9 @@ export function ConversationalAgentOsPageView({
   const [mobileView, setMobileView] = useState<MobileConversationView>(
     initialMobileViewport ? "thread_list" : "thread_view"
   );
+  const [actionedCardIds, setActionedCardIds] = useState<Set<string>>(new Set());
+  const [pendingAttachments, setPendingAttachments] = useState<{ name: string; kind: ConversationSourceItem["kind"] }[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -177,17 +180,46 @@ export function ConversationalAgentOsPageView({
     });
   }
 
+  function inferSourceKind(file: File): ConversationSourceItem["kind"] {
+    if (file.type.startsWith("audio/")) return "audio";
+    if (file.type.startsWith("image/")) return "screenshot";
+    return "meeting_summary";
+  }
+
+  function handleFileSelection(files: FileList | null) {
+    if (!files || files.length === 0) return;
+
+    const newAttachments = Array.from(files).map((file) => ({
+      name: file.name,
+      kind: inferSourceKind(file),
+    }));
+
+    setPendingAttachments((current) => [...current, ...newAttachments]);
+  }
+
+  function removeAttachment(index: number) {
+    setPendingAttachments((current) => current.filter((_, i) => i !== index));
+  }
+
   async function submitTextMessage(body: string) {
     const humanMember = findHumanMember(currentThread);
+    const hasContent = body.trim() || pendingAttachments.length > 0;
 
-    if (!body.trim() || !humanMember) {
+    if (!hasContent || !humanMember) {
       return;
     }
 
+    const attachmentsSnapshot = [...pendingAttachments];
+    setPendingAttachments([]);
     setError(null);
 
     startTransition(async () => {
       try {
+        const sourceItems: ConversationSourceItem[] = attachmentsSnapshot.map((att) => ({
+          kind: att.kind,
+          title: att.name,
+        }));
+
         const response = await fetch("/api/conversational-os/messages", {
           method: "POST",
           headers: {
@@ -197,8 +229,9 @@ export function ConversationalAgentOsPageView({
             threadId: currentThread.thread.id,
             actorId: humanMember.actorId,
             actorName: humanMember.actorName,
-            messageType: "text",
-            body: body.trim(),
+            messageType: attachmentsSnapshot.length > 0 ? "source_material" : "text",
+            body: body.trim() || `上传了 ${attachmentsSnapshot.length} 份素材`,
+            sourceItems: sourceItems.length > 0 ? sourceItems : undefined,
           }),
         });
         const payload = (await response.json()) as {
@@ -258,6 +291,7 @@ export function ConversationalAgentOsPageView({
         setCurrentThread(payload.currentThread);
         setThreadPreviews(payload.threadPreviews);
         setSelectedCardId((currentCardId) => resolveSelectedCardId(payload.currentThread!, currentCardId));
+        setActionedCardIds((current) => new Set([...current, cardId]));
       } catch (submitError) {
         setError(submitError instanceof Error ? submitError.message : "发送卡片失败。");
       }
@@ -404,14 +438,18 @@ export function ConversationalAgentOsPageView({
                     >
                       查看详情
                     </button>
-                    <button
-                      type="button"
-                      className="primary-button"
-                      disabled={isPending}
-                      onClick={() => void submitCardMessage(relatedCard.id)}
-                    >
-                      {formatCardButton(relatedCard)}
-                    </button>
+                    {actionedCardIds.has(relatedCard.id) ? (
+                      <Badge tone="success">已确认</Badge>
+                    ) : (
+                      <button
+                        type="button"
+                        className="primary-button"
+                        disabled={isPending}
+                        onClick={() => void submitCardMessage(relatedCard.id)}
+                      >
+                        {formatCardButton(relatedCard)}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -433,6 +471,26 @@ export function ConversationalAgentOsPageView({
       <label className="conversation-composer-label" htmlFor="conversation-message-input">
         继续在当前会话里回复、追问或确认 Agent 的结论。
       </label>
+
+      {pendingAttachments.length > 0 ? (
+        <div className="conversation-composer-attachments" aria-label="待发送附件">
+          {pendingAttachments.map((att, idx) => (
+            <div key={`${att.name}-${idx}`} className="conversation-composer-attachment-chip">
+              <span>{sourceItemLabel(att.kind)}</span>
+              <strong>{att.name}</strong>
+              <button
+                type="button"
+                className="ghost-button"
+                aria-label={`移除 ${att.name}`}
+                onClick={() => removeAttachment(idx)}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : null}
+
       <textarea
         id="conversation-message-input"
         value={draftMessage}
@@ -441,7 +499,31 @@ export function ConversationalAgentOsPageView({
         rows={4}
       />
       <div className="conversation-composer-actions">
-        <button type="submit" className="primary-button" disabled={isPending || !draftMessage.trim()}>
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="sr-only"
+          aria-label="选择文件"
+          multiple
+          accept="audio/*,image/*,.txt,.md,.doc,.docx,.pdf,.eml"
+          onChange={(event) => {
+            handleFileSelection(event.target.files);
+            event.target.value = "";
+          }}
+        />
+        <button
+          type="button"
+          className="ghost-button"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          上传素材
+        </button>
+        <span className="conversation-composer-hint">支持文字、录音、截图、邮件、链接等</span>
+        <button
+          type="submit"
+          className="primary-button"
+          disabled={isPending || (!draftMessage.trim() && pendingAttachments.length === 0)}
+        >
           发送
         </button>
       </div>

@@ -19,11 +19,10 @@ describe("root page", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("renders the conversational homepage entry on the root route", async () => {
+  it("renders the conversational workspace as the canonical product entry", async () => {
     render(await Page());
 
     expect(screen.getByRole("heading", { name: "会话版 Agent OS" })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "王豪 CEO 线程" })).toBeVisible();
     expect(screen.queryByRole("heading", { name: "销售主管首页" })).not.toBeInTheDocument();
   });
 });

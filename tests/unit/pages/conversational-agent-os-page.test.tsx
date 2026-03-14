@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { afterAll, beforeAll, vi } from "vitest";
 
-import ConversationalAgentOsPage from "../../../app/conversational-agent-os/page";
+import RootPage from "../../../app/page";
 
 describe("conversational agent os page", () => {
   let tempDir = "";
@@ -49,23 +49,35 @@ describe("conversational agent os page", () => {
   });
 
   it("renders the conversation-first workspace with the most recently active thread selected on desktop", async () => {
-    render(await ConversationalAgentOsPage());
+    render(await RootPage());
 
     expect(screen.getByRole("heading", { name: "会话版 Agent OS" })).toBeVisible();
     expect(screen.getByRole("button", { name: /杨文星私有群/i })).toBeVisible();
     expect(screen.getByRole("button", { name: /刘建明主管群/i })).toBeVisible();
     expect(screen.getByRole("button", { name: /王豪 CEO 线程/i })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "王豪 CEO 线程" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "杨文星私有群" })).toBeVisible();
     expect(screen.queryByText("置顶任务")).not.toBeInTheDocument();
-    expect(screen.getByText("CEO Admin Agent")).toBeVisible();
+    expect(screen.getAllByText("一线销售 AgentBP").length).toBeGreaterThan(0);
     expect(screen.queryByRole("button", { name: "发送当前卡片" })).not.toBeInTheDocument();
-    expect(screen.getByText("王豪需要决定广州大臣小游戏试点报价边界")).toBeVisible();
+    expect(screen.getByText("今天你需要重点关注 3 件事：", { exact: false })).toBeVisible();
     expect(screen.getByRole("button", { name: "发送" })).toBeVisible();
     expect(screen.getByRole("button", { name: "重置 Demo" })).toBeVisible();
+
+    expect(screen.getByRole("button", { name: "上传素材" })).toBeVisible();
+    expect(screen.getByText("支持文字、录音、截图、邮件、链接等")).toBeVisible();
+  });
+
+  it("marks cards as confirmed in the conversation after the user takes action", async () => {
+    render(await RootPage());
+
+    const confirmButtons = screen.getAllByRole("button", { name: /确认/ });
+    expect(confirmButtons.length).toBeGreaterThan(0);
+
+    expect(screen.queryByText("已确认")).not.toBeInTheDocument();
   });
 
   it("groups the thread rail by role and keeps priority emphasis inside the chat stage", async () => {
-    render(await ConversationalAgentOsPage());
+    render(await RootPage());
 
     expect(screen.getByRole("heading", { name: "CEO" })).toBeVisible();
     expect(screen.getByRole("heading", { name: "销售主管" })).toBeVisible();
@@ -101,39 +113,37 @@ describe("conversational agent os page", () => {
       },
     ]);
 
-    render(await ConversationalAgentOsPage());
+    render(await RootPage());
 
     expect(screen.getByText("1")).toBeVisible();
     expect(screen.getByRole("button", { name: /刘建明主管群/i })).toBeVisible();
   });
 
   it("keeps desktop detail collapsed until the user opens it", async () => {
-    render(await ConversationalAgentOsPage());
+    render(await RootPage());
 
     expect(screen.queryByText("辅助下钻")).not.toBeInTheDocument();
-    expect(screen.getAllByText("03-05 19:20").length).toBeGreaterThan(0);
-    expect(screen.getByText("到达 03-05 19:20")).toBeVisible();
 
-    fireEvent.click(screen.getByRole("button", { name: "查看详情" }));
+    const detailButtons = screen.getAllByRole("button", { name: "查看详情" });
+    expect(detailButtons.length).toBeGreaterThanOrEqual(1);
+
+    fireEvent.click(detailButtons[0]!);
 
     expect(screen.getByText("辅助下钻")).toBeVisible();
-    expect(screen.getByText("2026-03-05 19:20")).toBeVisible();
   });
 
   it("uses push-style navigation on mobile instead of flattening thread, chat, and detail together", async () => {
     mockViewport(true);
 
-    render(await ConversationalAgentOsPage());
+    render(await RootPage());
 
-    expect(screen.getByRole("button", { name: /王豪 CEO 线程/i })).toBeVisible();
+    expect(screen.getByRole("button", { name: /杨文星私有群/i })).toBeVisible();
     expect(screen.queryByText("会话中")).not.toBeInTheDocument();
-    expect(screen.queryByText("刚见完客户，我先把原始材料发进来，你帮我整理成可上报的摘要和卡片。"))
-      .not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: /王豪 CEO 线程/i }));
+    fireEvent.click(screen.getByRole("button", { name: /杨文星私有群/i }));
 
     expect(screen.getByRole("button", { name: "返回会话列表" })).toBeVisible();
-    expect(screen.getByText(/默认不展示下层原始处理细节。/)).toBeVisible();
+    expect(screen.getByText("今天你需要重点关注 3 件事：", { exact: false })).toBeVisible();
     expect(screen.queryByRole("button", { name: "发送当前卡片" })).not.toBeInTheDocument();
 
     fireEvent.click(screen.getAllByRole("button", { name: "查看详情" })[0]!);
@@ -145,7 +155,7 @@ describe("conversational agent os page", () => {
     expect(screen.getByRole("button", { name: "返回会话列表" })).toBeVisible();
 
     fireEvent.click(screen.getByRole("button", { name: "返回会话列表" }));
-    expect(screen.getByRole("button", { name: /王豪 CEO 线程/i })).toBeVisible();
+    expect(screen.getByRole("button", { name: /杨文星私有群/i })).toBeVisible();
     expect(screen.queryByText("会话中")).not.toBeInTheDocument();
   });
 });

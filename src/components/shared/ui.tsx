@@ -5,10 +5,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import { Bot, Grid2x2, House, PanelBottom, PanelsTopLeft, Radar } from "lucide-react";
+import { Bot, House, PanelsTopLeft, Radar, Settings } from "lucide-react";
 
 import {
-  mobileOverflowNavItems,
+  devNavItems,
   mobilePrimaryNavItems,
   primaryNavItems,
 } from "@/lib/navigation";
@@ -21,10 +21,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const hasInitializedResponsivePanel = useRef(false);
 
   const mobileNavIcons = {
-    "/conversational-agent-os": House,
-    "/deals": Grid2x2,
-    "/meetings": PanelBottom,
+    "/": House,
     "/pipeline": Radar,
+    "/settings": Settings,
   } as const;
 
   useEffect(() => {
@@ -43,12 +42,11 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className={clsx("app-shell", !isOpen && "app-shell-panel-collapsed")}>
       <aside className="left-nav">
         <div className="brand-block">
-          <Link href="/conversational-agent-os" className="brand-mark">
+          <Link href="/" className="brand-mark">
             ARM-DEMO
           </Link>
         </div>
 
-        <div className="nav-group-label">Operating Surfaces</div>
         <nav className="nav-list" aria-label="桌面主导航">
           {primaryNavItems.map(({ href, label }) => (
             <Link
@@ -59,6 +57,20 @@ export function AppShell({ children }: { children: ReactNode }) {
               {label}
             </Link>
           ))}
+          {devNavItems.length > 0 && (
+            <>
+              <div className="nav-group-label">开发</div>
+              {devNavItems.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={clsx("nav-item", pathname === href && "nav-item-active")}
+                >
+                  {label}
+                </Link>
+              ))}
+            </>
+          )}
         </nav>
       </aside>
 
@@ -151,7 +163,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </button>
           </div>
           <div className="mobile-more-list">
-            {mobileOverflowNavItems.map(({ href, label }) => (
+            {devNavItems.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}

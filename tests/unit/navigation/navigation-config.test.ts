@@ -1,45 +1,49 @@
-import { primaryNavItems } from "@/lib/navigation";
+import { primaryNavItems, mobilePrimaryNavItems, devNavItems } from "@/lib/navigation";
 
 describe("primary navigation", () => {
-  it("keeps a single canonical homepage entry in the sidebar", () => {
+  it("uses root path as the canonical homepage", () => {
     expect(primaryNavItems.filter((item) => item.label === "首页")).toEqual([
-      {
-        href: "/conversational-agent-os",
-        label: "首页",
-      },
+      { href: "/", label: "首页" },
     ]);
     expect(primaryNavItems.some((item) => item.href === "/home")).toBe(false);
-    expect(primaryNavItems.some((item) => item.label === "会话版 Agent OS")).toBe(false);
+    expect(primaryNavItems.some((item) => item.href === "/conversational-agent-os")).toBe(false);
   });
 
-  it("still keeps the other operating surfaces available", () => {
-    expect(primaryNavItems).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          href: "/ceo-command-center",
-          label: "CEO 主控室",
-        }),
-        expect.objectContaining({
-          href: "/sales-manager-cockpit",
-          label: "销售主管驾驶舱",
-        }),
-        expect.objectContaining({
-          href: "/sales-war-room",
-          label: "一线销售作战室",
-        }),
-        expect.objectContaining({
-          href: "/design-system",
-          label: "设计系统",
-        }),
-        expect.objectContaining({
-          href: "/agent-task-cards",
-          label: "Agent 任务卡片版",
-        }),
-        expect.objectContaining({
-          href: "/intake",
-          label: "素材导入",
-        }),
-      ])
-    );
+  it("contains only the focused navigation set after product simplification", () => {
+    const hrefs = primaryNavItems.map((item) => item.href);
+    expect(hrefs).toEqual(["/", "/pipeline", "/settings"]);
+  });
+
+  it("excludes archived surfaces from primary navigation", () => {
+    const hrefs = primaryNavItems.map((item) => item.href);
+    const archived = [
+      "/ceo-command-center",
+      "/sales-manager-cockpit",
+      "/sales-war-room",
+      "/agent-task-cards",
+      "/intake",
+      "/agent",
+      "/revenue",
+      "/deals",
+      "/customers",
+      "/meetings",
+      "/sales-team",
+      "/recaps",
+      "/agent-workflows",
+      "/data-sources",
+      "/design-system",
+    ];
+    for (const path of archived) {
+      expect(hrefs).not.toContain(path);
+    }
+  });
+
+  it("keeps design-system in a separate dev-only export", () => {
+    expect(devNavItems).toEqual([{ href: "/design-system", label: "设计系统" }]);
+  });
+
+  it("provides a focused mobile primary navigation", () => {
+    const hrefs = mobilePrimaryNavItems.map((item) => item.href);
+    expect(hrefs).toEqual(["/", "/pipeline", "/settings"]);
   });
 });

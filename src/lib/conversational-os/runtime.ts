@@ -24,8 +24,9 @@ type SendConversationMessageInput = {
   actorId: string;
   actorName: string;
   body?: string;
-  messageType?: "text" | "card";
+  messageType?: "text" | "card" | "source_material";
   cardId?: string;
+  sourceItems?: { kind: "meeting_summary" | "audio" | "screenshot" | "link"; title: string; detail?: string }[];
 };
 
 export type ConversationThreadPreview = {
@@ -444,7 +445,7 @@ async function createTargetThreadProcessing(
 function buildDeliveryPlan(params: {
   sourceState: ConversationThreadState;
   sourceCard: ConversationDecisionCard | null;
-  messageType: "text" | "card";
+  messageType: "text" | "card" | "source_material";
   primaryTurn: GeneratedTurnShape;
 }) {
   const cardDrivenType = getCardDrivenDeliveryType({
@@ -529,11 +530,17 @@ export function createConversationRuntime(options: ConversationRuntimeOptions = 
         throw new Error("消息内容不能为空。");
       }
 
-      const composedBody =
-        messageType === "card" ? `转发卡片：${sourceCard!.title}` : input.body!.trim();
-      const composedPrompt =
-        messageType === "card"
-          ? `请继续处理这张卡：${sourceCard!.title}。摘要：${sourceCard!.summary}`
+      const isSourceMaterial = messageType === "source_material";
+      const composedBody = messageType === "card"
+        ? `转发卡片：${sourceCard!.title}`
+        : input.body!.trim();
+      const sourceItemsSummary = isSourceMaterial && input.sourceItems?.length
+        ? input.sourceItems.map((item) => item.title).join("、")
+        : null;
+      const composedPrompt = messageType === "card"
+        ? `请继续处理这张卡：${sourceCard!.title}。摘要：${sourceCard!.summary}`
+        : isSourceMaterial
+          ? `用户上传了素材：${sourceItemsSummary}。原始说明：${input.body?.trim() ?? "无"}。请识别素材内容并生成结构化摘要和建议的下一步。`
           : input.body!.trim();
 
       const userMessage: ConversationMessage = {
@@ -541,11 +548,12 @@ export function createConversationRuntime(options: ConversationRuntimeOptions = 
         threadId: input.threadId,
         actorId: input.actorId,
         actorName: input.actorName,
-        kind: messageType === "card" ? "card_summary" : "human",
+        kind: isSourceMaterial ? "source_input" : messageType === "card" ? "card_summary" : "human",
         body: composedBody,
         occurredAt: nowIso(),
         visibility: "visible_to_thread",
         relatedCardId: sourceCard?.id ?? null,
+        ...(isSourceMaterial && input.sourceItems ? { sourceItems: input.sourceItems } : {}),
       };
 
       repository.appendMessages([userMessage]);

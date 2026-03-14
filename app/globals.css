@@ -1980,7 +1980,7 @@ button {
 
   .mobile-bottom-nav {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     align-items: stretch;
     gap: 8px;
     padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
@@ -2683,6 +2683,43 @@ button {
   background: linear-gradient(180deg, rgba(9, 15, 27, 0), rgba(9, 15, 27, 0.92) 30%);
 }
 
+.conversation-composer-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.conversation-composer-attachment-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(134, 168, 240, 0.22);
+  background: rgba(134, 168, 240, 0.08);
+  font-size: 0.82rem;
+}
+
+.conversation-composer-attachment-chip strong {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conversation-composer-attachment-chip .ghost-button {
+  padding: 0 4px;
+  min-width: auto;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.conversation-composer-hint {
+  font-size: 0.76rem;
+  color: rgba(174, 195, 242, 0.5);
+  white-space: nowrap;
+}
+
 .conversation-composer textarea {
   width: 100%;
   min-height: 110px;
@@ -2747,7 +2784,6 @@ button {
   }
 
   .conversation-card-detail-grid,
-  .conversation-composer-actions,
   .conversation-inline-card-topline,
   .conversation-inline-card-meta,
   .conversation-inline-card-footer,
@@ -2758,6 +2794,20 @@ button {
   .conversation-card-detail-topline {
     grid-template-columns: 1fr;
     display: grid;
+  }
+
+  .conversation-composer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .conversation-composer-hint {
+    display: none;
+  }
+
+  .conversation-composer-attachment-chip strong {
+    max-width: 100px;
   }
 
   .conversation-message,

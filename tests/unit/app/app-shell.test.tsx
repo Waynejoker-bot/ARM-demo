@@ -5,7 +5,7 @@ import { AppShell } from "@/components/shared/ui";
 import { useAgentPanelStore } from "@/state/agent-panel-store";
 
 vi.mock("next/navigation", () => ({
-  usePathname: () => "/conversational-agent-os",
+  usePathname: () => "/",
 }));
 
 describe("app shell", () => {
@@ -63,9 +63,9 @@ describe("app shell", () => {
     expect(mobileNav).toBeInTheDocument();
     expect(within(desktopNav).getByRole("link", { name: "首页" })).toHaveAttribute(
       "href",
-      "/conversational-agent-os"
+      "/"
     );
-    expect(within(mobileNav).getByRole("link", { name: "会议" })).toBeInTheDocument();
+    expect(within(mobileNav).getByRole("link", { name: "商机管道" })).toBeInTheDocument();
   });
 
   it("routes the brand mark to the canonical conversational homepage", () => {
@@ -77,7 +77,7 @@ describe("app shell", () => {
 
     expect(screen.getByRole("link", { name: "ARM-DEMO" })).toHaveAttribute(
       "href",
-      "/conversational-agent-os"
+      "/"
     );
   });
 

@@ -3,6 +3,12 @@ import { z } from "zod";
 
 import { createConversationRuntime } from "@/lib/conversational-os/runtime";
 
+const sourceItemSchema = z.object({
+  kind: z.enum(["meeting_summary", "audio", "screenshot", "link"]),
+  title: z.string().min(1),
+  detail: z.string().optional(),
+});
+
 const requestSchema = z.discriminatedUnion("messageType", [
   z.object({
     threadId: z.string().min(1),
@@ -17,6 +23,14 @@ const requestSchema = z.discriminatedUnion("messageType", [
     actorName: z.string().min(1),
     messageType: z.literal("card"),
     cardId: z.string().min(1),
+  }),
+  z.object({
+    threadId: z.string().min(1),
+    actorId: z.string().min(1),
+    actorName: z.string().min(1),
+    messageType: z.literal("source_material"),
+    body: z.string().min(1),
+    sourceItems: z.array(sourceItemSchema).min(1),
   }),
 ]);
 
