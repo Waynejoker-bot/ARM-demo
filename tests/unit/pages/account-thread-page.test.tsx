@@ -6,69 +6,51 @@ import {
 } from "@/components/threads/account-thread-panels";
 
 describe("account thread views", () => {
-  it("renders the customer list as account threads rather than static customers", () => {
+  it("renders the customer list as signal-driven cards with agent summaries", () => {
     render(<AccountThreadListView />);
 
-    expect(screen.getByRole("heading", { name: "客户推进线程" })).toBeVisible();
-    expect(screen.getByText(/客户进展/i)).toBeVisible();
-    expect(screen.getByText(/当前动作/i)).toBeVisible();
-    expect(screen.getByRole("heading", { name: "线下实录客户样本" })).toBeVisible();
-    expect(screen.getByText(/广州研发转发行团队/i)).toBeVisible();
+    expect(screen.getByRole("heading", { name: "客户中心" })).toBeVisible();
+    expect(screen.getAllByRole("link").length).toBeGreaterThan(0);
+
+    const cards = screen.getAllByLabelText("客户卡片");
+    expect(cards.length).toBeGreaterThan(0);
+
+    expect(screen.getByRole("heading", { name: "Agent 判断" })).toBeVisible();
   });
 
-  it("renders the detail page with continuous thread context and deal projection", () => {
+  it("renders the detail page as an agent-first conversation with proactive alerts", () => {
     render(<AccountThreadDetailView accountId="acc-3" />);
 
-    expect(screen.getByRole("heading", { name: "线程概览" })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "最近变化" })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "推进时间线" })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "正式商机投影区" })).toBeVisible();
-    expect(screen.getByText(/客户进展：商务推进中/i)).toBeVisible();
-    expect(screen.getByText(/当前动作：阻塞中/i)).toBeVisible();
+    expect(screen.getByRole("heading", { name: "玄河网络" })).toBeVisible();
+    expect(screen.getByText("Agent 教练")).toBeVisible();
+    expect(screen.getAllByText(/阻塞/i).length).toBeGreaterThan(0);
   });
 
-  it("lets users drill from a thread into key meetings and the projected deal", () => {
+  it("shows structured info cards for deals and meetings in the conversation flow", () => {
     render(<AccountThreadDetailView accountId="acc-3" />);
 
-    expect(screen.getByRole("link", { name: /玄河网络高层对齐会/i })).toHaveAttribute(
-      "href",
-      "/meetings/meeting-2"
-    );
     expect(screen.getByRole("link", { name: /玄河网络发行中台升级项目/i })).toHaveAttribute(
       "href",
       "/deals/deal-2"
     );
+    expect(screen.getByRole("link", { name: /玄河网络高层对齐会/i })).toHaveAttribute(
+      "href",
+      "/meetings/meeting-2"
+    );
   });
 
-  it("shows data trust signals for thread coverage and freshness", () => {
+  it("provides a chat input area with quick prompts for the customer agent", () => {
     render(<AccountThreadDetailView accountId="acc-3" />);
 
-    expect(screen.getByText(/数据新鲜度：数据过期/i)).toBeVisible();
-    expect(screen.getByText(/数据覆盖率：68%/i)).toBeVisible();
+    expect(screen.getByPlaceholderText(/问 Agent/i)).toBeVisible();
+    expect(screen.getByRole("button", { name: "发送" })).toBeVisible();
+    expect(screen.getByRole("button", { name: /怎么跟进/i })).toBeVisible();
   });
 
-  it("keeps real field references visible inside the customer detail view", () => {
+  it("shows data trust signals inline", () => {
     render(<AccountThreadDetailView accountId="acc-3" />);
 
-    expect(screen.getByRole("heading", { name: "真实线下实录参考" })).toBeVisible();
-    expect(screen.getByText(/广州成熟投放中台团队/i)).toBeVisible();
-    expect(screen.getByText(/整套中台替换概率低/i)).toBeVisible();
-  });
-
-  it("marks timeline and deal projection as secondary mobile sections", () => {
-    render(<AccountThreadDetailView accountId="acc-3" />);
-
-    expect(screen.getByRole("heading", { name: "线程概览" }).closest(".section-card")).toHaveAttribute(
-      "data-mobile-priority",
-      "primary"
-    );
-    expect(screen.getByRole("heading", { name: "推进时间线" }).closest(".section-card")).toHaveAttribute(
-      "data-mobile-collapsible",
-      "true"
-    );
-    expect(screen.getByRole("heading", { name: "正式商机投影区" }).closest(".section-card")).toHaveAttribute(
-      "data-mobile-collapsible",
-      "true"
-    );
+    expect(screen.getByText(/数据过期/i)).toBeVisible();
+    expect(screen.getByText(/68%/i)).toBeVisible();
   });
 });

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import { Bot, House, PanelsTopLeft, Radar, Settings } from "lucide-react";
+import { Bot, House, PanelsTopLeft, Radar, Settings, Users } from "lucide-react";
 
 import {
   devNavItems,
@@ -22,6 +22,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const mobileNavIcons = {
     "/": House,
+    "/customers": Users,
     "/pipeline": Radar,
     "/settings": Settings,
   } as const;

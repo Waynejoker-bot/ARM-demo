@@ -9,9 +9,9 @@ describe("primary navigation", () => {
     expect(primaryNavItems.some((item) => item.href === "/conversational-agent-os")).toBe(false);
   });
 
-  it("contains only the focused navigation set after product simplification", () => {
+  it("contains the focused navigation set with customer center", () => {
     const hrefs = primaryNavItems.map((item) => item.href);
-    expect(hrefs).toEqual(["/", "/pipeline", "/settings"]);
+    expect(hrefs).toEqual(["/", "/customers", "/pipeline", "/settings"]);
   });
 
   it("excludes archived surfaces from primary navigation", () => {
@@ -25,7 +25,6 @@ describe("primary navigation", () => {
       "/agent",
       "/revenue",
       "/deals",
-      "/customers",
       "/meetings",
       "/sales-team",
       "/recaps",
@@ -42,8 +41,8 @@ describe("primary navigation", () => {
     expect(devNavItems).toEqual([{ href: "/design-system", label: "设计系统" }]);
   });
 
-  it("provides a focused mobile primary navigation", () => {
+  it("provides a focused mobile primary navigation with customer center", () => {
     const hrefs = mobilePrimaryNavItems.map((item) => item.href);
-    expect(hrefs).toEqual(["/", "/pipeline", "/settings"]);
+    expect(hrefs).toEqual(["/", "/customers", "/pipeline", "/settings"]);
   });
 });

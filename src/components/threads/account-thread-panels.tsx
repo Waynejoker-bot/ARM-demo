@@ -3,6 +3,8 @@ import Link from "next/link";
 import { RealMeetingShowcaseSection } from "@/components/real-cases/showcase";
 import { Badge, PageHeader, SectionCard } from "@/components/shared/ui";
 import { EmptyState } from "@/components/shared/feedback-states";
+import { CustomerAgentComposer } from "@/components/threads/customer-agent-composer";
+import { deriveCustomerAlerts, deriveOneLineSummary } from "@/lib/domain/customer-alerts";
 import { getAccountById, getAccountThreadById, getMockDataset } from "@/lib/mock-selectors";
 import { formatFreshness, formatStage } from "@/lib/presentation/labels";
 
@@ -34,48 +36,79 @@ function toneForExecution(state: keyof typeof executionLabels) {
   return "info" as const;
 }
 
+function alertLevelToBadgeTone(level: "info" | "warn" | "risk") {
+  if (level === "risk") return "risk" as const;
+  if (level === "warn") return "warn" as const;
+  return "info" as const;
+}
+
 export function AccountThreadListView() {
   const dataset = getMockDataset();
   const threads = [...dataset.accountThreads].sort((left, right) => {
     const interventionDelta = Number(right.interventionNeed !== "none") - Number(left.interventionNeed !== "none");
     if (interventionDelta !== 0) return interventionDelta;
+    const stalledDelta =
+      Number(right.executionState === "stalled" || right.executionState === "blocked") -
+      Number(left.executionState === "stalled" || left.executionState === "blocked");
+    if (stalledDelta !== 0) return stalledDelta;
     return right.updatedAt.localeCompare(left.updatedAt);
   });
 
   return (
     <>
       <PageHeader
-        title="客户推进线程"
-        description="把客户列表重定义为推进线程列表，优先展示阶段、动作和阻点。"
+        title="客户中心"
+        description="按风险和紧急程度排列，Agent 为每个客户生成一句话判断。点击进入客户专属 Agent 对话。"
       />
 
-      <RealMeetingShowcaseSection
-        title="线下实录客户样本"
-        limit={3}
-        description="这些样本来自真实外勤会议，适合在看客户线程时快速参考：客户背景、关键结论和下一步动作应该如何落在一张卡里。"
-      />
-
-      <SectionCard title="线程列表" mobileDensity="feed">
-        <div className="stack-card">
-          <div className="button-row">
-            <Badge tone="info">客户进展</Badge>
-            <Badge tone="warn">当前动作</Badge>
-          </div>
-        </div>
+      <SectionCard title="Agent 判断" mobileDensity="feed">
         <div className="stack-list">
           {threads.map((thread) => {
             const account = dataset.accounts.find((item) => item.id === thread.accountId);
+            if (!account) return null;
+            const alerts = deriveCustomerAlerts(thread, account);
+            const summary = deriveOneLineSummary(thread, account);
+            const deals = dataset.deals.filter((deal) => thread.relatedDealIds.includes(deal.id));
+            const dealTotal = deals.reduce((sum, deal) => sum + deal.amount, 0);
+
             return (
-              <div className="stack-card" key={thread.id}>
-                <Link href={`/customers/${thread.accountId}`}>
-                  <strong>{account?.name ?? "未知客户"}</strong>
-                </Link>
-                <p>{thread.objectiveProgressSummary}</p>
-                <div className="button-row">
-                  <Badge tone="info">{progressLabels[thread.customerProgressStage]}</Badge>
-                  <Badge tone={toneForExecution(thread.executionState)}>{executionLabels[thread.executionState]}</Badge>
+              <Link
+                key={thread.id}
+                href={`/customers/${thread.accountId}`}
+                className="stack-card customer-card-link"
+                aria-label="客户卡片"
+              >
+                <div className="customer-card-header">
+                  <strong>{account.name}</strong>
+                  <div className="button-row">
+                    <Badge tone="info">{account.industry}</Badge>
+                    <Badge tone={toneForExecution(thread.executionState)}>
+                      {executionLabels[thread.executionState]}
+                    </Badge>
+                    {alerts.length > 0 ? (
+                      <Badge tone={alertLevelToBadgeTone(alerts[0]!.level)}>
+                        {alerts[0]!.title}
+                      </Badge>
+                    ) : null}
+                  </div>
                 </div>
-              </div>
+                <p className="customer-card-summary">{summary}</p>
+                <div className="customer-card-meta">
+                  <span>
+                    {thread.lastMeetingAt
+                      ? `上次互动 ${thread.lastMeetingAt.slice(0, 10)}`
+                      : "暂无互动记录"}
+                  </span>
+                  {thread.nextMeetingAt ? (
+                    <span>下次会议 {thread.nextMeetingAt.slice(0, 10)}</span>
+                  ) : null}
+                  {deals.length > 0 ? (
+                    <span>
+                      {deals.length} 个商机 · ¥{dealTotal.toLocaleString()}
+                    </span>
+                  ) : null}
+                </div>
+              </Link>
             );
           })}
         </div>
@@ -95,129 +128,96 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
 
   const meetings = dataset.meetings.filter((meeting) => thread.relatedMeetingIds.includes(meeting.id));
   const deals = dataset.deals.filter((deal) => thread.relatedDealIds.includes(deal.id));
-  const latestDeal = deals[0] ?? null;
+  const alerts = deriveCustomerAlerts(thread, account);
+
+  const agentOpeningParts: string[] = [];
+  if (alerts.length > 0) {
+    agentOpeningParts.push(alerts.map((a) => a.title + "：" + a.detail).join("\n"));
+  }
+  agentOpeningParts.push(`当前阶段：${progressLabels[thread.customerProgressStage]}，${executionLabels[thread.executionState]}。`);
+  agentOpeningParts.push(thread.currentFocus);
+  if (thread.latestBlocker) {
+    agentOpeningParts.push(`阻点：${thread.latestBlocker}`);
+  }
+  const agentOpening = agentOpeningParts.join("\n");
 
   return (
-    <>
-      <PageHeader
-        title={account.name}
-        description={account.description}
-        action={
-          <div className="button-row">
-            <Badge tone="info">{progressLabels[thread.customerProgressStage]}</Badge>
-            <Badge tone={toneForExecution(thread.executionState)}>{executionLabels[thread.executionState]}</Badge>
-            <Badge
-              tone={
-                thread.dataFreshness === "fresh"
-                  ? "success"
-                  : thread.dataFreshness === "stale"
-                    ? "warn"
-                    : "risk"
-              }
-            >
-              {formatFreshness(thread.dataFreshness)}
-            </Badge>
-          </div>
-        }
-      />
+    <div className="customer-agent-shell">
+      <div className="customer-agent-header">
+        <div>
+          <h1>{account.name}</h1>
+          <p className="customer-agent-desc">{account.description}</p>
+        </div>
+        <div className="button-row">
+          <Badge tone="info">{progressLabels[thread.customerProgressStage]}</Badge>
+          <Badge tone={toneForExecution(thread.executionState)}>{executionLabels[thread.executionState]}</Badge>
+          <Badge
+            tone={thread.dataFreshness === "fresh" ? "success" : thread.dataFreshness === "stale" ? "warn" : "risk"}
+          >
+            {formatFreshness(thread.dataFreshness)}
+          </Badge>
+          <Badge tone="default">{Math.round(thread.dataCoverage * 100)}%</Badge>
+        </div>
+      </div>
 
-      <div className="grid-3">
-        <SectionCard title="线程概览" mobilePriority="primary" mobileDensity="feed">
-          <div className="stack-list">
-            <div className="stack-card">
-              <strong>客户进展：{progressLabels[thread.customerProgressStage]}</strong>
-              <p>{thread.objectiveProgressSummary}</p>
-            </div>
-            <div className="stack-card">
-              <strong>当前动作：{executionLabels[thread.executionState]}</strong>
-              <p>{thread.currentFocus}</p>
-              <p className="muted">阻点：{thread.latestBlocker ?? "当前没有明显阻点。"}</p>
-            </div>
-            <div className="stack-card">
-              <strong>数据信任</strong>
-              <p>数据新鲜度：{formatFreshness(thread.dataFreshness)}</p>
-              <p>数据覆盖率：{Math.round(thread.dataCoverage * 100)}%</p>
-            </div>
+      <div className="customer-agent-conversation">
+        <article className="conversation-message conversation-message-agent">
+          <div className="conversation-message-topline">
+            <strong>Agent 教练</strong>
+            <span className="conversation-message-meta">客户专属 Agent</span>
           </div>
-        </SectionCard>
+          <p style={{ whiteSpace: "pre-line" }}>{agentOpening}</p>
+        </article>
 
-        <SectionCard title="最近变化" mobileDensity="feed">
-          <div className="stack-list">
+        {alerts.map((alert, idx) => (
+          <div key={`alert-${idx}`} className="conversation-inline-card">
+            <div className="conversation-inline-card-topline">
+              <span>主动提醒</span>
+              <Badge tone={alertLevelToBadgeTone(alert.level)}>{alert.title}</Badge>
+            </div>
+            <p>{alert.detail}</p>
+          </div>
+        ))}
+
+        {deals.length > 0 ? (
+          <div className="conversation-inline-card">
+            <div className="conversation-inline-card-topline">
+              <span>关联商机</span>
+              <Badge tone="info">{deals.length} 个</Badge>
+            </div>
+            {deals.map((deal) => (
+              <div key={deal.id} className="stack-card">
+                <Link href={`/deals/${deal.id}`}>
+                  <strong>{deal.name}</strong>
+                </Link>
+                <p>{formatStage(deal.stage)} · ¥{deal.amount.toLocaleString()} · {deal.nextStepSummary}</p>
+              </div>
+            ))}
+          </div>
+        ) : null}
+
+        {meetings.length > 0 ? (
+          <div className="conversation-inline-card">
+            <div className="conversation-inline-card-topline">
+              <span>相关会议</span>
+              <Badge tone="info">{meetings.length} 场</Badge>
+            </div>
             {meetings.map((meeting) => (
-              <div className="stack-card" key={meeting.id}>
+              <div key={meeting.id} className="stack-card">
                 <Link href={`/meetings/${meeting.id}`}>
                   <strong>{meeting.title}</strong>
                 </Link>
                 <p>
-                  {meeting.status === "completed" ? "已完成 Meeting" : "待进行 Meeting"} ·
-                  {meeting.riskSignalPresent ? " 暴露风险信号" : " 保持推进节奏"}
+                  {meeting.status === "completed" ? "已完成" : "待进行"} ·
+                  {meeting.riskSignalPresent ? " 暴露风险信号" : " 推进正常"}
                 </p>
               </div>
             ))}
           </div>
-        </SectionCard>
-
-        <SectionCard title="Agent BP 建议" mobileDensity="feed">
-          <div className="stack-list">
-            <div className="stack-card">
-              <strong>当前最大风险</strong>
-              <p>{thread.latestBlocker ?? "当前没有明显风险。"}</p>
-            </div>
-            <div className="stack-card">
-              <strong>下一步动作</strong>
-              <p>{thread.currentFocus}</p>
-            </div>
-            <div className="stack-card">
-              <strong>是否该升级 Deal</strong>
-              <p>
-                {latestDeal
-                  ? `当前已存在 Deal：${latestDeal.name}`
-                  : "当前建议继续推进线程，还不应直接生成 Deal。"}
-              </p>
-            </div>
-          </div>
-        </SectionCard>
+        ) : null}
       </div>
 
-      <RealMeetingShowcaseSection
-        title="真实线下实录参考"
-        limit={4}
-        showPublicContext
-        description="这里放的是线下会议里最像真实客户推进线程的样本，用来对照当前线程应如何表达结论、阻点和下一步。"
-      />
-
-      <SectionCard title="推进时间线" mobileCollapsible>
-        <div className="stack-list">
-          {meetings.map((meeting) => (
-            <div className="stack-card" key={`${meeting.id}-timeline`}>
-              <strong>{meeting.title}</strong>
-              <p>
-                状态变化节点：{progressLabels[thread.customerProgressStage]} / {executionLabels[thread.executionState]}
-              </p>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-
-      <SectionCard title="正式商机投影区" mobileCollapsible>
-        <div className="stack-list">
-          {deals.length ? (
-            deals.map((deal) => (
-              <div className="stack-card" key={deal.id}>
-                <Link href={`/deals/${deal.id}`}>
-                  <strong>{deal.name}</strong>
-                </Link>
-                <p>{formatStage(deal.stage)} · {deal.nextStepSummary}</p>
-              </div>
-            ))
-          ) : (
-            <div className="stack-card">
-              <strong>当前还没有正式商机投影</strong>
-              <p>这条线程仍应优先通过 Meeting 和客户推进动作来判断是否形成 Deal。</p>
-            </div>
-          )}
-        </div>
-      </SectionCard>
-    </>
+      <CustomerAgentComposer accountName={account.name} accountContext={agentOpening} />
+    </div>
   );
 }

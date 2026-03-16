@@ -512,6 +512,77 @@ button {
   box-shadow: var(--shadow-soft);
 }
 
+.customer-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.customer-card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.customer-card-summary {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.customer-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: rgba(174, 195, 242, 0.6);
+}
+
+.customer-agent-shell {
+  display: grid;
+  gap: 24px;
+}
+
+.customer-agent-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.customer-agent-header h1 {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.customer-agent-desc {
+  margin-top: 4px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.customer-agent-conversation {
+  display: grid;
+  gap: 16px;
+}
+
+.customer-agent-composer {
+  display: grid;
+  gap: 12px;
+  border-top: 1px solid rgba(134, 168, 240, 0.14);
+  padding-top: 16px;
+}
+
+.customer-agent-quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .intake-hero-grid,
 .intake-recognition-grid,
 .intake-question-list {
@@ -1980,7 +2051,7 @@ button {
 
   .mobile-bottom-nav {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     align-items: stretch;
     gap: 8px;
     padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
