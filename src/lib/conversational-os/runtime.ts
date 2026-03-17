@@ -72,6 +72,10 @@ type DeliveryPlan = {
   targetSummaryActorName: string;
   targetPrompt: string;
   tolerateModelFailure: boolean;
+  sourceCardTitle: string | null;
+  sourceCardSummary: string | null;
+  sourceCardSourceMeetingId: string | null;
+  sourceCardSourceDealId: string | null;
 };
 
 function nowIso() {
@@ -332,20 +336,87 @@ function buildFallbackPrimaryReply(params: {
   return "我已收到你的消息，并整理成当前线程可继续处理的摘要。";
 }
 
-function buildFallbackTargetReply(deliveryType: ConversationDeliveryType) {
-  if (deliveryType === "report_upstream") {
-    return "主管侧已收到这张上报卡，当前先以摘要进入编排队列。";
+function buildFallbackTargetTurn(plan: DeliveryPlan): GeneratedTurnShape {
+  const cardTitle = plan.sourceCardTitle ?? "待处理事项";
+  const cardSummary = plan.sourceCardSummary ?? plan.summary;
+
+  if (plan.deliveryType === "report_upstream") {
+    return {
+      assistantMessage: `已收到下游上报：${cardTitle}。请确认是否需要编排资源或升级给高层。`,
+      shouldCreateCard: true,
+      cardPayload: {
+        title: `需要决定：${cardTitle}`,
+        summary: cardSummary,
+        detail: `来自下游线程的上报。主管当前需要判断：继续在本层编排，还是升级给 CEO 层。`,
+        trustNote: "来源于下游上报摘要，非原始证据。",
+        priorityRank: 95,
+        primaryAction: "report_upstream",
+        primaryActionLabel: "升级给 CEO",
+        sourceMeetingId: plan.sourceCardSourceMeetingId,
+        sourceDealId: plan.sourceCardSourceDealId,
+      },
+      shouldHandoff: false,
+      handoffSummary: null,
+    };
   }
 
-  if (deliveryType === "escalate_upstream") {
-    return "CEO 侧已收到升级摘要，当前先进入待决策队列。";
+  if (plan.deliveryType === "escalate_upstream") {
+    return {
+      assistantMessage: `已收到主管层升级：${cardTitle}。请审阅并决定是否批准。`,
+      shouldCreateCard: true,
+      cardPayload: {
+        title: `待批准：${cardTitle}`,
+        summary: cardSummary,
+        detail: `来自主管层的升级请求，需要 CEO 层级的判断和批准。`,
+        trustNote: "来源于主管层升级摘要。",
+        priorityRank: 98,
+        primaryAction: "approve",
+        primaryActionLabel: "批准",
+        sourceMeetingId: plan.sourceCardSourceMeetingId,
+        sourceDealId: plan.sourceCardSourceDealId,
+      },
+      shouldHandoff: false,
+      handoffSummary: null,
+    };
   }
 
-  if (deliveryType === "decision_return") {
-    return "CEO 的决策已回传到主管侧，当前先按摘要进入执行队列。";
+  if (plan.deliveryType === "decision_return") {
+    return {
+      assistantMessage: `CEO 已批准：${cardTitle}。请按决策内容继续推进执行。`,
+      shouldCreateCard: true,
+      cardPayload: {
+        title: `已批准，继续执行：${cardTitle}`,
+        summary: cardSummary,
+        detail: `CEO 层的决策已回传，主管可按此继续编排和下达执行。`,
+        trustNote: "来源于 CEO 决策回传。",
+        priorityRank: 96,
+        primaryAction: "confirm",
+        primaryActionLabel: "确认并下达执行",
+        sourceMeetingId: plan.sourceCardSourceMeetingId,
+        sourceDealId: plan.sourceCardSourceDealId,
+      },
+      shouldHandoff: false,
+      handoffSummary: null,
+    };
   }
 
-  return "新的执行摘要已回传到一线销售侧，当前先按摘要进入待执行队列。";
+  return {
+    assistantMessage: `已收到执行下达：${cardTitle}。请确认并开始执行。`,
+    shouldCreateCard: true,
+    cardPayload: {
+      title: `待执行：${cardTitle}`,
+      summary: cardSummary,
+      detail: `来自主管层的执行下达，一线销售需确认后开始执行。`,
+      trustNote: "来源于主管层执行下达。",
+      priorityRank: 94,
+      primaryAction: "confirm",
+      primaryActionLabel: "确认开始执行",
+      sourceMeetingId: plan.sourceCardSourceMeetingId,
+      sourceDealId: plan.sourceCardSourceDealId,
+    },
+    shouldHandoff: false,
+    handoffSummary: null,
+  };
 }
 
 function isGeneratedTurnShape(value: unknown): value is GeneratedTurnShape {
@@ -399,13 +470,7 @@ async function createTargetThreadProcessing(
       throw error;
     }
 
-    targetTurn = {
-      assistantMessage: buildFallbackTargetReply(plan.deliveryType),
-      shouldCreateCard: false,
-      cardPayload: null,
-      shouldHandoff: false,
-      handoffSummary: null,
-    };
+    targetTurn = buildFallbackTargetTurn(plan);
   }
 
   const targetPrimaryAgent = getPrimaryAgentActor(targetThread);
@@ -485,6 +550,10 @@ function buildDeliveryPlan(params: {
     targetSummaryActorName: targetSummaryMessenger.actorName,
     targetPrompt: buildTargetPrompt(inferredType, params.sourceState.thread.title, summary),
     tolerateModelFailure: params.messageType === "card",
+    sourceCardTitle: params.sourceCard?.title ?? null,
+    sourceCardSummary: params.sourceCard?.summary ?? null,
+    sourceCardSourceMeetingId: params.sourceCard?.sourceMeetingId ?? null,
+    sourceCardSourceDealId: params.sourceCard?.sourceDealId ?? null,
   } satisfies DeliveryPlan;
 }
 
