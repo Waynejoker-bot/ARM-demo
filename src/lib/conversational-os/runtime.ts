@@ -473,6 +473,17 @@ async function createTargetThreadProcessing(
     targetTurn = buildFallbackTargetTurn(plan);
   }
 
+  if (!targetTurn.shouldCreateCard || !targetTurn.cardPayload) {
+    const fallback = buildFallbackTargetTurn(plan);
+    targetTurn = {
+      assistantMessage: targetTurn.assistantMessage,
+      shouldCreateCard: true,
+      cardPayload: fallback.cardPayload,
+      shouldHandoff: targetTurn.shouldHandoff,
+      handoffSummary: targetTurn.handoffSummary,
+    };
+  }
+
   const targetPrimaryAgent = getPrimaryAgentActor(targetThread);
   const targetCardId = targetTurn.cardPayload ? createCardId(plan.targetThreadId) : null;
   const targetReply: ConversationMessage = {
