@@ -378,9 +378,9 @@ export function ConversationalAgentOsPageView({
           : null;
 
         return (
-          <article
+          <div
             key={message.id}
-            className={`conversation-message conversation-message-${messageTone(message)}`}
+            className={`conversation-message-wrapper conversation-message-wrapper-${messageTone(message)}`}
           >
             <div className="conversation-message-topline">
               <strong>{message.actorName}</strong>
@@ -395,7 +395,8 @@ export function ConversationalAgentOsPageView({
                 </time>
               </div>
             </div>
-            <p>{message.body}</p>
+            <article className={`conversation-message conversation-message-${messageTone(message)}`}>
+              <p>{message.body}</p>
 
             {message.kind === "source_input" && message.sourceItems?.length ? (
               <div className="conversation-source-bundle" aria-label="源数据清单">
@@ -454,7 +455,8 @@ export function ConversationalAgentOsPageView({
                 </div>
               </div>
             ) : null}
-          </article>
+            </article>
+          </div>
         );
       })}
     </div>

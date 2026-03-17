@@ -2643,17 +2643,53 @@ button {
 .conversation-message-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
   min-height: 0;
   max-height: 58vh;
   overflow-y: auto;
   padding-right: 6px;
 }
 
+.conversation-message-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: min(78%, 760px);
+}
+
+.conversation-message-wrapper-human {
+  align-self: flex-end;
+}
+
+.conversation-message-wrapper-agent {
+  align-self: flex-start;
+}
+
+.conversation-message-wrapper-system {
+  width: min(88%, 820px);
+  align-self: center;
+}
+
+.conversation-message-wrapper-source {
+  align-self: flex-end;
+}
+
+.conversation-message-wrapper-card {
+  align-self: flex-start;
+}
+
+.conversation-message-wrapper .conversation-message-topline {
+  padding: 0 4px;
+}
+
+.conversation-message-wrapper .conversation-message-topline strong {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
 .conversation-message {
   display: grid;
   gap: 12px;
-  width: min(78%, 760px);
   padding: 15px 16px 14px;
   border-radius: 24px;
   border: 1px solid rgba(120, 154, 226, 0.1);
@@ -2661,25 +2697,20 @@ button {
 }
 
 .conversation-message-human {
-  align-self: flex-end;
   background: linear-gradient(180deg, rgba(23, 45, 79, 0.96), rgba(14, 27, 49, 0.92));
 }
 
 .conversation-message-agent {
-  align-self: flex-start;
   background: linear-gradient(180deg, rgba(14, 22, 38, 0.96), rgba(9, 16, 30, 0.9));
 }
 
 .conversation-message-system {
-  width: min(88%, 820px);
-  align-self: center;
   background: linear-gradient(180deg, rgba(15, 22, 31, 0.92), rgba(12, 18, 25, 0.86));
   border-style: dashed;
   box-shadow: none;
 }
 
 .conversation-message-source {
-  align-self: flex-end;
   background:
     linear-gradient(180deg, rgba(19, 40, 70, 0.96), rgba(13, 27, 49, 0.92)),
     radial-gradient(circle at top right, rgba(106, 188, 255, 0.12), transparent 42%);
@@ -2881,10 +2912,10 @@ button {
     max-width: 100px;
   }
 
-  .conversation-message,
-  .conversation-message-human,
-  .conversation-message-agent,
-  .conversation-message-system {
+  .conversation-message-wrapper,
+  .conversation-message-wrapper-human,
+  .conversation-message-wrapper-agent,
+  .conversation-message-wrapper-system {
     width: 100%;
     align-self: stretch;
   }
