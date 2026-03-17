@@ -472,7 +472,7 @@ function buildDeliveryPlan(params: {
     targetThreadId === "thread-manager-liu"
       ? "刘建明主管群"
       : targetThreadId === "thread-ceo-wang"
-        ? "王豪 CEO 线程"
+        ? "王豪的销售 BP Agent"
         : "杨文星私有群";
 
   return {

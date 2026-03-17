@@ -53,7 +53,7 @@ describe("conversational agent os page", () => {
 
     expect(screen.getByRole("button", { name: /杨文星私有群/i })).toBeVisible();
     expect(screen.getByRole("button", { name: /刘建明主管群/i })).toBeVisible();
-    expect(screen.getByRole("button", { name: /王豪 CEO 线程/i })).toBeVisible();
+    expect(screen.getByRole("button", { name: /王豪的销售 BP Agent/i })).toBeVisible();
     expect(screen.getByRole("heading", { name: "杨文星私有群" })).toBeVisible();
     expect(screen.queryByText("置顶任务")).not.toBeInTheDocument();
     expect(screen.getAllByText("一线销售 AgentBP").length).toBeGreaterThan(0);

@@ -32,7 +32,7 @@ export const conversationSeed: ConversationSeed = {
     },
     {
       id: "thread-ceo-wang",
-      title: "王豪 CEO 线程",
+      title: "王豪的销售 BP Agent",
       description: "王豪与 CEO Admin Agent 的高层决策线程。",
       threadType: "ceo_private",
       primaryRole: "ceo",
