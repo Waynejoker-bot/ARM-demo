@@ -1,24 +1,18 @@
 "use client";
 
-import { AgentPanel } from "@/components/agent/agent-panel";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode } from "react";
 import clsx from "clsx";
-import { Bot, House, PanelsTopLeft, Radar, Settings, Users } from "lucide-react";
+import { House, Radar, Settings, Users } from "lucide-react";
 
 import {
-  devNavItems,
   mobilePrimaryNavItems,
   primaryNavItems,
 } from "@/lib/navigation";
-import { useAgentPanelStore } from "@/state/agent-panel-store";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const { isOpen, collapsePanel, expandPanel, context } = useAgentPanelStore();
-  const [isMoreOpen, setIsMoreOpen] = useState(false);
-  const hasInitializedResponsivePanel = useRef(false);
 
   const mobileNavIcons = {
     "/": House,
@@ -27,24 +21,12 @@ export function AppShell({ children }: { children: ReactNode }) {
     "/settings": Settings,
   } as const;
 
-  useEffect(() => {
-    if (hasInitializedResponsivePanel.current) {
-      return;
-    }
-
-    hasInitializedResponsivePanel.current = true;
-
-    if (window.innerWidth <= 768) {
-      collapsePanel();
-    }
-  }, [collapsePanel]);
-
   return (
-    <div className={clsx("app-shell", !isOpen && "app-shell-panel-collapsed")}>
+    <div className="app-shell app-shell-panel-collapsed">
       <aside className="left-nav">
         <div className="brand-block">
           <Link href="/" className="brand-mark">
-            ARM-DEMO
+            ARM
           </Link>
         </div>
 
@@ -58,58 +40,11 @@ export function AppShell({ children }: { children: ReactNode }) {
               {label}
             </Link>
           ))}
-          {devNavItems.length > 0 && (
-            <>
-              <div className="nav-group-label">开发</div>
-              {devNavItems.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className={clsx("nav-item", pathname === href && "nav-item-active")}
-                >
-                  {label}
-                </Link>
-              ))}
-            </>
-          )}
         </nav>
       </aside>
 
       <div className="main-shell">
-        <div className="mobile-briefing-header" aria-label="移动端简报头">
-          <div className="mobile-briefing-copy">
-            <span className="eyebrow">AI Sales OS</span>
-            <strong>Agent 正在持续监听本页上下文与风险变化</strong>
-          </div>
-          <button
-            className="ghost-button mobile-briefing-agent-button"
-            type="button"
-            onClick={expandPanel}
-          >
-            打开 Agent
-          </button>
-        </div>
-
-        <header className="top-bar">
-          <div className="top-bar-search-stack">
-            <div className="top-bar-kicker">Revenue Command Surface</div>
-            <div className="search-pill">
-              <span className="search-pill-label">Command Search</span>
-              <strong>搜索商机、会议、纪要、风险信号</strong>
-            </div>
-          </div>
-          <div className="top-bar-meta">
-            <span className="context-chip context-chip-live">演示模式</span>
-            <span className="context-chip">2026 年 Q1</span>
-            <span className="context-chip">全球销售团队</span>
-            <span className="context-chip context-chip-agent">Agent 已联动</span>
-            <span className="context-chip">数据状态：新鲜度混合</span>
-          </div>
-        </header>
-
-        <main
-          className={clsx("main-content", "main-content-mobile-safe", isOpen && "main-content-panel-open")}
-        >
+        <main className="main-content main-content-mobile-safe">
           {children}
         </main>
       </div>
@@ -130,60 +65,8 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             );
           })}
-
-          <button
-            className="mobile-agent-trigger"
-            type="button"
-            aria-label="打开移动端 Agent 工作台"
-            onClick={expandPanel}
-          >
-            <Bot size={18} />
-            <span>Agent</span>
-          </button>
-
-          <button
-            className={clsx("mobile-more-trigger", isMoreOpen && "mobile-more-trigger-active")}
-            type="button"
-            aria-label="打开更多页面"
-            onClick={() => setIsMoreOpen((current) => !current)}
-          >
-            <PanelsTopLeft size={18} />
-            <span>More</span>
-          </button>
         </nav>
-
-        <div className={clsx("mobile-more-sheet", isMoreOpen && "mobile-more-sheet-open")}>
-          <div className="mobile-more-sheet-header">
-            <span className="eyebrow">更多页面</span>
-            <button
-              type="button"
-              className="ghost-button mobile-more-close"
-              onClick={() => setIsMoreOpen(false)}
-            >
-              收起
-            </button>
-          </div>
-          <div className="mobile-more-list">
-            {devNavItems.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={clsx("mobile-more-link", pathname === href && "mobile-more-link-active")}
-                onClick={() => setIsMoreOpen(false)}
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-        </div>
       </div>
-
-      <AgentPanel
-        isOpen={isOpen}
-        context={context}
-        onCollapse={collapsePanel}
-        onExpand={expandPanel}
-      />
     </div>
   );
 }

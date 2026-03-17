@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
-import { Badge, PageHeader } from "@/components/shared/ui";
+import { Badge } from "@/components/shared/ui";
 import { ConversationThreadList } from "@/components/conversational-os/thread-list";
 import type {
   ConversationThreadDetail,
@@ -581,7 +581,6 @@ export function ConversationalAgentOsPageView({
             <div className="conversation-mobile-topbar">
               <div className="conversation-mobile-title-stack">
                 <span className="conversation-kicker">会话列表</span>
-                <h2>会话版 Agent OS</h2>
               </div>
               <button type="button" className="ghost-button" onClick={resetDemo} disabled={isPending}>
                 重置 Demo
@@ -648,19 +647,6 @@ export function ConversationalAgentOsPageView({
 
   return (
     <div className="conversation-page-shell">
-      <PageHeader
-        title="会话版 Agent OS"
-        description="首页直接进入全量会话流，默认以超级管理员视角查看所有可见线程。"
-        supportingCopy="看得到某条 conversation，就能进入并看到该线程的全部内容；任务卡作为消息里的结构化 payload 继续推进。"
-        action={
-          <div className="button-row">
-            <button type="button" className="ghost-button" onClick={resetDemo} disabled={isPending}>
-              重置 Demo
-            </button>
-          </div>
-        }
-      />
-
       <div className="conversation-layout">
         <ConversationThreadList
           threads={threadPreviews}
@@ -686,6 +672,9 @@ export function ConversationalAgentOsPageView({
                     {formatRelativeConversationTime(latestThreadMessage.occurredAt)}
                   </time>
                 ) : null}
+                <button type="button" className="ghost-button" onClick={resetDemo} disabled={isPending}>
+                  重置 Demo
+                </button>
               </div>
             </div>
 

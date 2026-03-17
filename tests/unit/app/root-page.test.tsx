@@ -22,7 +22,7 @@ describe("root page", () => {
   it("renders the conversational workspace as the canonical product entry", async () => {
     render(await Page());
 
-    expect(screen.getByRole("heading", { name: "会话版 Agent OS" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "重置 Demo" })).toBeVisible();
     expect(screen.queryByRole("heading", { name: "销售主管首页" })).not.toBeInTheDocument();
   });
 });

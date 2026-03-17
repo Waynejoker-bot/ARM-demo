@@ -51,7 +51,6 @@ describe("conversational agent os page", () => {
   it("renders the conversation-first workspace with the most recently active thread selected on desktop", async () => {
     render(await RootPage());
 
-    expect(screen.getByRole("heading", { name: "会话版 Agent OS" })).toBeVisible();
     expect(screen.getByRole("button", { name: /杨文星私有群/i })).toBeVisible();
     expect(screen.getByRole("button", { name: /刘建明主管群/i })).toBeVisible();
     expect(screen.getByRole("button", { name: /王豪 CEO 线程/i })).toBeVisible();

@@ -2051,7 +2051,7 @@ button {
 
   .mobile-bottom-nav {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     align-items: stretch;
     gap: 8px;
     padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
