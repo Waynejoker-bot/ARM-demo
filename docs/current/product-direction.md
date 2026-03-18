@@ -5,7 +5,7 @@
 
 ## 1. 当前产品定义
 
-AI Sales OS 是一个以一线销售为核心用户的 Agent 协同工作台。
+AI Revenue Management OS 是一个以一线销售为核心用户的 Agent 协同工作台。
 
 canonical 定义：
 

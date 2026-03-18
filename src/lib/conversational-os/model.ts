@@ -18,6 +18,7 @@ const cardPayloadSchema = z.object({
   primary_action_label: z.string().min(1),
   source_meeting_id: z.string().min(1).nullable().optional(),
   source_deal_id: z.string().min(1).nullable().optional(),
+  source_agent: z.enum(["sales_bp", "manager_bp", "customer_agent", "deal_agent"]),
 });
 
 const conversationalTurnSchema = z
@@ -64,6 +65,7 @@ export type GeneratedConversationCardPayload = {
   primaryActionLabel: string;
   sourceMeetingId: string | null;
   sourceDealId: string | null;
+  sourceAgent: "sales_bp" | "manager_bp" | "customer_agent" | "deal_agent";
 };
 
 export type ConversationalAgentTurn = {
@@ -83,14 +85,14 @@ export class ConversationalAgentModelError extends Error {
 
 function getRoleInstruction(thread: ConversationThread) {
   if (thread.threadType === "rep_private") {
-    return "你服务的是一线销售私有群，要先给销售可执行的下一步，同时必要时生成给主管的摘要。";
+    return "你是一线销售的 Business Partner Agent（BPAgent），负责帮助销售理解素材、推进商机、闭环执行。当你基于客户数据生成卡片时，标注来源为 customer_agent；当你基于商机数据生成卡片时，标注来源为 deal_agent；当你作为销售助手生成卡片时，标注来源为 sales_bp。";
   }
 
   if (thread.threadType === "manager_private") {
-    return "你服务的是主管私有群，要先给主管编排和升级判断，不要直接暴露 CEO 侧内部处理细节。";
+    return "你是销售主管的 Business Partner Agent（BPAgent），负责帮助主管看清全局、发现问题、高效干预。当你生成辅导或审批卡片时，标注来源为 manager_bp；当你转发商机风险时，标注来源为 deal_agent。";
   }
 
-  return "你服务的是 CEO 私有线程，要先给升级摘要、待决策卡和经营层动作建议。";
+  return "你服务的是一个协作线程，要给出专业、简洁、可执行的回复。";
 }
 
 function formatVisibleCards(cards: ConversationDecisionCard[]) {
@@ -147,7 +149,7 @@ export function buildConversationalAgentMessages(
     {
       role: "system",
       content: [
-        "你是会话版 Agent OS 的内部 Agent。",
+        "你是 AI Revenue Management OS 的 Business Partner Agent。",
         "你需要把会话上下文压缩成专业、简洁、可执行的中文回复。",
         getRoleInstruction(input.thread),
         "你不能决定组织路由，只能返回内容建议。",
@@ -176,7 +178,7 @@ export function buildConversationalAgentMessages(
           "请返回 JSON，字段必须是：",
           "assistant_message: string",
           "should_create_card: boolean",
-          "card_payload: object | null",
+          "card_payload: object | null (含 source_agent: 'sales_bp'|'manager_bp'|'customer_agent'|'deal_agent')",
           "should_handoff: boolean",
           "handoff_summary: string | null",
         ].join("\n"),
@@ -226,6 +228,7 @@ export async function generateConversationalAgentTurn(
           primaryActionLabel: parsed.data.card_payload.primary_action_label,
           sourceMeetingId: parsed.data.card_payload.source_meeting_id ?? null,
           sourceDealId: parsed.data.card_payload.source_deal_id ?? null,
+          sourceAgent: parsed.data.card_payload.source_agent,
         }
       : null,
     shouldHandoff: parsed.data.should_handoff,

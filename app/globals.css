@@ -2051,7 +2051,7 @@ button {
 
   .mobile-bottom-nav {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: stretch;
     gap: 8px;
     padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
@@ -2932,5 +2932,189 @@ button {
 
   .conversation-composer textarea {
     min-height: 96px;
+  }
+}
+
+.agent-source-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(109, 226, 255, 0.08);
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* ═══ WeChat-style mobile chat ═══ */
+
+.conversation-message-avatar {
+  display: none;
+}
+
+.conversation-mobile-thread-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.conversation-mobile-thread-tab {
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.conversation-mobile-thread-tab-active {
+  color: var(--text);
+  border-color: rgba(109, 226, 255, 0.3);
+  background: rgba(109, 226, 255, 0.08);
+}
+
+.conversation-mobile-tab-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff4d4f;
+}
+
+@media (max-width: 720px) {
+  .conversation-message-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    background: linear-gradient(135deg, rgba(109, 226, 255, 0.15), rgba(78, 130, 220, 0.2));
+    border: 1px solid rgba(109, 226, 255, 0.1);
+  }
+
+  .conversation-message-wrapper-human .conversation-message-avatar {
+    background: linear-gradient(135deg, rgba(52, 199, 89, 0.2), rgba(48, 176, 199, 0.15));
+    order: 1;
+  }
+
+  .conversation-message-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .conversation-message-wrapper-human .conversation-message-row {
+    flex-direction: row-reverse;
+  }
+
+  .conversation-message-wrapper,
+  .conversation-message-wrapper-human,
+  .conversation-message-wrapper-agent,
+  .conversation-message-wrapper-source,
+  .conversation-message-wrapper-card {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .conversation-message-wrapper-human {
+    align-items: flex-end;
+  }
+
+  .conversation-message-wrapper-agent,
+  .conversation-message-wrapper-source,
+  .conversation-message-wrapper-card {
+    align-items: flex-start;
+  }
+
+  .conversation-message {
+    padding: 12px 14px;
+    border-radius: 18px;
+    max-width: calc(100% - 46px);
+  }
+
+  .conversation-message-wrapper-human .conversation-message {
+    border-top-right-radius: 4px;
+  }
+
+  .conversation-message-wrapper-agent .conversation-message,
+  .conversation-message-wrapper-card .conversation-message {
+    border-top-left-radius: 4px;
+  }
+
+  .conversation-message-topline {
+    font-size: 12px;
+    padding: 0 4px;
+  }
+
+  .conversation-message-wrapper-human .conversation-message-topline {
+    text-align: right;
+  }
+
+  .conversation-composer {
+    position: sticky;
+    bottom: 0;
+    padding: 10px 12px;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    margin: 0 -18px -18px;
+    background: linear-gradient(180deg, rgba(12, 20, 36, 0.98), rgba(8, 14, 28, 0.99));
+  }
+
+  .conversation-composer textarea {
+    min-height: 40px;
+    max-height: 120px;
+    padding: 10px 14px;
+    border-radius: 20px;
+    font-size: 15px;
+    resize: none;
+  }
+
+  .conversation-composer-actions {
+    gap: 8px;
+  }
+
+  .conversation-mobile-thread-view {
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    min-height: calc(100dvh - 100px);
+  }
+
+  .conversation-mobile-thread-view .conversation-surface {
+    padding: 12px;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .conversation-mobile-thread-view .conversation-message-list {
+    max-height: none;
+    overflow: visible;
+    padding: 0 4px;
+  }
+
+  .conversation-inline-card {
+    border-radius: 14px;
+    padding: 10px 12px;
+  }
+
+  .mobile-bottom-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

@@ -4,7 +4,7 @@
 >
 > 仅保留作历史上下文与复盘材料使用，不再作为当前实现依据。
 
-# AI Sales OS Frontend Full Mock Build Plan
+# AI Revenue Management OS Frontend Full Mock Build Plan
 
 ## 1. Purpose
 

@@ -21,7 +21,7 @@ describe("app shell", () => {
     expect(screen.queryByText("Agent 已联动")).not.toBeInTheDocument();
   });
 
-  it("renders desktop and mobile navigation with customer center", () => {
+  it("renders desktop and mobile navigation without customer center", () => {
     render(
       <AppShell>
         <div>内容</div>
@@ -32,9 +32,9 @@ describe("app shell", () => {
     const mobileNav = screen.getByRole("navigation", { name: "移动端主导航" });
 
     expect(within(desktopNav).getByRole("link", { name: "首页" })).toHaveAttribute("href", "/");
-    expect(within(desktopNav).getByRole("link", { name: "客户" })).toHaveAttribute("href", "/customers");
+    expect(within(desktopNav).queryByRole("link", { name: "客户" })).not.toBeInTheDocument();
     expect(within(desktopNav).getByRole("link", { name: "商机管道" })).toHaveAttribute("href", "/pipeline");
-    expect(within(mobileNav).getByRole("link", { name: "客户" })).toBeInTheDocument();
+    expect(within(mobileNav).queryByRole("link", { name: "客户" })).not.toBeInTheDocument();
   });
 
   it("does not render agent panel or mobile agent trigger", () => {

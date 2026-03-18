@@ -8,7 +8,7 @@ describe("meeting workbench view", () => {
 
     expect(screen.getByRole("heading", { name: "会前准备" })).toBeVisible();
     expect(screen.getByRole("heading", { name: "会议证据" })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "Agent BP 判断" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "会后 Agent 分析" })).toBeVisible();
     expect(screen.getByRole("heading", { name: "会后总结与状态提议" })).toBeVisible();
     expect(screen.getByRole("heading", { name: "影响范围" })).toBeVisible();
   });

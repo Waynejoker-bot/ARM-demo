@@ -1,4 +1,4 @@
-# AI Sales OS Frontend Full Mock Build Plan
+# AI Revenue Management OS Frontend Full Mock Build Plan
 
 ## 1. Purpose
 

@@ -145,8 +145,9 @@ export function MeetingWorkbenchView({ meetingId }: { meetingId: string }) {
           </div>
         </SectionCard>
 
-        <SectionCard title="Agent BP 判断" mobileDensity="feed">
+        <SectionCard title="会后 Agent 分析" mobileDensity="feed">
           <div className="stack-list">
+            <div className="agent-source-tag">来自销售 BPAgent</div>
             <div className="stack-card">
               <strong>{summary?.summary ?? thread?.currentFocus ?? "当前 Meeting 仍待 Agent 生成判断。"}</strong>
               <p>
@@ -167,6 +168,7 @@ export function MeetingWorkbenchView({ meetingId }: { meetingId: string }) {
       </div>
 
       <SectionCard title="会后总结与状态提议" mobilePriority="primary">
+        <div className="agent-source-tag">{deal ? "来自商机 Agent" : "来自客户 Agent"}</div>
         <div className="grid-2">
           <div className="stack-list">
             <div className="stack-card">

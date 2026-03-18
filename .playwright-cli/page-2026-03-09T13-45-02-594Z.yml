@@ -2,7 +2,7 @@
   - generic [ref=e2]:
     - complementary [ref=e3]:
       - generic [ref=e4]:
-        - generic [ref=e5]: AI Sales OS
+        - generic [ref=e5]: AI Revenue Management OS
         - generic [ref=e8]: Meeting-first Demo
         - heading "ARM-demo" [level=1] [ref=e9]
         - paragraph [ref=e10]: 以 Agent 为核心交互、以 Meeting 驱动推进、以 mock 数据完成演示闭环。

@@ -57,6 +57,7 @@ type GeneratedTurnShape = {
     primaryActionLabel: string;
     sourceMeetingId: string | null;
     sourceDealId: string | null;
+    sourceAgent: "sales_bp" | "manager_bp" | "customer_agent" | "deal_agent";
   } | null;
   shouldHandoff: boolean;
   handoffSummary: string | null;
@@ -76,6 +77,7 @@ type DeliveryPlan = {
   sourceCardSummary: string | null;
   sourceCardSourceMeetingId: string | null;
   sourceCardSourceDealId: string | null;
+  sourceCardSourceAgent: "sales_bp" | "manager_bp" | "customer_agent" | "deal_agent";
 };
 
 function nowIso() {
@@ -179,12 +181,6 @@ function getCardDrivenDeliveryType(params: {
     }
   }
 
-  if (thread.threadType === "ceo_private") {
-    if (sourceCard.primaryAction === "approve" || sourceCard.primaryActionLabel.includes("批准")) {
-      return "decision_return" as const;
-    }
-  }
-
   return null;
 }
 
@@ -203,10 +199,6 @@ function getTextDrivenDeliveryType(thread: ConversationThread) {
 function getTargetThreadIdForDelivery(deliveryType: ConversationDeliveryType) {
   if (deliveryType === "report_upstream" || deliveryType === "decision_return") {
     return "thread-manager-liu";
-  }
-
-  if (deliveryType === "escalate_upstream") {
-    return "thread-ceo-wang";
   }
 
   return "thread-rep-yang";
@@ -354,6 +346,7 @@ function buildFallbackTargetTurn(plan: DeliveryPlan): GeneratedTurnShape {
         primaryActionLabel: "升级给 CEO",
         sourceMeetingId: plan.sourceCardSourceMeetingId,
         sourceDealId: plan.sourceCardSourceDealId,
+        sourceAgent: plan.sourceCardSourceAgent,
       },
       shouldHandoff: false,
       handoffSummary: null,
@@ -374,6 +367,7 @@ function buildFallbackTargetTurn(plan: DeliveryPlan): GeneratedTurnShape {
         primaryActionLabel: "批准",
         sourceMeetingId: plan.sourceCardSourceMeetingId,
         sourceDealId: plan.sourceCardSourceDealId,
+        sourceAgent: plan.sourceCardSourceAgent,
       },
       shouldHandoff: false,
       handoffSummary: null,
@@ -394,6 +388,7 @@ function buildFallbackTargetTurn(plan: DeliveryPlan): GeneratedTurnShape {
         primaryActionLabel: "确认并下达执行",
         sourceMeetingId: plan.sourceCardSourceMeetingId,
         sourceDealId: plan.sourceCardSourceDealId,
+        sourceAgent: plan.sourceCardSourceAgent,
       },
       shouldHandoff: false,
       handoffSummary: null,
@@ -413,6 +408,7 @@ function buildFallbackTargetTurn(plan: DeliveryPlan): GeneratedTurnShape {
       primaryActionLabel: "确认开始执行",
       sourceMeetingId: plan.sourceCardSourceMeetingId,
       sourceDealId: plan.sourceCardSourceDealId,
+      sourceAgent: plan.sourceCardSourceAgent,
     },
     shouldHandoff: false,
     handoffSummary: null,
@@ -514,6 +510,7 @@ async function createTargetThreadProcessing(
       createdAt: nowIso(),
       sourceMeetingId: targetTurn.cardPayload.sourceMeetingId,
       sourceDealId: targetTurn.cardPayload.sourceDealId,
+      sourceAgent: targetTurn.cardPayload.sourceAgent,
     });
   }
 }
@@ -547,9 +544,7 @@ function buildDeliveryPlan(params: {
   const targetThreadTitle =
     targetThreadId === "thread-manager-liu"
       ? "刘建明主管群"
-      : targetThreadId === "thread-ceo-wang"
-        ? "王豪的销售 BP Agent"
-        : "杨文星私有群";
+      : "杨文星私有群";
 
   return {
     targetThreadId,
@@ -565,6 +560,7 @@ function buildDeliveryPlan(params: {
     sourceCardSummary: params.sourceCard?.summary ?? null,
     sourceCardSourceMeetingId: params.sourceCard?.sourceMeetingId ?? null,
     sourceCardSourceDealId: params.sourceCard?.sourceDealId ?? null,
+    sourceCardSourceAgent: params.sourceCard?.sourceAgent ?? "sales_bp",
   } satisfies DeliveryPlan;
 }
 
@@ -706,6 +702,7 @@ export function createConversationRuntime(options: ConversationRuntimeOptions = 
           createdAt: nowIso(),
           sourceMeetingId: primaryTurn.cardPayload.sourceMeetingId,
           sourceDealId: primaryTurn.cardPayload.sourceDealId,
+          sourceAgent: primaryTurn.cardPayload.sourceAgent,
         });
       }
 

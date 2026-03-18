@@ -1,0 +1,50 @@
+flowchart TB
+    classDef layer fill:#1a1a2e,stroke:#e94560,stroke-width:2px,color:#fff
+    classDef data fill:#0f3460,stroke:#53a8b6,color:#fff
+    classDef agent fill:#2d132c,stroke:#ee4540,color:#fff
+    classDef comm fill:#1b1b2f,stroke:#e43f5a,color:#fff
+    classDef ui fill:#162447,stroke:#1f4068,color:#fff
+
+    %% ── Layer 1: 数据层 ──
+    L1["<b>① 数据层 · Raw Input</b><br/>────────────────────<br/>🎙 会议录音（核心事实源）<br/>💬 聊天记录 · 📧 邮件<br/>📊 CRM 字段 · 📎 文档/截图"]:::data
+
+    %% ── Layer 2: Agent 层 ──
+    L2_title["<b>② Agent 层</b>"]:::layer
+
+    subgraph BP ["BPAgent · Business Partner · 1人 = 1实例"]
+        direction LR
+        bp_mgr["<b>主管 BPAgent</b> ×1<br/>团队总览 · 辅导<br/>资源调配 · 审批"]
+        bp_a["<b>销售A BPAgent</b><br/>任务 · 素材理解<br/>执行闭环"]
+        bp_b["<b>销售B BPAgent</b><br/>任务 · 素材理解<br/>执行闭环"]
+        bp_c["<b>销售C BPAgent</b><br/>任务 · 素材理解<br/>执行闭环"]
+    end
+
+    subgraph CA ["客户 Agent · 1客户 = 1实例 · 商机 Agent ⊂ 客户 Agent"]
+        direction LR
+        ca_x["<b>客户X Agent</b><br/>生命周期 · 健康度<br/>├ 商机① Agent<br/>└ 商机② Agent"]
+        ca_y["<b>客户Y Agent</b><br/>生命周期 · 健康度<br/>└ 商机③ Agent"]
+    end
+
+    %% ── Layer 3: 通讯层 ──
+    L3["<b>③ 通讯层 · 对话 + 卡片</b><br/>────────────────────<br/>对话引擎 ↔ 卡片路由 → 主动推送"]:::comm
+
+    %% ── Layer 4: 前端展示层 ──
+    L4["<b>④ 前端展示层</b><br/>────────────────────<br/>/ 对话主界面（Agent OS）<br/>/pipeline 商机看板<br/>/meetings/:id · /deals/:id · /customers/:id"]:::ui
+
+    %% ── 层间数据流（纵向） ──
+    L1 --> BP
+    L1 --> CA
+    BP --> L3
+    CA -- "事实 + 建议" --> L3
+    L3 --> L4
+
+    %% ── Agent 间关系 ──
+    bp_mgr -- "辅导 →" --> bp_a
+    bp_mgr -- "辅导 →" --> bp_b
+    bp_mgr -- "辅导 →" --> bp_c
+
+    bp_a -. "操作" .-> ca_x
+    bp_b -. "操作" .-> ca_x
+    bp_b -. "操作" .-> ca_y
+    bp_c -. "操作" .-> ca_y
+    bp_mgr -. "审批/介入" .-> CA

@@ -24,11 +24,11 @@ describe("conversational os persistence", () => {
       const threads = repository.listThreads();
       const repThread = repository.getThreadState("thread-rep-yang");
 
-      expect(threads).toHaveLength(3);
-      expect(repThread.thread.title).toBe("杨文星私有群");
-      expect(repThread.cards.some((card) => card.id === "card-rep-zifei-priority")).toBe(true);
-      expect(repThread.cards.find((card) => card.id === "card-rep-zifei-priority")?.createdAt).toBe(
-        "2026-03-05T19:11:00+08:00"
+      expect(threads).toHaveLength(2);
+      expect(repThread.thread.title).toBe("杨文星的工作台");
+      expect(repThread.cards.some((card) => card.id === "card-flow-meeting-summary")).toBe(true);
+      expect(repThread.cards.find((card) => card.id === "card-flow-meeting-summary")?.createdAt).toBe(
+        "2026-03-15T16:32:00+08:00"
       );
     } finally {
       rmSync(dir, { recursive: true, force: true });
@@ -101,12 +101,12 @@ describe("conversational os persistence", () => {
       const repository = createConversationRepository({ dbPath });
       repository.recordDelivery({
         id: "delivery-runtime-1",
-        fromThreadId: "thread-ceo-wang",
-        toThreadId: "thread-manager-liu",
-        deliveryType: "decision_return",
-        summary: "CEO 已批准试点边界，回传主管继续执行。",
+        fromThreadId: "thread-manager-liu",
+        toThreadId: "thread-rep-yang",
+        deliveryType: "task_downstream",
+        summary: "主管已确认试点边界，下达给杨文星继续执行。",
         createdAt: "2026-03-12T02:00:00+08:00",
-        relatedCardId: "card-ceo-dachen-pricing",
+        relatedCardId: "card-mgr-team-status",
       });
       repository.appendMessages([
         {
@@ -125,7 +125,7 @@ describe("conversational os persistence", () => {
       let previews = repository.listThreadPreviewsWithUnread();
       expect(previews.find((thread) => thread.id === "thread-manager-liu")?.unreadCount).toBe(1);
 
-      repository.markThreadRead("thread-manager-liu", "2026-03-12T02:01:00+08:00");
+      repository.markThreadRead("thread-manager-liu", "2026-03-17T00:00:00+08:00");
 
       const reloaded = createConversationRepository({ dbPath });
       previews = reloaded.listThreadPreviewsWithUnread();
@@ -155,6 +155,7 @@ describe("conversational os persistence", () => {
         primaryActionLabel: "确认",
         sourceMeetingId: null,
         sourceDealId: null,
+        sourceAgent: "manager_bp",
         createdAt: "2026-03-12T10:00:00+08:00",
       });
 
@@ -177,14 +178,14 @@ describe("conversational os persistence", () => {
       const db = new DatabaseSync(dbPath);
       db.prepare("UPDATE conversation_cards SET created_at = ? WHERE id = ?").run(
         "2026-03-05T00:00:00+08:00",
-        "card-rep-zifei-priority"
+        "card-flow-meeting-summary"
       );
       db.close();
 
       const reloaded = createConversationRepository({ dbPath }).getThreadState("thread-rep-yang");
 
-      expect(reloaded.cards.find((card) => card.id === "card-rep-zifei-priority")?.createdAt).toBe(
-        "2026-03-05T19:11:00+08:00"
+      expect(reloaded.cards.find((card) => card.id === "card-flow-meeting-summary")?.createdAt).toBe(
+        "2026-03-15T16:32:00+08:00"
       );
     } finally {
       rmSync(dir, { recursive: true, force: true });

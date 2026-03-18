@@ -1,4 +1,4 @@
-# AI Sales OS Agent-First IA And Wireframe Spec For Coding Agent
+# AI Revenue Management OS Agent-First IA And Wireframe Spec For Coding Agent
 
 ## 1. Purpose
 This document describes the information architecture, route structure, page composition, and low-fidelity wireframe intent for an AI coding agent.

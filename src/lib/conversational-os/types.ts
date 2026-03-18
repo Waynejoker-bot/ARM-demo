@@ -1,14 +1,12 @@
 import type { RoleType } from "@/lib/domain/types";
 
-export type ConversationThreadType = "rep_private" | "manager_private" | "ceo_private";
+export type ConversationThreadType = "rep_private" | "manager_private";
 
 export type ConversationMemberType =
   | "human_rep"
   | "human_manager"
-  | "human_ceo"
   | "agent_rep_bp"
-  | "agent_manager_bp"
-  | "agent_ceo_admin";
+  | "agent_manager_bp";
 
 export type ConversationThread = {
   id: string;
@@ -72,6 +70,8 @@ export type ConversationCardAction =
   | "approve"
   | "request_details";
 
+export type ConversationSourceAgent = "sales_bp" | "manager_bp" | "customer_agent" | "deal_agent";
+
 export type ConversationDecisionCard = {
   id: string;
   threadId: string;
@@ -84,6 +84,7 @@ export type ConversationDecisionCard = {
   primaryActionLabel: string;
   sourceMeetingId: string | null;
   sourceDealId: string | null;
+  sourceAgent: ConversationSourceAgent;
   createdAt: string;
 };
 

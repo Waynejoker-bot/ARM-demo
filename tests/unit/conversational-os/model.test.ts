@@ -36,11 +36,11 @@ describe("conversational os model service", () => {
     });
 
     expect(modelMessages[0]?.role).toBe("system");
-    expect(modelMessages[0]?.content).toContain("会话版 Agent OS");
+    expect(modelMessages[0]?.content).toContain("AI Revenue Management OS");
     expect(modelMessages[0]?.content).toContain("只返回 JSON");
-    expect(modelMessages[1]?.content).toContain("线程：杨文星私有群");
+    expect(modelMessages[1]?.content).toContain("线程：杨文星的工作台");
     expect(modelMessages[1]?.content).toContain("当前置顶优先卡");
-    expect(modelMessages[1]?.content).toContain("广州紫菲网络科技有限公司需要 1 周内锁定二访阵容");
+    expect(modelMessages[1]?.content).toContain("紫菲科技技术评估会摘要");
     expect(modelMessages[1]?.content).toContain("最近消息");
     expect(modelMessages[1]?.content).toContain("我已经约到周五二访");
   });
@@ -60,6 +60,7 @@ describe("conversational os model service", () => {
           primary_action_label: "上报主管",
           source_meeting_id: "meeting-real-1",
           source_deal_id: "deal-real-1",
+          source_agent: "deal_agent",
         },
         should_handoff: true,
         handoff_summary: "杨文星已锁定二访时间，建议主管评估是否需要额外资源介入。",

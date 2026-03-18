@@ -4,7 +4,7 @@
 >
 > 仅保留作历史上下文与复盘材料使用，不再作为当前实现依据。
 
-# AI Sales OS Role Workspaces Design
+# AI Revenue Management OS Role Workspaces Design
 
 日期：2026-03-08
 

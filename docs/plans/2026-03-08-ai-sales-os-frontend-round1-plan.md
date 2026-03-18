@@ -1,4 +1,4 @@
-# AI Sales OS Frontend Round 1 Implementation Plan
+# AI Revenue Management OS Frontend Round 1 Implementation Plan
 
 ## 1. Purpose
 

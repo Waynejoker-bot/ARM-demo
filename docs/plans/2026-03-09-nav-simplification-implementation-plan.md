@@ -21,7 +21,7 @@
 Add a test that renders `AppShell` and asserts:
 
 - `arm-demo` is visible in the left rail
-- `AI Sales OS` is not rendered
+- `AI Revenue Management OS` is not rendered
 - `Meeting-first Demo` is not rendered
 - the old descriptive paragraph is not rendered
 

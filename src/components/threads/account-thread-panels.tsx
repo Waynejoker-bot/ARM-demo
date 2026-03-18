@@ -161,6 +161,7 @@ export function AccountThreadDetailView({ accountId }: { accountId: string }) {
       </div>
 
       <div className="customer-agent-conversation">
+        <div className="agent-source-tag">客户 Agent 判断</div>
         <article className="conversation-message conversation-message-agent">
           <div className="conversation-message-topline">
             <strong>Agent 教练</strong>

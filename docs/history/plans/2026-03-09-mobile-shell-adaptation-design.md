@@ -8,7 +8,7 @@
 
 ## Goal
 
-Adapt the existing AI Sales OS frontend to phones without creating a separate product, route tree, or business logic path.
+Adapt the existing AI Revenue Management OS frontend to phones without creating a separate product, route tree, or business logic path.
 
 The same link must render:
 

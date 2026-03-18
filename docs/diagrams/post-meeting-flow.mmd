@@ -1,0 +1,66 @@
+flowchart TD
+    classDef human fill:#1a5276,stroke:#2980b9,color:#fff,stroke-width:2px
+    classDef bp fill:#4a235a,stroke:#8e44ad,color:#fff,stroke-width:2px
+    classDef cust fill:#0e6655,stroke:#1abc9c,color:#fff,stroke-width:2px
+    classDef deal fill:#784212,stroke:#e67e22,color:#fff,stroke-width:2px
+    classDef mgr fill:#7b241c,stroke:#e74c3c,color:#fff,stroke-width:2px
+    classDef card fill:#1c2833,stroke:#566573,color:#fff
+
+    %% ── 起点：销售参加完会议 ──
+    START(("销售参加完<br/>客户X的会议")):::human
+
+    %% ── Step 1：销售发送素材 ──
+    S1["① 销售发送会议链接<br/>给自己的 BPAgent"]:::human
+
+    %% ── Step 2-3：销售 BPAgent 工作 ──
+    BP1["② 销售 BPAgent<br/>接收素材 · 分类识别<br/>（这是客户X · 商机①的会议）"]:::bp
+    BP2["③ 销售 BPAgent<br/>调用模型理解会议内容"]:::bp
+    BP3["④ 生成会议摘要卡片<br/>· 关键议题与决策<br/>· 参会人态度<br/>· 识别的关键信号<br/>· 建议的下一步"]:::card
+
+    %% ── Step 4-6：销售确认 ──
+    S2["⑤ 销售查看摘要<br/>可追问细节"]:::human
+    S3["⑥ 销售 confirm 摘要"]:::human
+
+    %% ── Step 7：apply 到客户 Agent ──
+    BP4["⑦ 销售 BPAgent<br/>apply 到客户X Agent"]:::bp
+
+    %% ── Step 8：客户 Agent 工作 ──
+    CA1["⑧ 客户X Agent<br/>· 更新 Account Thread<br/>· 重算客户健康度<br/>· 检测关系变化信号"]:::cust
+
+    %% ── Step 9：商机 Agent 工作 ──
+    DA1["⑨ 商机① Agent<br/>· 评估阶段推进条件<br/>· 重算风险评分<br/>· 重算赢单预测<br/>· 生成下一步建议"]:::deal
+
+    %% ── Step 10：输出卡片 ──
+    CARDS["⑩ 生成结构化卡片<br/>· 阶段推进建议<br/>· 风险变化提醒<br/>· 下一步行动建议<br/>· 客户健康度变化"]:::card
+
+    %% ── Step 11：回到销售 ──
+    S4["⑪ 销售收到新卡片<br/>查看 · 追问 · confirm"]:::human
+    S5["⑫ 销售 confirm 下一步<br/>→ apply → 可选 sync CRM"]:::human
+
+    %% ── Step 12：回写 ──
+    DA2["⑬ 商机 Agent<br/>回写状态到客户 Agent"]:::deal
+
+    %% ── 主管分支 ──
+    MGR1["⑭ 如风险升高<br/>→ 通知主管 BPAgent"]:::mgr
+    MGR2["⑮ 主管 BPAgent<br/>推送辅导/关注卡片给主管"]:::mgr
+    MGR3["主管查看 · 决策"]:::human
+
+    %% ── 连接 ──
+    START --> S1
+    S1 --> BP1
+    BP1 --> BP2
+    BP2 --> BP3
+    BP3 --> S2
+    S2 --> S3
+    S3 --> BP4
+    BP4 --> CA1
+    CA1 --> DA1
+    DA1 --> CARDS
+    CARDS --> S4
+    S4 --> S5
+    S5 --> DA2
+    DA2 --> CA1
+
+    DA1 -- "风险升高" --> MGR1
+    MGR1 --> MGR2
+    MGR2 --> MGR3

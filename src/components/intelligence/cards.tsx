@@ -10,7 +10,6 @@ import {
 } from "@/lib/semantics/agent-actions";
 import {
   Badge,
-  MetricCard,
   SectionCard,
 } from "@/components/shared/ui";
 import { formatFreshness, formatRisk, formatStage } from "@/lib/presentation/labels";
@@ -18,8 +17,6 @@ import type {
   AgentOutput,
   EvidenceRef,
   ForecastSnapshot,
-  RepScorecard as RepScorecardType,
-  WorkflowEvent,
 } from "@/lib/domain/types";
 
 type MobileSectionProps = {
@@ -27,14 +24,6 @@ type MobileSectionProps = {
   mobileDensity?: "feed" | "cards";
   mobileCollapsible?: boolean;
 };
-
-export function KpiCard(props: {
-  label: string;
-  value: string;
-  tone?: "default" | "risk" | "positive" | "info" | "warn";
-}) {
-  return <MetricCard {...props} />;
-}
 
 export function AgentBriefCard({
   title,
@@ -313,45 +302,3 @@ export function ForecastCard({ snapshot }: { snapshot: ForecastSnapshot }) {
   );
 }
 
-export function RepScoreCard({
-  rep,
-  mobilePriority,
-  mobileDensity,
-  mobileCollapsible,
-}: {
-  rep: RepScorecardType;
-} & MobileSectionProps) {
-  return (
-    <SectionCard
-      title={rep.repName}
-      mobilePriority={mobilePriority}
-      mobileDensity={mobileDensity}
-      mobileCollapsible={mobileCollapsible}
-    >
-      <div className="stack-list">
-        <div className="button-row">
-          <HealthScoreRing score={rep.averageHealthScore} />
-          <div className="stack-card">
-            <strong>{rep.teamName}</strong>
-            <p>{rep.coachingFocus}</p>
-          </div>
-        </div>
-        <div className="button-row">
-          <Badge tone="success">赢单率 {Math.round(rep.closeRate * 100)}%</Badge>
-          <Badge tone="info">能力分 {rep.capabilityScore}</Badge>
-        </div>
-      </div>
-    </SectionCard>
-  );
-}
-
-export function WorkflowEventCard({ event }: { event: WorkflowEvent }) {
-  const tone = event.status === "failed" ? "risk" : event.status === "pending" ? "warn" : "success";
-  return (
-    <div className="stack-card">
-      <strong>{event.eventLabel}</strong>
-      <p>{event.timestamp}</p>
-      <Badge tone={tone}>{event.status}</Badge>
-    </div>
-  );
-}

@@ -5,14 +5,12 @@ export type NavItem = {
 
 export const primaryNavItems: NavItem[] = [
   { href: "/", label: "首页" },
-  { href: "/customers", label: "客户" },
   { href: "/pipeline", label: "商机管道" },
   { href: "/settings", label: "设置" },
 ];
 
 export const mobilePrimaryNavItems: NavItem[] = [
   { href: "/", label: "首页" },
-  { href: "/customers", label: "客户" },
   { href: "/pipeline", label: "商机管道" },
   { href: "/settings", label: "设置" },
 ];

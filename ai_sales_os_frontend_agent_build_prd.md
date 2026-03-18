@@ -1,4 +1,4 @@
-# AI Sales OS Frontend Build PRD For Coding Agent
+# AI Revenue Management OS Frontend Build PRD For Coding Agent
 
 ## 1. Purpose
 This document is written for an AI coding agent, not for a human design team.

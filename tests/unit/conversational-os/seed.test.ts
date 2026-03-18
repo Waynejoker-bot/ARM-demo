@@ -1,11 +1,10 @@
 import { conversationSeed, defaultThreadId } from "@/lib/conversational-os/seed";
 
 describe("conversational agent os seed", () => {
-  it("defines exactly three starter threads", () => {
+  it("defines exactly two starter threads", () => {
     expect(conversationSeed.threads.map((thread) => thread.id)).toEqual([
       "thread-rep-yang",
       "thread-manager-liu",
-      "thread-ceo-wang",
     ]);
   });
 
@@ -13,18 +12,16 @@ describe("conversational agent os seed", () => {
     expect(defaultThreadId).toBe("thread-rep-yang");
   });
 
-  it("includes pinned cards for rep, manager, and ceo views", () => {
+  it("includes pinned cards for rep and manager views", () => {
     expect(conversationSeed.threads.every((thread) => thread.pinnedCardId)).toBe(true);
     expect(conversationSeed.cards.every((card) => card.createdAt)).toBe(true);
+    expect(conversationSeed.cards.every((card) => card.sourceAgent)).toBe(true);
     expect(
-      conversationSeed.cards.find((card) => card.id === "card-rep-zifei-priority")?.title
-    ).toContain("广州紫菲网络科技有限公司");
+      conversationSeed.cards.find((card) => card.id === "card-flow-meeting-summary")?.title
+    ).toContain("紫菲科技");
     expect(
-      conversationSeed.cards.find((card) => card.id === "card-manager-zifei-intervention")?.title
-    ).toContain("刘建明");
-    expect(
-      conversationSeed.cards.find((card) => card.id === "card-ceo-dachen-pricing")?.title
-    ).toContain("王豪");
+      conversationSeed.cards.find((card) => card.id === "card-mgr-team-status")?.title
+    ).toContain("团队状态");
   });
 
   it("roots the rep seed in Yang Wenxing's real meeting materials", () => {
@@ -33,13 +30,13 @@ describe("conversational agent os seed", () => {
     );
 
     expect(repThreadMessages.some((message) => message.kind === "source_input")).toBe(true);
-    expect(repThreadMessages.some((message) => message.body.includes("刚见完客户"))).toBe(true);
+    expect(repThreadMessages.some((message) => message.body.includes("紫菲科技"))).toBe(true);
     expect(
       repThreadMessages.some(
         (message) =>
           message.body.includes("VOD 聚合 API") ||
-          message.body.includes("月底广州会") ||
-          message.sourceItems?.some((item) => item.title === "硬件会议摘要")
+          message.body.includes("技术评估会") ||
+          message.sourceItems?.some((item) => item.kind === "meeting_summary")
       )
     ).toBe(true);
   });
@@ -59,14 +56,13 @@ describe("conversational agent os seed", () => {
     expect(repCards.some((card) => card.sourceDealId === "deal-real-2")).toBe(true);
   });
 
-  it("defines seeded deliveries and read state for all three threads", () => {
+  it("defines seeded deliveries and read state for both threads", () => {
     expect(conversationSeed.deliveries.length).toBeGreaterThan(0);
-    expect(conversationSeed.readStates).toHaveLength(3);
+    expect(conversationSeed.readStates).toHaveLength(2);
     expect(conversationSeed.readStates.every((state) => state.lastReadAt)).toBe(true);
     expect(conversationSeed.readStates.map((state) => state.threadId)).toEqual([
       "thread-rep-yang",
       "thread-manager-liu",
-      "thread-ceo-wang",
     ]);
   });
 });

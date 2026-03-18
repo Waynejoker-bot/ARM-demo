@@ -105,7 +105,8 @@ const CREATE_CARDS_SQL = `
     primary_action_label TEXT NOT NULL,
     created_at TEXT NOT NULL,
     source_meeting_id TEXT,
-    source_deal_id TEXT
+    source_deal_id TEXT,
+    source_agent TEXT NOT NULL DEFAULT 'sales_bp'
   )
 `;
 
@@ -164,6 +165,7 @@ function withDatabase<T>(dbPath: string, run: (db: any) => T) {
   db.exec(CREATE_DELIVERIES_SQL);
   db.exec(CREATE_THREAD_READS_SQL);
   ensureCardCreatedAtColumn(db);
+  ensureCardSourceAgentColumn(db);
   ensureMessageSourceItemsColumn(db);
   syncSeedCardCreatedAt(db);
 
@@ -200,6 +202,18 @@ function syncSeedCardCreatedAt(db: any) {
   }
 }
 
+function ensureCardSourceAgentColumn(db: any) {
+  const columns = db.prepare("PRAGMA table_info(conversation_cards)").all() as Array<{
+    name: string;
+  }>;
+
+  if (columns.some((column) => column.name === "source_agent")) {
+    return;
+  }
+
+  db.exec("ALTER TABLE conversation_cards ADD COLUMN source_agent TEXT NOT NULL DEFAULT 'sales_bp'");
+}
+
 function ensureMessageSourceItemsColumn(db: any) {
   const columns = db.prepare("PRAGMA table_info(conversation_messages)").all() as Array<{
     name: string;
@@ -234,8 +248,8 @@ function bootstrapSeed(db: any) {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   const insertCard = db.prepare(`
-    INSERT INTO conversation_cards (id, thread_id, title, summary, detail, trust_note, priority_rank, primary_action, primary_action_label, created_at, source_meeting_id, source_deal_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO conversation_cards (id, thread_id, title, summary, detail, trust_note, priority_rank, primary_action, primary_action_label, created_at, source_meeting_id, source_deal_id, source_agent)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   const insertHandoff = db.prepare(`
     INSERT INTO conversation_handoffs (id, from_thread_id, to_thread_id, summary, detail_visible_to_downstream, created_at, related_card_id)
@@ -300,7 +314,8 @@ function bootstrapSeed(db: any) {
       card.primaryActionLabel,
       card.createdAt,
       card.sourceMeetingId,
-      card.sourceDealId
+      card.sourceDealId,
+      card.sourceAgent
     );
   }
 
@@ -424,7 +439,6 @@ export function createConversationRepository(options: ConversationRepositoryOpti
               ORDER BY CASE id
                 WHEN 'thread-rep-yang' THEN 1
                 WHEN 'thread-manager-liu' THEN 2
-                WHEN 'thread-ceo-wang' THEN 3
                 ELSE 99
               END ASC
             `
@@ -452,7 +466,6 @@ export function createConversationRepository(options: ConversationRepositoryOpti
               ORDER BY CASE id
                 WHEN 'thread-rep-yang' THEN 1
                 WHEN 'thread-manager-liu' THEN 2
-                WHEN 'thread-ceo-wang' THEN 3
                 ELSE 99
               END ASC
             `
@@ -533,7 +546,7 @@ export function createConversationRepository(options: ConversationRepositoryOpti
         const cards = db
           .prepare(
             `
-              SELECT id, thread_id, title, summary, detail, trust_note, priority_rank, primary_action, primary_action_label, created_at, source_meeting_id, source_deal_id
+              SELECT id, thread_id, title, summary, detail, trust_note, priority_rank, primary_action, primary_action_label, created_at, source_meeting_id, source_deal_id, source_agent
               FROM conversation_cards
               WHERE thread_id = ?
               ORDER BY priority_rank DESC, id ASC
@@ -553,6 +566,7 @@ export function createConversationRepository(options: ConversationRepositoryOpti
             createdAt: row.created_at,
             sourceMeetingId: row.source_meeting_id,
             sourceDealId: row.source_deal_id,
+            sourceAgent: row.source_agent ?? "sales_bp",
           })) as ConversationDecisionCard[];
 
         const handoffs = db
@@ -644,8 +658,8 @@ export function createConversationRepository(options: ConversationRepositoryOpti
         db.prepare(
           `
             INSERT OR REPLACE INTO conversation_cards (
-              id, thread_id, title, summary, detail, trust_note, priority_rank, primary_action, primary_action_label, created_at, source_meeting_id, source_deal_id
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              id, thread_id, title, summary, detail, trust_note, priority_rank, primary_action, primary_action_label, created_at, source_meeting_id, source_deal_id, source_agent
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           `
         ).run(
           card.id,
@@ -659,7 +673,8 @@ export function createConversationRepository(options: ConversationRepositoryOpti
           card.primaryActionLabel,
           card.createdAt,
           card.sourceMeetingId,
-          card.sourceDealId
+          card.sourceDealId,
+          card.sourceAgent
         );
 
         const currentPinnedRow = db

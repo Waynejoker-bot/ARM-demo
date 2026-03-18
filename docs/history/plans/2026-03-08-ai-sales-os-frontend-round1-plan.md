@@ -4,7 +4,7 @@
 >
 > 仅保留作历史上下文与复盘材料使用，不再作为当前实现依据。
 
-# AI Sales OS Frontend Round 1 Implementation Plan
+# AI Revenue Management OS Frontend Round 1 Implementation Plan
 
 ## 1. Purpose
 

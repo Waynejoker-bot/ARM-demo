@@ -75,34 +75,40 @@ export default async function DealDetailPage({
           </div>
         </SectionCard>
 
-        {primaryOutput ? (
-          <ExplainableCard
-            title="可解释智能结果"
-            summary={primaryOutput.summary}
-            confidence={primaryOutput.confidence}
-            freshness={deal.dataFreshness}
-            evidence={evidence}
-            mobilePriority="primary"
-            mobileDensity="feed"
-          />
-        ) : (
-          <SectionCard title="可解释智能结果" mobilePriority="primary" mobileDensity="feed">
-            <div className="stack-card">
-              <strong>暂无 Agent 结论</strong>
-              <p>这条商机还没有可展示的智能结论。</p>
-            </div>
-          </SectionCard>
-        )}
+        <div>
+          <div className="agent-source-tag">来自商机 Agent</div>
+          {primaryOutput ? (
+            <ExplainableCard
+              title="可解释智能结果"
+              summary={primaryOutput.summary}
+              confidence={primaryOutput.confidence}
+              freshness={deal.dataFreshness}
+              evidence={evidence}
+              mobilePriority="primary"
+              mobileDensity="feed"
+            />
+          ) : (
+            <SectionCard title="可解释智能结果" mobilePriority="primary" mobileDensity="feed">
+              <div className="stack-card">
+                <strong>暂无 Agent 结论</strong>
+                <p>这条商机还没有可展示的智能结论。</p>
+              </div>
+            </SectionCard>
+          )}
+        </div>
 
-        {primaryOutput ? (
-          <SuggestionActionCard
-            output={primaryOutput}
-            mobilePriority="primary"
-            mobileDensity="feed"
-          />
-        ) : (
-          <div />
-        )}
+        <div>
+          <div className="agent-source-tag">来自商机 Agent</div>
+          {primaryOutput ? (
+            <SuggestionActionCard
+              output={primaryOutput}
+              mobilePriority="primary"
+              mobileDensity="feed"
+            />
+          ) : (
+            <div />
+          )}
+        </div>
       </div>
 
       <div className="grid-2">

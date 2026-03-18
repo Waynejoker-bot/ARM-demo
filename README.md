@@ -1,4 +1,4 @@
-# AI Sales OS Frontend
+# AI Revenue Management OS Frontend
 
 一个以 `Agent-first` 为核心交互方式的销售智能前端演示项目。
 

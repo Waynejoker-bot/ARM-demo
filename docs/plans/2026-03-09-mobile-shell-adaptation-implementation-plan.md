@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Add a responsive mobile shell to the existing AI Sales OS frontend so the same routes render desktop layouts on desktop and phone-optimized layouts on mobile, without forking business logic.
+**Goal:** Add a responsive mobile shell to the existing AI Revenue Management OS frontend so the same routes render desktop layouts on desktop and phone-optimized layouts on mobile, without forking business logic.
 
 **Architecture:** Introduce shell-level adaptation first, then layer mobile density variants into shared UI primitives and the highest-value routes. Keep routes, domain objects, page responsibilities, and agent semantics shared; only presentation containers and density change across breakpoints.
 

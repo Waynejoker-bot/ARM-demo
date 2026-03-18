@@ -53,7 +53,7 @@ Out of scope:
 ## Acceptance Criteria
 
 1. The left rail shows only `arm-demo` as the brand title.
-2. The left rail no longer shows `AI Sales OS`, `Meeting-first Demo`, or the long demo description.
+2. The left rail no longer shows `AI Revenue Management OS`, `Meeting-first Demo`, or the long demo description.
 3. The home page top section includes the demo description that was removed from the left rail.
 4. Existing navigation items and top bar chips remain intact.
 5. Tests cover the changed shell and home content placement.

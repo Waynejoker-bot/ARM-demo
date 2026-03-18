@@ -51,12 +51,11 @@ describe("conversational agent os page", () => {
   it("renders the conversation-first workspace with the most recently active thread selected on desktop", async () => {
     render(await RootPage());
 
-    expect(screen.getByRole("button", { name: /杨文星私有群/i })).toBeVisible();
-    expect(screen.getByRole("button", { name: /刘建明主管群/i })).toBeVisible();
-    expect(screen.getByRole("button", { name: /王豪的销售 BP Agent/i })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "杨文星私有群" })).toBeVisible();
+    expect(screen.getByRole("button", { name: /杨文星的工作台/i })).toBeVisible();
+    expect(screen.getByRole("button", { name: /刘建明的工作台/i })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "杨文星的工作台" })).toBeVisible();
     expect(screen.queryByText("置顶任务")).not.toBeInTheDocument();
-    expect(screen.getAllByText("一线销售 AgentBP").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("销售 BPAgent").length).toBeGreaterThan(0);
     expect(screen.queryByRole("button", { name: "发送当前卡片" })).not.toBeInTheDocument();
     expect(screen.getByText("今天你需要重点关注 3 件事：", { exact: false })).toBeVisible();
     expect(screen.getByRole("button", { name: "发送" })).toBeVisible();
@@ -78,14 +77,8 @@ describe("conversational agent os page", () => {
   it("groups the thread rail by role and keeps priority emphasis inside the chat stage", async () => {
     render(await RootPage());
 
-    expect(screen.getByRole("heading", { name: "CEO" })).toBeVisible();
     expect(screen.getByRole("heading", { name: "销售主管" })).toBeVisible();
     expect(screen.getByRole("heading", { name: "一线销售" })).toBeVisible();
-    expect(
-      screen.queryByText("杨文星、一线销售 AgentBP 与主管 Agent 的协作线程。")
-    ).not.toBeInTheDocument();
-    expect(screen.queryByText("刘建明、主管 AgentBP 与 CEO Agent 的升级与编排线程。"))
-      .not.toBeInTheDocument();
     expect(screen.queryByText("当前最重要")).not.toBeInTheDocument();
     expect(screen.queryByText("置顶任务")).not.toBeInTheDocument();
     expect(screen.getAllByText("最近消息").length).toBeGreaterThan(0);
@@ -114,8 +107,11 @@ describe("conversational agent os page", () => {
 
     render(await RootPage());
 
-    expect(screen.getByText("1")).toBeVisible();
-    expect(screen.getByRole("button", { name: /刘建明主管群/i })).toBeVisible();
+    const unreadBadges = screen.getAllByText("1").filter(
+      (el) => el.classList.contains("conversation-thread-unread")
+    );
+    expect(unreadBadges.length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByRole("button", { name: /刘建明的工作台/i })).toBeVisible();
   });
 
   it("keeps desktop detail collapsed until the user opens it", async () => {
@@ -136,10 +132,10 @@ describe("conversational agent os page", () => {
 
     render(await RootPage());
 
-    expect(screen.getByRole("button", { name: /杨文星私有群/i })).toBeVisible();
+    expect(screen.getByRole("button", { name: /杨文星的工作台/i })).toBeVisible();
     expect(screen.queryByText("会话中")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: /杨文星私有群/i }));
+    fireEvent.click(screen.getByRole("button", { name: /杨文星的工作台/i }));
 
     expect(screen.getByRole("button", { name: "返回会话列表" })).toBeVisible();
     expect(screen.getByText("今天你需要重点关注 3 件事：", { exact: false })).toBeVisible();
@@ -154,7 +150,7 @@ describe("conversational agent os page", () => {
     expect(screen.getByRole("button", { name: "返回会话列表" })).toBeVisible();
 
     fireEvent.click(screen.getByRole("button", { name: "返回会话列表" }));
-    expect(screen.getByRole("button", { name: /杨文星私有群/i })).toBeVisible();
+    expect(screen.getByRole("button", { name: /杨文星的工作台/i })).toBeVisible();
     expect(screen.queryByText("会话中")).not.toBeInTheDocument();
   });
 });

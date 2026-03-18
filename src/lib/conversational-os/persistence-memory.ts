@@ -51,7 +51,7 @@ export function createInMemoryConversationRepository() {
 
   return {
     listThreads(): ConversationThread[] {
-      const order = ["thread-rep-yang", "thread-manager-liu", "thread-ceo-wang"];
+      const order = ["thread-rep-yang", "thread-manager-liu"];
       return [...store.threads].sort(
         (a, b) => (order.indexOf(a.id) ?? 99) - (order.indexOf(b.id) ?? 99)
       );

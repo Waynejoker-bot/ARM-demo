@@ -1,4 +1,4 @@
-# AI Sales OS Role Workspaces Design
+# AI Revenue Management OS Role Workspaces Design
 
 日期：2026-03-08
 

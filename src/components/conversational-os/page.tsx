@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
 import { Badge } from "@/components/shared/ui";
@@ -47,6 +48,16 @@ function messageLabel(message: ConversationMessage) {
   if (message.kind === "system_handoff") return "状态通知";
   if (message.kind === "card_summary") return "卡片摘要";
   return "消息";
+}
+
+function sourceAgentLabel(agent: string | undefined): string {
+  const labels: Record<string, string> = {
+    sales_bp: "销售 BPAgent",
+    manager_bp: "主管 BPAgent",
+    customer_agent: "客户 Agent",
+    deal_agent: "商机 Agent",
+  };
+  return labels[agent ?? ""] ?? "Agent 建议";
 }
 
 function sourceItemLabel(kind: ConversationSourceItem["kind"]) {
@@ -100,7 +111,7 @@ export function ConversationalAgentOsPageView({
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isMobileViewport, setIsMobileViewport] = useState(initialMobileViewport);
   const [mobileView, setMobileView] = useState<MobileConversationView>(
-    initialMobileViewport ? "thread_list" : "thread_view"
+    initialMobileViewport ? "thread_view" : "thread_view"
   );
   const [actionedCardIds, setActionedCardIds] = useState<Set<string>>(new Set());
   const [pendingAttachments, setPendingAttachments] = useState<{ name: string; kind: ConversationSourceItem["kind"] }[]>([]);
@@ -124,7 +135,7 @@ export function ConversationalAgentOsPageView({
       setIsMobileViewport(matches);
 
       if (matches) {
-        setMobileView("thread_list");
+        setMobileView("thread_view");
       }
     };
 
@@ -395,67 +406,70 @@ export function ConversationalAgentOsPageView({
                 </time>
               </div>
             </div>
-            <article className={`conversation-message conversation-message-${messageTone(message)}`}>
-              <p>{message.body}</p>
+            <div className="conversation-message-row">
+              <div className="conversation-message-avatar">{message.actorName.charAt(0)}</div>
+              <article className={`conversation-message conversation-message-${messageTone(message)}`}>
+                <p>{message.body}</p>
 
-            {message.kind === "source_input" && message.sourceItems?.length ? (
-              <div className="conversation-source-bundle" aria-label="源数据清单">
-                {message.sourceItems.map((item) => (
-                  <div key={`${message.id}-${item.kind}-${item.title}`} className="conversation-source-item">
-                    <div className="conversation-source-item-topline">
-                      <span>{sourceItemLabel(item.kind)}</span>
-                      <strong>{item.title}</strong>
+              {message.kind === "source_input" && message.sourceItems?.length ? (
+                <div className="conversation-source-bundle" aria-label="源数据清单">
+                  {message.sourceItems.map((item) => (
+                    <div key={`${message.id}-${item.kind}-${item.title}`} className="conversation-source-item">
+                      <div className="conversation-source-item-topline">
+                        <span>{sourceItemLabel(item.kind)}</span>
+                        <strong>{item.title}</strong>
+                      </div>
+                      {item.detail ? <p>{item.detail}</p> : null}
                     </div>
-                    {item.detail ? <p>{item.detail}</p> : null}
-                  </div>
-                ))}
-              </div>
-            ) : null}
-
-            {relatedCard ? (
-              <div className="conversation-inline-card">
-                <div className="conversation-inline-card-topline">
-                  <span>卡片摘要</span>
-                  <Badge tone="info">{relatedCard.primaryActionLabel}</Badge>
+                  ))}
                 </div>
-                <strong>{relatedCard.title}</strong>
-                <p>{relatedCard.summary}</p>
-                <div className="conversation-inline-card-footer">
-                  <div className="conversation-inline-card-meta">
-                    <span>{relatedCard.trustNote}</span>
-                    <time
-                      className="conversation-inline-card-time"
-                      dateTime={relatedCard.createdAt}
-                      title={formatAbsoluteConversationTime(relatedCard.createdAt)}
-                    >
-                      到达 {formatRelativeConversationTime(relatedCard.createdAt)}
-                    </time>
+              ) : null}
+
+              {relatedCard ? (
+                <div className="conversation-inline-card">
+                  <div className="conversation-inline-card-topline">
+                    <span>{sourceAgentLabel(relatedCard.sourceAgent)}</span>
+                    <Badge tone="info">{relatedCard.primaryActionLabel}</Badge>
                   </div>
-                  <div className="button-row">
-                    <button
-                      type="button"
-                      className="ghost-button"
-                      onClick={() => openCardDetail(relatedCard.id)}
-                    >
-                      查看详情
-                    </button>
-                    {actionedCardIds.has(relatedCard.id) ? (
-                      <Badge tone="success">已确认</Badge>
-                    ) : (
+                  <strong>{relatedCard.title}</strong>
+                  <p>{relatedCard.summary}</p>
+                  <div className="conversation-inline-card-footer">
+                    <div className="conversation-inline-card-meta">
+                      <span>{relatedCard.trustNote}</span>
+                      <time
+                        className="conversation-inline-card-time"
+                        dateTime={relatedCard.createdAt}
+                        title={formatAbsoluteConversationTime(relatedCard.createdAt)}
+                      >
+                        到达 {formatRelativeConversationTime(relatedCard.createdAt)}
+                      </time>
+                    </div>
+                    <div className="button-row">
                       <button
                         type="button"
-                        className="primary-button"
-                        disabled={isPending}
-                        onClick={() => void submitCardMessage(relatedCard.id)}
+                        className="ghost-button"
+                        onClick={() => openCardDetail(relatedCard.id)}
                       >
-                        {formatCardButton(relatedCard)}
+                        查看详情
                       </button>
-                    )}
+                      {actionedCardIds.has(relatedCard.id) ? (
+                        <Badge tone="success">已确认</Badge>
+                      ) : (
+                        <button
+                          type="button"
+                          className="primary-button"
+                          disabled={isPending}
+                          onClick={() => void submitCardMessage(relatedCard.id)}
+                        >
+                          {formatCardButton(relatedCard)}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : null}
-            </article>
+              ) : null}
+              </article>
+            </div>
           </div>
         );
       })}
@@ -542,6 +556,10 @@ export function ConversationalAgentOsPageView({
       <p>{selectedCard.detail}</p>
       <div className="conversation-card-detail-grid">
         <div>
+          <span>来源 Agent</span>
+          <strong>{sourceAgentLabel(selectedCard.sourceAgent)}</strong>
+        </div>
+        <div>
           <span>信任信息</span>
           <strong>{selectedCard.trustNote}</strong>
         </div>
@@ -600,19 +618,30 @@ export function ConversationalAgentOsPageView({
         {mobileView === "thread_view" ? (
           <section className="conversation-mobile-screen conversation-mobile-thread-view">
             <div className="conversation-mobile-topbar">
-              <button
-                type="button"
-                className="ghost-button"
-                onClick={() => setMobileView("thread_list")}
-                aria-label="返回会话列表"
-              >
-                返回会话列表
-              </button>
-              <div className="conversation-mobile-title-stack">
-                <span className="conversation-kicker">会话中</span>
-                <h2>{currentThread.thread.title}</h2>
+              <div className="conversation-mobile-thread-tabs">
+                {threadPreviews.map((preview) => (
+                  <button
+                    key={preview.id}
+                    type="button"
+                    className={clsx(
+                      "conversation-mobile-thread-tab",
+                      preview.id === selectedThreadId && "conversation-mobile-thread-tab-active"
+                    )}
+                    onClick={() => handleThreadSelection(preview.id)}
+                  >
+                    {preview.title}
+                    {preview.unreadCount > 0 ? <span className="conversation-mobile-tab-dot" /> : null}
+                  </button>
+                ))}
               </div>
-              <Badge tone="info">{findHumanMember(currentThread)?.actorName ?? "Agent"}</Badge>
+              <button
+                className="ghost-button"
+                type="button"
+                disabled={isPending}
+                onClick={() => void resetDemo()}
+              >
+                重置
+              </button>
             </div>
 
             {conversationStatus}

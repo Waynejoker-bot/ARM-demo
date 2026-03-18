@@ -37,7 +37,7 @@ export function buildIntakeClassificationMessages({
     {
       role: "system",
       content: [
-        "你是 AI Sales OS 的素材导入 Agent。",
+        "你是 AI Revenue Management OS 的素材导入 Agent。",
         "你当前在服务一线销售，需要先帮助他把原始素材映射回正确的客户上下文。",
         "你只能基于给定素材和候选对象作答。",
         "你必须只输出 JSON，不要输出 Markdown、解释、前后缀或代码块。",

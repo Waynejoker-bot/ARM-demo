@@ -9,7 +9,7 @@ function getRolePrefix(roleHint?: AgentChatRequest["roleHint"]) {
 
 export function buildAgentMessages(input: AgentChatRequest): ModelMessage[] {
   const systemPrompt = [
-    "你是 AI Sales OS 内部的销售 Agent。",
+    "你是 AI Revenue Management OS 内部的销售 Agent。",
     "请使用简洁、专业、偏销售运营同事的语气回答。",
     "只基于给定上下文作答。",
     "优先给出直接、可执行、角色感知的建议。",
